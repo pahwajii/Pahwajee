@@ -1,0 +1,84 @@
+{
+  "theme": "light",
+  "archetype": "5 (Luxury) blended with 1 (Organic & Earthy)",
+  "emotional_tone": "Trust, Quality, Freshness, Tradition, Premium Artisan",
+  "typography": {
+    "heading_font": "Cormorant Garamond",
+    "body_font": "Outfit",
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-primary-dark",
+      "h2": "text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-primary-dark",
+      "h3": "text-2xl sm:text-3xl font-medium",
+      "h4": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-lg leading-relaxed text-secondary-dark",
+      "small": "text-sm tracking-wide uppercase tracking-[0.2em]"
+    }
+  },
+  "colors": {
+    "light_mode": {
+      "background": "#FAF6F0",
+      "surface": "#FFFFFF",
+      "primary": "#8B1E0F",
+      "secondary": "#D4AF37",
+      "text_main": "#2C1E16",
+      "text_muted": "#5A4231",
+      "border": "#E8DEC8"
+    },
+    "dark_mode": {
+      "background": "#1A1210",
+      "surface": "#2A1D1A",
+      "primary": "#B73C2C",
+      "secondary": "#DFB761",
+      "text_main": "#F5EBE6",
+      "text_muted": "#D0BDB5",
+      "border": "#3E2B25"
+    }
+  },
+  "layout_and_spacing": {
+    "philosophy": "Generous spacing, optical alignment, bento grids for galleries, large product focus.",
+    "container_padding": "px-4 sm:px-8 lg:px-12",
+    "section_spacing": "py-16 sm:py-24 lg:py-32",
+    "border_radius": "rounded-2xl",
+    "shadows": "shadow-[0_8px_30px_rgb(44,30,22,0.08)]",
+    "glassmorphism": "backdrop-blur-xl bg-white/70 border border-white/20 dark:bg-black/60 dark:border-white/10"
+  },
+  "components": {
+    "hero": "Split layout or overlapping container. Image on right or background with subtle dark/warm overlay (bg-black/30). Text left aligned, massive Serif heading.",
+    "buttons": "Primary CTA uses Rich Red (bg-[#8B1E0F]) with white text. Hover states use slight lift (-translate-y-1) and shadow increase. Floating WhatsApp uses WhatsApp Green (#25D366) with glassmorphic tooltip.",
+    "product_cards": "Rounded corners (rounded-2xl), overflow-hidden, image container with aspect-square or 4:5. Hover effect: image scales up 105%. Card has pure white bg (light mode) with very subtle warm shadow.",
+    "navigation": "Sticky, fixed top. Uses Crystal Glassmorphism. Logo in Serif font or image. Links are clean Outfit text.",
+    "testimonials": "Google Reviews style but elevated. Cards with star ratings (Gold #D4AF37), avatar, and elegant quote styling."
+  },
+  "motion_and_interactions": {
+    "scroll_reveal": "Framer Motion: initial opacity-0, y-10. whileInView opacity-100, y-0. transition duration-0.7 ease-out.",
+    "hover_effects": "Images scale slightly. Cards lift slightly. Buttons brighten on hover.",
+    "page_transitions": "Smooth fade in."
+  },
+  "media": {
+    "hero_storefront": "https://images.unsplash.com/photo-1769643207188-f9b6b7e1d72c?crop=entropy&cs=srgb&fm=jpg",
+    "category_sweets": "https://images.pexels.com/photos/8887052/pexels-photo-8887052.jpeg",
+    "category_shakes": "https://images.unsplash.com/photo-1644461151939-f78a01d14608?crop=entropy&cs=srgb&fm=jpg",
+    "category_fast_food": "https://images.unsplash.com/photo-1667185487656-91aee4306658?crop=entropy&cs=srgb&fm=jpg",
+    "category_hampers": "https://images.unsplash.com/photo-1773450970959-cef81e9b1053?crop=entropy&cs=srgb&fm=jpg",
+    "product_nankhatai": "https://images.pexels.com/photos/37219215/pexels-photo-37219215.jpeg",
+    "product_cold_coffee": "https://images.unsplash.com/photo-1624306070914-c480667416cd?crop=entropy&cs=srgb&fm=jpg",
+    "testimonial_bg": "https://images.unsplash.com/photo-1770989064308-78baffbaa47e?crop=entropy&cs=srgb&fm=jpg"
+  },
+  "technical_rules": {
+    "testing": "All interactive and key informational elements MUST include a 'data-testid' attribute using kebab-case role-based naming.",
+    "icons": "lucide-react",
+    "ui_library": "shadcn/ui customized with the color palette. Do not use default Vercel-like borders or gray text.",
+    "file_extensions": "Use .js and .jsx extensions. Do not use .tsx or .ts."
+  },
+  "instructions_to_main_agent": [
+    "Ensure all text has sufficient contrast, especially over images (use text shadows or gradient overlays).",
+    "Build the navigation as a sticky glassmorphic header.",
+    "Implement Floating Action Buttons (WhatsApp and Call) fixed to bottom right using z-50.",
+    "Use Framer Motion for scroll animations on sections to give a premium feel.",
+    "Create a responsive bento grid for the Gallery section.",
+    "For the Products page, implement client-side category filtering and search for the catalogue.",
+    "Integrate the 'Cormorant Garamond' and 'Outfit' fonts via Google Fonts.",
+    "Implement Dark Mode using Tailwind's 'dark:' variant classes, switching out the cream backgrounds for deep espresso/charcoal tones.",
+    "Create Shadcn components in JS, keeping in mind the 'file_extensions' rule."
+  ]
+}
