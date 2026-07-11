@@ -1,7 +1,7 @@
 fastapi
-uvicorn
-motor
-bcrypt
-pyjwt
-pydantic[email]
+uvicorn[standard]
 python-dotenv
+motor
+pydantic[email]
+bcrypt
+PyJWT

@@ -1,9 +1,13 @@
-/* App-specific styles */
 .App { min-height: 100vh; }
 
-/* Lightbox */
-.lightbox-backdrop { background: rgba(20, 14, 10, 0.92); backdrop-filter: blur(8px); }
+.lightbox-backdrop {
+  background: rgba(20, 14, 10, 0.92);
+  backdrop-filter: blur(8px);
+}
 
-/* Marquee */
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .marquee-track { animation: marquee 40s linear infinite; }

@@ -44,7 +44,7 @@
   },
   "components": {
     "hero": "Split layout or overlapping container. Image on right or background with subtle dark/warm overlay (bg-black/30). Text left aligned, massive Serif heading.",
-    "buttons": "Primary CTA uses Rich Red (bg-[#8B1E0F]) with white text. Hover states use slight lift (-translate-y-1) and shadow increase. Floating WhatsApp uses WhatsApp Green (#25D366) with glassmorphic tooltip.",
+    "buttons": "Primary CTA uses Rich Red (bg-[#8B1E0F]) with white text. Hover states use slight lift (-translate-y-1) and shadow increase. Floating WhatsApp uses WhatsApp Green (#25D366) with glassmorphism tooltip.",
     "product_cards": "Rounded corners (rounded-2xl), overflow-hidden, image container with aspect-square or 4:5. Hover effect: image scales up 105%. Card has pure white bg (light mode) with very subtle warm shadow.",
     "navigation": "Sticky, fixed top. Uses Crystal Glassmorphism. Logo in Serif font or image. Links are clean Outfit text.",
     "testimonials": "Google Reviews style but elevated. Cards with star ratings (Gold #D4AF37), avatar, and elegant quote styling."

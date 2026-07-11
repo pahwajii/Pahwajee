@@ -1,51 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 35 40% 96%;      /* #FAF6F0 warm cream */
-    --foreground: 20 33% 13%;      /* #2C1E16 deep espresso */
+    --background: 31 38% 95%;
+    --foreground: 21 34% 13%;
     --card: 0 0% 100%;
-    --card-foreground: 20 33% 13%;
+    --card-foreground: 21 34% 13%;
     --popover: 0 0% 100%;
-    --popover-foreground: 20 33% 13%;
-    --primary: 8 80% 30%;          /* #8B1E0F rich red */
-    --primary-foreground: 35 40% 96%;
-    --secondary: 43 70% 52%;       /* #D4AF37 gold */
-    --secondary-foreground: 20 33% 13%;
-    --muted: 35 30% 90%;
-    --muted-foreground: 20 20% 35%;
+    --popover-foreground: 21 34% 13%;
+    --primary: 7 76% 34%;
+    --primary-foreground: 31 38% 95%;
+    --secondary: 43 69% 53%;
+    --secondary-foreground: 21 34% 13%;
+    --muted: 31 26% 88%;
+    --muted-foreground: 22 19% 35%;
     --accent: 43 65% 55%;
-    --accent-foreground: 20 33% 13%;
+    --accent-foreground: 21 34% 13%;
     --destructive: 0 84% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 36 40% 85%;
-    --input: 36 40% 88%;
-    --ring: 8 80% 30%;
-    --radius: 1rem;
-  }
-  .dark {
-    --background: 15 20% 8%;       /* #1A1210 */
-    --foreground: 30 40% 94%;      /* #F5EBE6 */
-    --card: 15 20% 13%;            /* #2A1D1A */
-    --card-foreground: 30 40% 94%;
-    --popover: 15 20% 13%;
-    --popover-foreground: 30 40% 94%;
-    --primary: 8 65% 45%;          /* #B73C2C */
-    --primary-foreground: 30 40% 94%;
-    --secondary: 42 65% 62%;       /* #DFB761 */
-    --secondary-foreground: 15 20% 8%;
-    --muted: 15 15% 18%;
-    --muted-foreground: 30 25% 75%;
-    --accent: 42 55% 55%;
-    --accent-foreground: 15 20% 8%;
-    --destructive: 0 62% 40%;
-    --destructive-foreground: 30 40% 94%;
-    --border: 15 20% 22%;
-    --input: 15 20% 22%;
-    --ring: 42 65% 62%;
+    --border: 34 30% 83%;
+    --input: 34 30% 88%;
+    --ring: 7 76% 34%;
+    --radius: 0.5rem;
   }
 }
 
@@ -58,42 +37,25 @@
     -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, .font-serif {
-    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
   ::selection { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 }
 
 @layer components {
-  .container-x { @apply mx-auto max-w-7xl px-4 sm:px-8 lg:px-12; }
-  .section-y { @apply py-16 sm:py-24 lg:py-32; }
-  .glass {
-    @apply backdrop-blur-xl bg-white/70 border border-white/40 dark:bg-black/50 dark:border-white/10;
-  }
-  .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-primary-foreground font-medium shadow-lg shadow-primary/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300;
-  }
-  .btn-outline {
-    @apply inline-flex items-center gap-2 rounded-full border-2 border-primary/80 px-6 py-3 text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300;
-  }
-  .btn-gold {
-    @apply inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-secondary-foreground font-medium shadow-lg shadow-secondary/20 hover:-translate-y-0.5 transition-all duration-300;
-  }
-  .eyebrow {
-    @apply text-xs tracking-[0.28em] uppercase text-secondary font-medium;
-  }
-  .card-warm {
-    @apply rounded-2xl bg-card border border-border/60 shadow-[0_8px_30px_rgb(44,30,22,0.06)] overflow-hidden;
-  }
-  .noise-bg {
-    background-image:
-      radial-gradient(1200px 500px at 20% -10%, hsl(var(--secondary) / 0.10), transparent 60%),
-      radial-gradient(900px 400px at 100% 10%, hsl(var(--primary) / 0.08), transparent 60%);
-  }
+  .container-x { @apply mx-auto max-w-6xl px-5 sm:px-8 lg:px-10; }
+  .section-y { @apply py-16 sm:py-20 lg:py-24; }
+  .glass { @apply backdrop-blur-xl bg-white/80 border border-white/70 shadow-[0_8px_24px_rgb(44,30,22,0.09)]; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm text-primary-foreground font-semibold shadow-lg shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300; }
+  .btn-outline { @apply inline-flex items-center justify-center gap-2 rounded-full border border-primary/70 px-6 py-3 text-sm text-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300; }
+  .btn-gold { @apply inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-6 py-3 text-sm text-secondary-foreground font-semibold shadow-lg shadow-secondary/20 hover:-translate-y-0.5 transition-all duration-300; }
+  .eyebrow { @apply text-xs tracking-[0.28em] uppercase text-secondary font-semibold; }
+  .card-warm { @apply rounded-lg bg-card border border-border/60 shadow-[0_10px_26px_rgb(44,30,22,0.07)] overflow-hidden; }
+  .noise-bg { background: hsl(var(--background)); }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: hsl(var(--muted)); }
 ::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.5); border-radius: 999px; }

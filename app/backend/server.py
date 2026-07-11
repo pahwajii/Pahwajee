@@ -1,12 +1,8 @@
-from dotenv import load_dotenv
+﻿from dotenv import load_dotenv
 from pathlib import Path
-import os
 
 ROOT_DIR = Path(__file__).parent
-env_path = ROOT_DIR / '.env'
-loaded = load_dotenv(env_path, override=True)
-print(f"DEBUG: env_path={env_path.resolve()}, exists={env_path.exists()}, loaded={loaded}", flush=True)
-print(f"DEBUG: MONGO_URL in os.environ={os.environ.get('MONGO_URL')}", flush=True)
+load_dotenv(ROOT_DIR / '.env')
 
 import os
 import uuid
@@ -23,7 +19,6 @@ from pydantic import BaseModel, Field, EmailStr
 
 # ------------------- Setup -------------------
 mongo_url = os.environ['MONGO_URL']
-print(f"DEBUG: MONGO_URL={mongo_url}", flush=True)
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
@@ -104,8 +99,12 @@ class Product(BaseModel):
     price: Optional[str] = None
     availability: str = "Available"
     tags: List[str] = []
+    season: str = "all"
     featured: bool = False
     bestseller: bool = False
+    bestSeller: bool = False
+    festivalSpecial: bool = False
+    newArrival: bool = False
     order: int = 0
 
 class ProductIn(BaseModel):
@@ -118,8 +117,12 @@ class ProductIn(BaseModel):
     price: Optional[str] = None
     availability: str = "Available"
     tags: List[str] = []
+    season: str = "all"
     featured: bool = False
     bestseller: bool = False
+    bestSeller: bool = False
+    festivalSpecial: bool = False
+    newArrival: bool = False
     order: int = 0
 
 class Category(BaseModel):
@@ -200,59 +203,62 @@ SEED_CATEGORIES = [
 def _p(name, cat, desc, img, price=None, feat=False, best=False, avail="Available"):
     from re import sub
     slug = sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+    season = "summer" if cat == "summer-specials" else "winter" if cat == "winter-specials" else "all"
     return {"name": name, "slug": slug, "description": desc, "category": cat, "image": img,
-            "price": price, "featured": feat, "bestseller": best, "availability": avail, "tags": [], "images": [], "order": 0}
+            "price": price, "featured": feat, "bestseller": best, "bestSeller": best,
+            "festivalSpecial": cat == "festival-collection", "newArrival": False, "season": season,
+            "availability": avail, "tags": [], "images": [], "order": 0}
 
 SEED_PRODUCTS = [
     # Signature
-    _p("Pure Desi Ghee Nankhatai", "signature", "Buttery, crumbly cookies baked with pure desi ghee — a Meerut heritage since decades.", "https://images.pexels.com/photos/37219215/pexels-photo-37219215.jpeg", "₹450/kg", True, True),
-    _p("Punjabi Style Rewri", "signature", "Crunchy sesame & jaggery rewri, hand-rolled in the authentic Punjabi tradition.", "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=1200&auto=format&fit=crop", "₹380/kg", True, True),
-    _p("Premium Gazak", "signature", "Layered sesame gazak — light, flaky & delicately sweet. A winter favourite.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "₹420/kg", True, True),
+    _p("Pure Desi Ghee Nankhatai", "signature", "Buttery, crumbly cookies baked with pure desi ghee - a Meerut heritage since decades.", "https://images.pexels.com/photos/37219215/pexels-photo-37219215.jpeg", "Rs 450/kg", True, True),
+    _p("Punjabi Style Rewri", "signature", "Crunchy sesame & jaggery rewri, hand-rolled in the authentic Punjabi tradition.", "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=1200&auto=format&fit=crop", "Rs 380/kg", True, True),
+    _p("Premium Gazak", "signature", "Layered sesame gazak - light, flaky & delicately sweet. A winter favourite.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "Rs 420/kg", True, True),
     # Summer Specials
-    _p("Fresh Milk Bottle", "summer-specials", "Farm-fresh chilled milk, filled daily. Perfect for families.", "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop", "₹60/L"),
-    _p("Mango Shake", "summer-specials", "Alphonso mango blended with thick creamy milk. Summer in a glass.", "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=1200&auto=format&fit=crop", "₹120", False, True),
-    _p("Banana Shake", "summer-specials", "Ripe bananas, cold milk, a hint of honey.", "https://images.unsplash.com/photo-1601371520429-cff7fddb8ac0?w=1200&auto=format&fit=crop", "₹100"),
-    _p("Khajoor Shake", "summer-specials", "Rich date shake with pure milk — natural sweetness, energy boost.", "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=1200&auto=format&fit=crop", "₹140"),
-    _p("Anjeer Shake", "summer-specials", "Premium figs blended with milk & saffron.", "https://images.unsplash.com/photo-1541544181051-e46607bc22a4?w=1200&auto=format&fit=crop", "₹150"),
-    _p("Chocolate Shake", "summer-specials", "Silky Belgian chocolate shake, topped with cream.", "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=1200&auto=format&fit=crop", "₹130"),
-    _p("Oreo Shake", "summer-specials", "Crushed Oreo cookies swirled into thick milkshake.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "₹140"),
-    _p("Strawberry Shake", "summer-specials", "Fresh strawberries whisked with chilled milk.", "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=1200&auto=format&fit=crop", "₹130"),
-    _p("Cold Coffee", "summer-specials", "Signature thick cold coffee with ice-cream scoop.", "https://images.unsplash.com/photo-1624306070914-c480667416cd?crop=entropy&cs=srgb&fm=jpg&w=1200", "₹110", True, True),
-    _p("Lassi", "summer-specials", "Thick sweet lassi topped with malai.", "https://images.unsplash.com/photo-1626200925376-97b7ad4a5cad?w=1200&auto=format&fit=crop", "₹80"),
-    _p("Fresh Juices", "summer-specials", "Seasonal fruits, freshly pressed. No sugar added.", "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=1200&auto=format&fit=crop", "₹90"),
-    _p("Ice Cream", "summer-specials", "Assorted premium ice-creams — cones, cups & sundaes.", "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=1200&auto=format&fit=crop", "₹60+"),
+    _p("Fresh Milk Bottle", "summer-specials", "Farm-fresh chilled milk, filled daily. Perfect for families.", "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop", "Rs 60/L"),
+    _p("Mango Shake", "summer-specials", "Alphonso mango blended with thick creamy milk. Summer in a glass.", "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=1200&auto=format&fit=crop", "Rs 120", False, True),
+    _p("Banana Shake", "summer-specials", "Ripe bananas, cold milk, a hint of honey.", "https://images.unsplash.com/photo-1601371520429-cff7fddb8ac0?w=1200&auto=format&fit=crop", "Rs 100"),
+    _p("Khajoor Shake", "summer-specials", "Rich date shake with pure milk - natural sweetness, energy boost.", "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=1200&auto=format&fit=crop", "Rs 140"),
+    _p("Anjeer Shake", "summer-specials", "Premium figs blended with milk & saffron.", "https://images.unsplash.com/photo-1541544181051-e46607bc22a4?w=1200&auto=format&fit=crop", "Rs 150"),
+    _p("Chocolate Shake", "summer-specials", "Silky Belgian chocolate shake, topped with cream.", "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=1200&auto=format&fit=crop", "Rs 130"),
+    _p("Oreo Shake", "summer-specials", "Crushed Oreo cookies swirled into thick milkshake.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "Rs 140"),
+    _p("Strawberry Shake", "summer-specials", "Fresh strawberries whisked with chilled milk.", "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=1200&auto=format&fit=crop", "Rs 130"),
+    _p("Cold Coffee", "summer-specials", "Signature thick cold coffee with ice-cream scoop.", "https://images.unsplash.com/photo-1624306070914-c480667416cd?crop=entropy&cs=srgb&fm=jpg&w=1200", "Rs 110", True, True),
+    _p("Lassi", "summer-specials", "Thick sweet lassi topped with malai.", "https://images.unsplash.com/photo-1626200925376-97b7ad4a5cad?w=1200&auto=format&fit=crop", "Rs 80"),
+    _p("Fresh Juices", "summer-specials", "Seasonal fruits, freshly pressed. No sugar added.", "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=1200&auto=format&fit=crop", "Rs 90"),
+    _p("Ice Cream", "summer-specials", "Assorted premium ice-creams - cones, cups & sundaes.", "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=1200&auto=format&fit=crop", "Rs 60+"),
     # Fast Food
-    _p("Maggi", "fast-food", "Classic desi masala Maggi with veggies & cheese.", "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=1200&auto=format&fit=crop", "₹70"),
-    _p("Sandwiches", "fast-food", "Toasted grilled sandwiches with fresh veggies & cheese.", "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1200&auto=format&fit=crop", "₹90+"),
-    _p("Patties", "fast-food", "Hot flaky veg patties — the perfect tea-time snack.", "https://images.unsplash.com/photo-1601001435957-74f0958a93c5?w=1200&auto=format&fit=crop", "₹40"),
-    _p("Burgers", "fast-food", "Juicy stuffed burgers with crispy patties.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "₹120"),
-    _p("Pizza", "fast-food", "Wood-fired thin crust pizza with premium toppings.", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&auto=format&fit=crop", "₹180+"),
-    _p("French Fries", "fast-food", "Crispy golden fries with signature dips.", "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=1200&auto=format&fit=crop", "₹90"),
-    _p("Garlic Bread", "fast-food", "Buttery garlic bread with herbs & cheese.", "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=1200&auto=format&fit=crop", "₹130"),
+    _p("Maggi", "fast-food", "Classic desi masala Maggi with veggies & cheese.", "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=1200&auto=format&fit=crop", "Rs 70"),
+    _p("Sandwiches", "fast-food", "Toasted grilled sandwiches with fresh veggies & cheese.", "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1200&auto=format&fit=crop", "Rs 90+"),
+    _p("Patties", "fast-food", "Hot flaky veg patties - the perfect tea-time snack.", "https://images.unsplash.com/photo-1601001435957-74f0958a93c5?w=1200&auto=format&fit=crop", "Rs 40"),
+    _p("Burgers", "fast-food", "Juicy stuffed burgers with crispy patties.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "Rs 120"),
+    _p("Pizza", "fast-food", "Wood-fired thin crust pizza with premium toppings.", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&auto=format&fit=crop", "Rs 180+"),
+    _p("French Fries", "fast-food", "Crispy golden fries with signature dips.", "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=1200&auto=format&fit=crop", "Rs 90"),
+    _p("Garlic Bread", "fast-food", "Buttery garlic bread with herbs & cheese.", "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=1200&auto=format&fit=crop", "Rs 130"),
     # Bakery
-    _p("Birthday Cakes", "bakery", "Custom birthday cakes made fresh — 1kg, 2kg, tiered & themed.", "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=1200&auto=format&fit=crop", "₹600+", True, True),
-    _p("Anniversary Cakes", "bakery", "Elegant anniversary cakes to make it unforgettable.", "https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=1200&auto=format&fit=crop", "₹700+"),
-    _p("Customized Cakes", "bakery", "Bring your vision to life — photo cakes, character cakes & more.", "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Pastries", "bakery", "Chocolate, black forest, red velvet & more.", "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop", "₹60+"),
-    _p("Cookies", "bakery", "Assorted butter cookies & jar cookies.", "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1200&auto=format&fit=crop", "₹250/kg"),
+    _p("Birthday Cakes", "bakery", "Custom birthday cakes made fresh - 1kg, 2kg, tiered & themed.", "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=1200&auto=format&fit=crop", "Rs 600+", True, True),
+    _p("Anniversary Cakes", "bakery", "Elegant anniversary cakes to make it unforgettable.", "https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=1200&auto=format&fit=crop", "Rs 700+"),
+    _p("Customized Cakes", "bakery", "Bring your vision to life - photo cakes, character cakes & more.", "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=1200&auto=format&fit=crop", "On Request"),
+    _p("Pastries", "bakery", "Chocolate, black forest, red velvet & more.", "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop", "Rs 60+"),
+    _p("Cookies", "bakery", "Assorted butter cookies & jar cookies.", "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1200&auto=format&fit=crop", "Rs 250/kg"),
     # Winter Specials
-    _p("Peanut Chikki", "winter-specials", "Traditional peanut & jaggery chikki, snap-crisp.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "₹320/kg"),
-    _p("Til Patti", "winter-specials", "Golden sesame patti with a caramelized finish.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "₹360/kg"),
-    _p("Dry Fruit Sweets", "winter-specials", "Kaju katli, badam barfi, anjeer roll — pure decadence.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "₹950/kg", True, True),
-    _p("Hot Coffee", "winter-specials", "Rich brewed hot coffee, topped with cocoa dust.", "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&auto=format&fit=crop", "₹80"),
-    _p("Hot Chocolate", "winter-specials", "Thick Belgian hot chocolate with marshmallows.", "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=1200&auto=format&fit=crop", "₹110"),
+    _p("Peanut Chikki", "winter-specials", "Traditional peanut & jaggery chikki, snap-crisp.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "Rs 320/kg"),
+    _p("Til Patti", "winter-specials", "Golden sesame patti with a caramelized finish.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "Rs 360/kg"),
+    _p("Dry Fruit Sweets", "winter-specials", "Kaju katli, badam barfi, anjeer roll - pure decadence.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "Rs 950/kg", True, True),
+    _p("Hot Coffee", "winter-specials", "Rich brewed hot coffee, topped with cocoa dust.", "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&auto=format&fit=crop", "Rs 80"),
+    _p("Hot Chocolate", "winter-specials", "Thick Belgian hot chocolate with marshmallows.", "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=1200&auto=format&fit=crop", "Rs 110"),
     # Festival Hampers
-    _p("Dry Fruit Trays", "festival-collection", "Premium wooden trays with assorted dry fruits.", "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=1200&auto=format&fit=crop", "₹1200+", True, True),
-    _p("Diwali Gift Hampers", "festival-collection", "Curated Diwali hampers — sweets, chocolates, candles & more.", "https://images.unsplash.com/photo-1573648952759-a4e0e01e9e6b?w=1200&auto=format&fit=crop", "₹1500+", True),
-    _p("Raksha Bandhan Hampers", "festival-collection", "Beautiful rakhi hampers for your siblings — near or far.", "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=1200&auto=format&fit=crop", "₹800+"),
-    _p("Corporate Gift Hampers", "festival-collection", "Bulk corporate gifting — custom branding available.", "https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Wedding Gift Hampers", "festival-collection", "Elegant wedding return gifts — trays, boxes, personalized packaging.", "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Premium Customized Hampers", "festival-collection", "Design your own hamper — pick your products & packaging.", "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1200&auto=format&fit=crop", "On Request", True),
+    _p("Dry Fruit Trays", "festival-collection", "Premium wooden trays with assorted dry fruits.", "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=1200&auto=format&fit=crop", "Rs 1200+", True, True),
+    _p("Diwali Gift Hampers", "festival-collection", "Curated Diwali hampers - sweets, chocolates, candles & more.", "https://images.unsplash.com/photo-1573648952759-a4e0e01e9e6b?w=1200&auto=format&fit=crop", "Rs 1500+", True),
+    _p("Raksha Bandhan Hampers", "festival-collection", "Beautiful rakhi hampers for your siblings - near or far.", "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=1200&auto=format&fit=crop", "Rs 800+"),
+    _p("Corporate Gift Hampers", "festival-collection", "Bulk corporate gifting - custom branding available.", "https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop", "On Request"),
+    _p("Wedding Gift Hampers", "festival-collection", "Elegant wedding return gifts - trays, boxes, personalized packaging.", "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&auto=format&fit=crop", "On Request"),
+    _p("Premium Customized Hampers", "festival-collection", "Design your own hamper - pick your products & packaging.", "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1200&auto=format&fit=crop", "On Request", True),
 ]
 
 SEED_TESTIMONIALS = [
     {"name": "Rahul Sharma", "location": "Sadar Bazaar, Meerut", "rating": 5, "review": "PAHWA JEE's nankhatai is a Meerut legend. My family has been buying from here for over 20 years. Nothing else comes close.", "avatar": "https://i.pravatar.cc/150?img=12", "order": 1},
-    {"name": "Priya Agarwal", "location": "Shastri Nagar, Meerut", "rating": 5, "review": "Ordered a customized birthday cake — delivered on time, tasted heavenly, and looked absolutely stunning. Highly recommended!", "avatar": "https://i.pravatar.cc/150?img=45", "order": 2},
+    {"name": "Priya Agarwal", "location": "Shastri Nagar, Meerut", "rating": 5, "review": "Ordered a customized birthday cake - delivered on time, tasted heavenly, and looked absolutely stunning. Highly recommended!", "avatar": "https://i.pravatar.cc/150?img=45", "order": 2},
     {"name": "Aman Verma", "location": "Abu Lane, Meerut", "rating": 5, "review": "Their cold coffee is the best in Meerut. I drop by every evening after work. Fresh, thick and full of flavour.", "avatar": "https://i.pravatar.cc/150?img=33", "order": 3},
     {"name": "Neha Gupta", "location": "Meerut Cantt", "rating": 5, "review": "Got Diwali hampers for my entire office. Everyone loved the packaging and the quality of dry fruits. Will order again next year!", "avatar": "https://i.pravatar.cc/150?img=48", "order": 4},
     {"name": "Vikram Malhotra", "location": "Modipuram, Meerut", "rating": 5, "review": "Rewri and gazak are exactly like my grandmother used to make. Authentic taste, generous quantity, fair prices.", "avatar": "https://i.pravatar.cc/150?img=15", "order": 5},
@@ -276,11 +282,11 @@ SEED_GALLERY = [
 
 SEED_FAQS = [
     {"question": "Do you take custom cake orders?", "answer": "Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call 6396339806 to discuss designs.", "order": 1},
-    {"question": "Do you offer bulk / corporate orders?", "answer": "Yes — we specialize in corporate gifting, weddings & bulk festival hampers with custom packaging & branding options. Contact us for a personalized quote.", "order": 2},
+    {"question": "Do you offer bulk / corporate orders?", "answer": "Yes - we specialize in corporate gifting, weddings & bulk festival hampers with custom packaging & branding options. Contact us for a personalized quote.", "order": 2},
     {"question": "What are your business hours?", "answer": "We are open every day from 9:00 AM to 10:30 PM, including Sundays and public holidays.", "order": 3},
     {"question": "Do you deliver in Meerut?", "answer": "Yes, we offer local delivery in Meerut. Delivery charges depend on your location and order value. Please call us to confirm.", "order": 4},
     {"question": "Which payment methods do you accept?", "answer": "We accept cash, UPI, all major cards, and digital wallets at the store. For online orders, we can share UPI details when confirming.", "order": 5},
-    {"question": "Are your products made with pure desi ghee?", "answer": "Our signature nankhatai and select sweets are made with 100% pure desi ghee. Each product mentions its key ingredients — just ask us anything!", "order": 6},
+    {"question": "Are your products made with pure desi ghee?", "answer": "Our signature nankhatai and select sweets are made with 100% pure desi ghee. Each product mentions its key ingredients - just ask us anything!", "order": 6},
     {"question": "Can I schedule a cake for a specific time?", "answer": "Yes, once your order is confirmed we deliver at your preferred time slot. For same-day delivery, please order before 12 PM.", "order": 7},
 ]
 

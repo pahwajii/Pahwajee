@@ -1,5 +1,3 @@
-# PAHWA JEE — Admin Test Credentials
-
 ## Admin Account (seeded on startup)
 - Email: `admin@pahwajee.com`
 - Password: `Pahwa@2026`
