@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search } from 'lucide-react';
+import SEO from '../components/SEO';
 import api from '../lib/api';
 import ProductCard from '../components/ProductCard';
 
@@ -130,6 +131,10 @@ export default function Products() {
 
   return (
     <div className="noise-bg section-y pt-28">
+      <SEO 
+        title="Fresh Sweets, Bakery & Cakes Menu | PAHWAJEE Meerut"
+        description="Browse our complete catalog of freshly baked Desi Ghee Nankhatai, traditional Punjabi Rewri & Gajak, customized birthday cakes, namkeens, and thick shakes in Meerut."
+      />
       <div className="container-x">
         <div className="mb-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>

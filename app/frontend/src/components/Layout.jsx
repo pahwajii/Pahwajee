@@ -7,11 +7,11 @@ import { BUSINESS, waLink, telLink } from "@/lib/api";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Products" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/about", label: "About" },
+  { to: "/diwali", label: "Diwali Specials" },
+  { to: "/gifting", label: "Corporate Gifting" },
+  { to: "/about", label: "About Us" },
   { to: "/testimonials", label: "Reviews" },
-  { to: "/faqs", label: "FAQs" },
-  { to: "/contact", label: "Contact" },
+  { to: "/contact", label: "Contact Us" },
 ];
 
 function useDarkMode() {
@@ -85,6 +85,15 @@ function Navbar() {
               {dark ? <Sun className="w-5 h-5 text-secondary" /> : <Moon className="w-5 h-5 text-primary" />}
             </button>
             <a
+              data-testid="nav-whatsapp-btn"
+              href={waLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex btn-gold !py-2 !px-4 !text-sm !bg-emerald-600 !text-white hover:!bg-emerald-700 shadow-md shadow-emerald-600/20"
+            >
+              <MessageCircle className="w-4 h-4" /> WhatsApp
+            </a>
+            <a
               data-testid="nav-call-btn"
               href={telLink(BUSINESS.phones[0])}
               className="hidden md:inline-flex btn-primary !py-2 !px-4 !text-sm"
@@ -122,9 +131,14 @@ function Navbar() {
                   {n.label}
                 </NavLink>
               ))}
-              <a href={telLink()} className="block mt-2 btn-primary w-full justify-center">
-                <Phone className="w-4 h-4" /> Call Now
-              </a>
+              <div className="mt-4 flex flex-col gap-2">
+                <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold justify-center w-full !bg-emerald-600 !text-white flex items-center gap-2 py-2.5">
+                  <MessageCircle className="w-4 h-4" /> WhatsApp Order
+                </a>
+                <a href={telLink()} className="btn-primary justify-center w-full flex items-center gap-2 py-2.5">
+                  <Phone className="w-4 h-4" /> Call Now
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -169,29 +183,51 @@ export default function Layout() {
       </main>
       <FloatingButtons />
       <footer className="bg-card border-t border-border mt-auto py-12">
-        <div className="container-x grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="font-serif text-xl font-bold mb-4">PAHWA JEE</h3>
-            <p className="text-sm text-muted-foreground">{BUSINESS.tagline}</p>
-          </div>
-          <div>
-            <h4 className="font-medium text-sm mb-4">Contact Info</h4>
-            <p className="text-sm text-muted-foreground flex items-center gap-2 mb-2">
-              <MapPin className="w-4 h-4" /> {BUSINESS.address}
-            </p>
-            <p className="text-sm text-muted-foreground flex items-center gap-2">
-              <Clock className="w-4 h-4" /> {BUSINESS.hours}
-            </p>
-          </div>
-          <div>
-            <h4 className="font-medium text-sm mb-4">Follow Us</h4>
+        <div className="container-x grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-2">
+            <h3 className="font-serif text-2xl font-bold mb-4 text-primary">PAHWA JEE</h3>
+            <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
             <div className="flex gap-4">
-              <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition">
+              <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5">
                 <Share2 className="w-5 h-5" />
               </a>
-              <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition">
+              <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5">
                 <Globe className="w-5 h-5" />
               </a>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
+              <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">All Products</Link></li>
+              <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
+              <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Corporate Gifting</Link></li>
+              <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">Our Story</Link></li>
+              <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</Link></li>
+              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors">FAQs</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Contact Info</h4>
+            <div className="space-y-3 text-sm text-muted-foreground">
+              <p className="flex items-start gap-2.5">
+                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <span>{BUSINESS.address}</span>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <Clock className="w-5 h-5 text-primary shrink-0" />
+                <span>{BUSINESS.hours}</span>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <Phone className="w-5 h-5 text-primary shrink-0" />
+                <a href={telLink()} className="hover:text-primary transition-colors">{BUSINESS.phones.join(', ')}</a>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <MessageCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                <a href={waLink()} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">WhatsApp Chat</a>
+              </p>
             </div>
           </div>
         </div>

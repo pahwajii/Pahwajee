@@ -8,16 +8,12 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
-import Gallery from './pages/Gallery';
-
-function Placeholder({ title }) {
-  return (
-    <div className="container-x section-y">
-      <p className="eyebrow">PAHWA JEE</p>
-      <h1 className="mt-4 text-5xl font-serif">{title}</h1>
-    </div>
-  );
-}
+import Reviews from './pages/Reviews';
+import FAQs from './pages/FAQs';
+import Contact from './pages/Contact';
+import Diwali from './pages/Diwali';
+import CorporateGifting from './pages/CorporateGifting';
+import CategoryLanding from './pages/CategoryLanding';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -28,10 +24,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/products" element={<Products />} />
           <Route path="/products/:slug" element={<ProductDetail />} />
           <Route path="/about" element={<About />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/testimonials" element={<Placeholder title="Reviews" />} />
-          <Route path="/faqs" element={<Placeholder title="FAQs" />} />
-          <Route path="/contact" element={<Placeholder title="Contact" />} />
+          <Route path="/testimonials" element={<Reviews />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/diwali" element={<Diwali />} />
+          <Route path="/gifting" element={<CorporateGifting />} />
+          
+          {/* Category Landing Pages */}
+          <Route path="/nankhatai-meerut" element={<CategoryLanding type="nankhatai" />} />
+          <Route path="/rewri-gajak-meerut" element={<CategoryLanding type="rewri-gajak" />} />
+          <Route path="/sweets-meerut" element={<CategoryLanding type="sweets" />} />
+          <Route path="/bakery-meerut" element={<CategoryLanding type="bakery" />} />
         </Route>
       </Routes>
     </BrowserRouter>
