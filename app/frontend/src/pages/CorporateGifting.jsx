@@ -117,7 +117,7 @@ export default function CorporateGifting() {
         </section>
 
         {/* Lead Intake Form */}
-        <section className="max-w-2xl mx-auto my-12 bg-white/60 p-8 rounded-3xl border border-border/50 backdrop-blur-md">
+        <section className="max-w-2xl mx-auto my-12 bg-white/60 dark:bg-card/40 p-8 rounded-3xl border border-border/50 backdrop-blur-md">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-serif font-bold text-foreground">Request a Bulk Gifting Quote</h2>
             <p className="text-sm text-muted-foreground mt-2">Submit your requirements and our coordinator will get back to you within 2 hours.</p>

@@ -97,7 +97,7 @@ export default function Reviews() {
             We are deeply grateful to be a part of your daily celebrations, family gatherings, and festive seasons. Here is what local food lovers say about PAHWAJEE.
           </p>
 
-          <div className="mt-8 flex justify-center items-center gap-6 bg-white/50 border border-border/50 py-4 px-8 rounded-full inline-flex">
+          <div className="mt-8 flex justify-center items-center gap-6 bg-white/50 dark:bg-card/30 border border-border/50 py-4 px-8 rounded-full inline-flex">
             <div className="text-left">
               <p className="text-2xl font-bold font-serif text-primary">4.9 / 5.0</p>
               <p className="text-xs text-muted-foreground">Aggregate Rating</p>

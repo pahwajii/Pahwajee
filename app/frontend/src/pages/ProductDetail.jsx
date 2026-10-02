@@ -3,22 +3,23 @@ import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import api, { waLink, telLink } from '../lib/api';
 import ProductCard from '../components/ProductCard';
-import { ChevronRight, Phone, MessageCircle, ShieldAlert, Calendar, Box } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Phone, MessageCircle, ShieldAlert, Calendar, Box } from 'lucide-react';
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeImgIndex, setActiveImgIndex] = useState(0);
 
   useEffect(() => {
     if (!slug) return;
     setLoading(true);
     
-    // Fetch product details
     api.get(`/products/${slug}`)
       .then((data) => {
         setProduct(data);
+        setActiveImgIndex(0);
         // Fetch related products of the same category
         api.get(`/products?category=${data.category}`)
           .then((items) => {
@@ -82,6 +83,10 @@ export default function ProductDetail() {
   };
 
   const specs = getProductSpecs(product.name);
+  const images = product && product.images && product.images.length > 0
+    ? product.images
+    : (product && product.image ? [product.image] : []);
+  const currentImage = images[activeImgIndex] || '/placeholder.jpg';
 
   // Generate dynamic product schema
   const schema = {
@@ -117,14 +122,63 @@ export default function ProductDetail() {
         </nav>
 
         {/* Product Details Grid */}
-        <section className="grid gap-12 md:grid-cols-2 items-start bg-white/40 p-6 md:p-10 rounded-3xl border border-border/50 backdrop-blur-md">
-          {/* Image */}
-          <div className="aspect-square rounded-2xl overflow-hidden bg-muted border border-white/60 shadow-lg">
-            <img 
-              src={product.image || '/placeholder.jpg'} 
-              alt={product.name} 
-              className="w-full h-full object-cover" 
-            />
+        <section className="grid gap-12 md:grid-cols-2 items-start bg-white/40 dark:bg-card/30 p-6 md:p-10 rounded-3xl border border-border/50 backdrop-blur-md">
+          {/* Image Gallery */}
+          <div className="flex flex-col gap-4 w-full">
+            {/* Main Image Container */}
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted border border-white/60 shadow-lg group">
+              <img 
+                src={currentImage} 
+                alt={product.name} 
+                className="w-full h-full object-cover transition-all duration-300" 
+              />
+              
+              {/* Navigation Arrows (only if multiple images exist) */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setActiveImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={() => setActiveImgIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                  {/* Indicator overlay */}
+                  <span className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded-md backdrop-blur-xs">
+                    {activeImgIndex + 1} / {images.length}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Thumbnail Navigation */}
+            {images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+                {images.map((img, idx) => {
+                  const isActive = idx === activeImgIndex;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImgIndex(idx)}
+                      className={`relative aspect-square w-16 shrink-0 rounded-lg overflow-hidden border-2 bg-muted transition-all duration-200 ${
+                        isActive 
+                          ? 'border-primary scale-[1.03] shadow' 
+                          : 'border-transparent hover:border-primary/40'
+                      }`}
+                    >
+                      <img src={img} alt={`${product.name} variant ${idx + 1}`} className="h-full w-full object-cover" />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Details */}

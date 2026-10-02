@@ -94,7 +94,7 @@ export default function FAQs() {
                 setOpenIdx(null);
               }}
               placeholder="Search questions..."
-              className="h-12 w-full rounded-full border border-border bg-white/80 pl-12 pr-4 text-sm outline-none ring-primary/20 focus:ring-4"
+              className="h-12 w-full rounded-full border border-border bg-white/80 dark:bg-card/70 pl-12 pr-4 text-sm outline-none ring-primary/20 focus:ring-4"
             />
           </div>
         </section>
@@ -107,7 +107,7 @@ export default function FAQs() {
               return (
                 <div 
                   key={f.id || idx} 
-                  className="card-warm overflow-hidden bg-white/70 border border-border/50 transition-all duration-300"
+                  className="card-warm overflow-hidden bg-white/70 dark:bg-card/40 border border-border/50 transition-all duration-300"
                 >
                   <button
                     type="button"
@@ -138,7 +138,7 @@ export default function FAQs() {
               );
             })
           ) : (
-            <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-white/50">
+            <div className="text-center py-12 border border-dashed border-border rounded-2xl bg-white/50 dark:bg-card/30">
               <p className="text-muted-foreground">No FAQs matching your query found. Try searching another keyword.</p>
             </div>
           )}

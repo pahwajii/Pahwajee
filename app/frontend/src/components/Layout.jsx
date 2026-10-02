@@ -1,17 +1,19 @@
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, X, Phone, MessageCircle, Sun, Moon, MapPin, Clock, Share2, Globe } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, Sun, Moon, MapPin, Clock, Instagram, Facebook } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BUSINESS, waLink, telLink } from "@/lib/api";
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/products", label: "Products" },
-  { to: "/diwali", label: "Diwali Specials" },
-  { to: "/gifting", label: "Corporate Gifting" },
-  { to: "/about", label: "About Us" },
+  { to: "/products", label: "Shop" },
+  { to: "/rewri-gajak-meerut", label: "Rewri & Gajak" },
+  { to: "/nankhatai-meerut", label: "Nankhatai" },
+  { to: "/gifting", label: "Gift Hampers" },
+  { to: "/diwali", label: "Diwali" },
+  { to: "/about", label: "About" },
   { to: "/testimonials", label: "Reviews" },
-  { to: "/contact", label: "Contact Us" },
+  { to: "/contact", label: "Contact" },
 ];
 
 function useDarkMode() {
@@ -187,12 +189,17 @@ export default function Layout() {
           <div className="md:col-span-2">
             <h3 className="font-serif text-2xl font-bold mb-4 text-primary">PAHWA JEE</h3>
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
-            <div className="flex gap-4">
-              <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5">
-                <Share2 className="w-5 h-5" />
+            <div className="flex flex-wrap gap-4 items-center">
+              <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5 flex items-center gap-1.5" title="Instagram (Abu Lane Branch)">
+                <Instagram className="w-5 h-5" />
+                <span className="text-xs font-semibold hidden sm:inline">Abu Lane</span>
               </a>
-              <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5">
-                <Globe className="w-5 h-5" />
+              <a href={BUSINESS.instagramOther} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5 flex items-center gap-1.5" title="Instagram (Food Adda Branch)">
+                <Instagram className="w-5 h-5" />
+                <span className="text-xs font-semibold hidden sm:inline">Food Adda</span>
+              </a>
+              <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5" title="Facebook">
+                <Facebook className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -200,12 +207,13 @@ export default function Layout() {
             <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Quick Links</h4>
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
-              <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">All Products</Link></li>
+              <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
+              <li><Link to="/rewri-gajak-meerut" className="text-muted-foreground hover:text-primary transition-colors">Rewri & Gajak</Link></li>
+              <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Desi Ghee Nankhatai</Link></li>
+              <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Gift Hampers</Link></li>
               <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
-              <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Corporate Gifting</Link></li>
-              <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">Our Story</Link></li>
-              <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</Link></li>
-              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors">FAQs</Link></li>
+              <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About PAHWAJEE</Link></li>
+              <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Customer Reviews</Link></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
             </ul>
           </div>

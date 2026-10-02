@@ -20,3 +20,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 .qodo/
+.freebuff/
+app/frontend/scratch/
+public/Photos-1-001*/
+public/products/

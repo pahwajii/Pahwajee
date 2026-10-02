@@ -1,4 +1,4 @@
-﻿from dotenv import load_dotenv
+from dotenv import load_dotenv
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent
@@ -210,50 +210,65 @@ def _p(name, cat, desc, img, price=None, feat=False, best=False, avail="Availabl
             "availability": avail, "tags": [], "images": [], "order": 0}
 
 SEED_PRODUCTS = [
-    # Signature
-    _p("Pure Desi Ghee Nankhatai", "signature", "Buttery, crumbly cookies baked with pure desi ghee - a Meerut heritage since decades.", "https://images.pexels.com/photos/37219215/pexels-photo-37219215.jpeg", "Rs 450/kg", True, True),
-    _p("Punjabi Style Rewri", "signature", "Crunchy sesame & jaggery rewri, hand-rolled in the authentic Punjabi tradition.", "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=1200&auto=format&fit=crop", "Rs 380/kg", True, True),
-    _p("Premium Gazak", "signature", "Layered sesame gazak - light, flaky & delicately sweet. A winter favourite.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "Rs 420/kg", True, True),
-    # Summer Specials
-    _p("Fresh Milk Bottle", "summer-specials", "Farm-fresh chilled milk, filled daily. Perfect for families.", "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&auto=format&fit=crop", "Rs 60/L"),
-    _p("Mango Shake", "summer-specials", "Alphonso mango blended with thick creamy milk. Summer in a glass.", "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=1200&auto=format&fit=crop", "Rs 120", False, True),
-    _p("Banana Shake", "summer-specials", "Ripe bananas, cold milk, a hint of honey.", "https://images.unsplash.com/photo-1601371520429-cff7fddb8ac0?w=1200&auto=format&fit=crop", "Rs 100"),
-    _p("Khajoor Shake", "summer-specials", "Rich date shake with pure milk - natural sweetness, energy boost.", "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=1200&auto=format&fit=crop", "Rs 140"),
-    _p("Anjeer Shake", "summer-specials", "Premium figs blended with milk & saffron.", "https://images.unsplash.com/photo-1541544181051-e46607bc22a4?w=1200&auto=format&fit=crop", "Rs 150"),
-    _p("Chocolate Shake", "summer-specials", "Silky Belgian chocolate shake, topped with cream.", "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=1200&auto=format&fit=crop", "Rs 130"),
-    _p("Oreo Shake", "summer-specials", "Crushed Oreo cookies swirled into thick milkshake.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "Rs 140"),
-    _p("Strawberry Shake", "summer-specials", "Fresh strawberries whisked with chilled milk.", "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=1200&auto=format&fit=crop", "Rs 130"),
-    _p("Cold Coffee", "summer-specials", "Signature thick cold coffee with ice-cream scoop.", "https://images.unsplash.com/photo-1624306070914-c480667416cd?crop=entropy&cs=srgb&fm=jpg&w=1200", "Rs 110", True, True),
-    _p("Lassi", "summer-specials", "Thick sweet lassi topped with malai.", "https://images.unsplash.com/photo-1626200925376-97b7ad4a5cad?w=1200&auto=format&fit=crop", "Rs 80"),
-    _p("Fresh Juices", "summer-specials", "Seasonal fruits, freshly pressed. No sugar added.", "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=1200&auto=format&fit=crop", "Rs 90"),
-    _p("Ice Cream", "summer-specials", "Assorted premium ice-creams - cones, cups & sundaes.", "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=1200&auto=format&fit=crop", "Rs 60+"),
-    # Fast Food
-    _p("Maggi", "fast-food", "Classic desi masala Maggi with veggies & cheese.", "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=1200&auto=format&fit=crop", "Rs 70"),
-    _p("Sandwiches", "fast-food", "Toasted grilled sandwiches with fresh veggies & cheese.", "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1200&auto=format&fit=crop", "Rs 90+"),
-    _p("Patties", "fast-food", "Hot flaky veg patties - the perfect tea-time snack.", "https://images.unsplash.com/photo-1601001435957-74f0958a93c5?w=1200&auto=format&fit=crop", "Rs 40"),
-    _p("Burgers", "fast-food", "Juicy stuffed burgers with crispy patties.", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&auto=format&fit=crop", "Rs 120"),
-    _p("Pizza", "fast-food", "Wood-fired thin crust pizza with premium toppings.", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&auto=format&fit=crop", "Rs 180+"),
-    _p("French Fries", "fast-food", "Crispy golden fries with signature dips.", "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=1200&auto=format&fit=crop", "Rs 90"),
-    _p("Garlic Bread", "fast-food", "Buttery garlic bread with herbs & cheese.", "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=1200&auto=format&fit=crop", "Rs 130"),
-    # Bakery
-    _p("Birthday Cakes", "bakery", "Custom birthday cakes made fresh - 1kg, 2kg, tiered & themed.", "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=1200&auto=format&fit=crop", "Rs 600+", True, True),
-    _p("Anniversary Cakes", "bakery", "Elegant anniversary cakes to make it unforgettable.", "https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=1200&auto=format&fit=crop", "Rs 700+"),
-    _p("Customized Cakes", "bakery", "Bring your vision to life - photo cakes, character cakes & more.", "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Pastries", "bakery", "Chocolate, black forest, red velvet & more.", "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop", "Rs 60+"),
-    _p("Cookies", "bakery", "Assorted butter cookies & jar cookies.", "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1200&auto=format&fit=crop", "Rs 250/kg"),
-    # Winter Specials
-    _p("Peanut Chikki", "winter-specials", "Traditional peanut & jaggery chikki, snap-crisp.", "https://images.unsplash.com/photo-1606755962773-d324e2a2c8ea?w=1200&auto=format&fit=crop", "Rs 320/kg"),
-    _p("Til Patti", "winter-specials", "Golden sesame patti with a caramelized finish.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "Rs 360/kg"),
-    _p("Dry Fruit Sweets", "winter-specials", "Kaju katli, badam barfi, anjeer roll - pure decadence.", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop", "Rs 950/kg", True, True),
-    _p("Hot Coffee", "winter-specials", "Rich brewed hot coffee, topped with cocoa dust.", "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&auto=format&fit=crop", "Rs 80"),
-    _p("Hot Chocolate", "winter-specials", "Thick Belgian hot chocolate with marshmallows.", "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=1200&auto=format&fit=crop", "Rs 110"),
-    # Festival Hampers
-    _p("Dry Fruit Trays", "festival-collection", "Premium wooden trays with assorted dry fruits.", "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=1200&auto=format&fit=crop", "Rs 1200+", True, True),
-    _p("Diwali Gift Hampers", "festival-collection", "Curated Diwali hampers - sweets, chocolates, candles & more.", "https://images.unsplash.com/photo-1573648952759-a4e0e01e9e6b?w=1200&auto=format&fit=crop", "Rs 1500+", True),
-    _p("Raksha Bandhan Hampers", "festival-collection", "Beautiful rakhi hampers for your siblings - near or far.", "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=1200&auto=format&fit=crop", "Rs 800+"),
-    _p("Corporate Gift Hampers", "festival-collection", "Bulk corporate gifting - custom branding available.", "https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Wedding Gift Hampers", "festival-collection", "Elegant wedding return gifts - trays, boxes, personalized packaging.", "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&auto=format&fit=crop", "On Request"),
-    _p("Premium Customized Hampers", "festival-collection", "Design your own hamper - pick your products & packaging.", "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1200&auto=format&fit=crop", "On Request", True),
+    # Signatures (Rewri & Gazak & Nankhatai)
+    _p("Khasta Rewri", "signature", "Authentic Punjabi style khasta sesame & organic jaggery rewri.", "/products/Khasta-rewri.png", "Rs 480/kg", True, True),
+    _p("Chips Rewri", "signature", "Crispy wafer-thin sesame & jaggery chips rewri.", "/products/chips-rewri.png", "Rs 520/kg", True),
+    _p("Dilkhush Gazak", "signature", "Melt-in-mouth soft & flaky jaggery sesame gazak specialty.", "/products/dilkhush-gazzak.png", "Rs 640/kg", True, True),
+    _p("Chocolate Gazak", "signature", "Decadent cocoa infused sesame gazak.", "/products/choclate-gazzak.png", "Rs 580/kg"),
+    _p("Gol Gazak", "signature", "Traditional round sesame and jaggery gazak disc.", "/products/golgazzak.png", "Rs 560/kg"),
+    _p("Kaju Gazak Roll", "signature", "Premium cashew stuffed sesame gazak roll.", "/products/kajugazzak-roll.png", "Rs 750/kg", True),
+    _p("Mawa Roll Gazak", "signature", "Rich khoya mawa filled sesame gazak roll.", "/products/mawaroll-gazzak.png", "Rs 680/kg"),
+    _p("Sugar Gazak", "signature", "Classic white sugar sesame gazak.", "/products/sugar gazzak.png", "Rs 460/kg"),
+    _p("Til Patti Gazak", "signature", "Golden thin-layer caramelized sesame patti gazak.", "/products/tilpattigazzak.png", "Rs 520/kg"),
+    _p("Til Peanut Khasta", "signature", "Crispy sesame & roasted peanut jaggery khasta.", "/products/til-peanut-khasta.png", "Rs 490/kg"),
+    _p("Pure Desi Ghee Nankhatai", "signature", "Legendary Meerut traditional cookie baked with 100% pure desi ghee.", "/products/nankhatayi.png", "Rs 500/kg", True, True),
+    _p("Besan Laddoo", "signature", "Traditional roasted gram flour laddoos prepared in pure desi ghee.", "/products/besan-laddo.png", "Rs 400/kg"),
+    _p("Mango Bite", "signature", "Delicate mango flavor dry fruit bite sweet.", "/products/mangobit.png", "Rs 600/kg"),
+
+    # Winter Specials (Chikkis, Laddoos, Halwa)
+    _p("Peanut Chikki", "winter-specials", "Snap-crisp roasted peanut and organic jaggery chikki.", "/products/peanut-chikki.png", "Rs 320/kg"),
+    _p("Roasted Peanut Chikki", "winter-specials", "Double-roasted crunchy peanut jaggery chikki.", "/products/roastedpeanut-chikki.png", "Rs 350/kg"),
+    _p("Murmura Patti", "winter-specials", "Puffed rice & jaggery crisp chikki patti.", "/products/murmura-patti.png", "Rs 280/kg"),
+    _p("Gur Ke Sev", "winter-specials", "Traditional gram flour sev coated in organic jaggery.", "/products/gur-ke-sev.png", "Rs 380/kg"),
+    _p("Til Bugga", "winter-specials", "Roasted sesame, mawa & cardamom winter specialty.", "/products/til-bugga.png", "Rs 600/kg", True),
+    _p("Alsi Ke Laddoo", "winter-specials", "Nourishing flaxseed laddoos enriched with pure desi ghee.", "/products/alsi-ke-laddoo.png", "Rs 700/kg"),
+    _p("Dry Fruit Laddoo", "winter-specials", "Rich sugar-free dry fruit laddoos packed with almonds, cashews & pistachios.", "/products/dryfruitladdoo.png", "Rs 850/kg", True, True),
+    _p("Khajoor Laddoo", "winter-specials", "Healthy date laddoos sweetened naturally with dates and nuts.", "/products/khajoor-laddo.png", "Rs 800/kg"),
+    _p("Special Pishori Pinni", "winter-specials", "Authentic Punjabi Pishori Pinni enriched with pistachios & desi ghee.", "/products/pishori-pinni.png", "Rs 700/kg", True),
+    _p("Desi Ghee Gajar Ka Halwa", "winter-specials", "Fresh red winter carrots slow-cooked in pure desi ghee, milk & khoya.", "/products/gajar-halwa.png", "Rs 480/kg", True),
+    _p("Special Kheer", "winter-specials", "Rich saffron & cardamom flavored rice kheer.", "/products/kheer.png", "Rs 250/kg"),
+
+    # Fresh Healthy Specials (Summer / All Season)
+    _p("Fresh Special Salad", "summer-specials", "Fresh farm vegetables and crunchy greens salad.", "/products/salad.png", "Rs 120/plate"),
+    _p("Healthy Sprouts", "summer-specials", "Nutritious protein-rich steamed sprouts chart.", "/products/sprouts.png", "Rs 100/plate"),
+
+    # Festival & Dry Fruit Gift Trays
+    {
+        "name": "Dry Fruit Gift Trays",
+        "slug": "dry-fruit-gift-trays",
+        "description": "Handcrafted premium dry fruit gift trays and boxes. Perfect for corporate gifting, weddings, and festivals. Features custom arrangements of premium cashews, almonds, pistachios, walnuts, and raisins.",
+        "category": "festival-collection",
+        "image": "/products/Dryfruit-tray1.png",
+        "images": [
+            "/products/Dryfruit-tray1.png",
+            "/products/Dryfruit-tray2.png",
+            "/products/Dryfruit-tray3.png",
+            "/products/Dryfruit-tray4.png",
+            "/products/Dryfruit-tray5.png",
+            "/products/Dryfruit-tray6.png",
+            "/products/Dryfruit-tray7.png"
+        ],
+        "price": "Rs 1100 – Rs 2500",
+        "featured": True,
+        "bestseller": True,
+        "bestSeller": True,
+        "festivalSpecial": True,
+        "newArrival": False,
+        "season": "all",
+        "availability": "Available",
+        "tags": [],
+        "order": 0
+    },
 ]
 
 SEED_TESTIMONIALS = [

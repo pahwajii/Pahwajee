@@ -53,7 +53,39 @@ const CONFIGS = {
 };
 
 const fallbackProducts = [
-  { id: 'nankhatai', name: 'Pure Desi Ghee Nankhatai', slug: 'pure-desi-ghee-nankhatai', category: 'signature', season: 'all', image: 'https://images.pexels.com/photos/37219215/pexels-photo-37219215.jpeg', price: 'Rs 450/kg', availability: 'Available', bestseller: true, bestSeller: true }
+  { id: 'khasta-rewri', name: 'Khasta Rewri', slug: 'khasta-rewri', category: 'signature', season: 'winter', image: '/products/Khasta-rewri.png', price: 'Rs 480/kg', availability: 'Available', bestseller: true, bestSeller: true },
+  { id: 'chips-rewri', name: 'Chips Rewri', slug: 'chips-rewri', category: 'signature', season: 'winter', image: '/products/chips-rewri.png', price: 'Rs 520/kg', availability: 'Available', bestseller: true },
+  { id: 'dilkhush-gazak', name: 'Dilkhush Gazak', slug: 'dilkhush-gazzak', category: 'signature', season: 'winter', image: '/products/dilkhush-gazzak.png', price: 'Rs 640/kg', availability: 'Available', bestseller: true, bestSeller: true },
+  { id: 'chocolate-gazak', name: 'Chocolate Gazak', slug: 'chocolate-gazak', category: 'signature', season: 'winter', image: '/products/choclate-gazzak.png', price: 'Rs 580/kg', availability: 'Available' },
+  { id: 'gol-gazak', name: 'Gol Gazak', slug: 'gol-gazak', category: 'signature', season: 'winter', image: '/products/golgazzak.png', price: 'Rs 560/kg', availability: 'Available' },
+  { id: 'kaju-gazak-roll', name: 'Kaju Gazak Roll', slug: 'kaju-gazak-roll', category: 'signature', season: 'winter', image: '/products/kajugazzak-roll.png', price: 'Rs 750/kg', availability: 'Available', featured: true },
+  { id: 'mawa-roll-gazak', name: 'Mawa Roll Gazak', slug: 'mawa-roll-gazak', category: 'signature', season: 'winter', image: '/products/mawaroll-gazzak.png', price: 'Rs 680/kg', availability: 'Available' },
+  { id: 'sugar-gazak', name: 'Sugar Gazak', slug: 'sugar-gazak', category: 'signature', season: 'winter', image: '/products/sugar gazzak.png', price: 'Rs 460/kg', availability: 'Available' },
+  { id: 'til-patti-gazak', name: 'Til Patti Gazak', slug: 'til-patti-gazak', category: 'signature', season: 'winter', image: '/products/tilpattigazzak.png', price: 'Rs 520/kg', availability: 'Available' },
+  { id: 'til-peanut-khasta', name: 'Til Peanut Khasta', slug: 'til-peanut-khasta', category: 'signature', season: 'winter', image: '/products/til-peanut-khasta.png', price: 'Rs 490/kg', availability: 'Available' },
+  { id: 'pure-desi-ghee-nankhatai', name: 'Pure Desi Ghee Nankhatai', slug: 'pure-desi-ghee-nankhatai', category: 'signature', season: 'all', image: '/products/nankhatayi.png', price: 'Rs 500/kg', availability: 'Available', bestseller: true, bestSeller: true },
+  { id: 'besan-laddoo', name: 'Besan Laddoo', slug: 'besan-laddoo', category: 'signature', season: 'all', image: '/products/besan-laddo.png', price: 'Rs 400/kg', availability: 'Available' },
+  { id: 'mango-bite', name: 'Mango Bite', slug: 'mango-bite', category: 'signature', season: 'all', image: '/products/mangobit.png', price: 'Rs 600/kg', availability: 'Available' },
+  { id: 'peanut-chikki', name: 'Peanut Chikki', slug: 'peanut-chikki', category: 'winter-specials', season: 'winter', image: '/products/peanut-chikki.png', price: 'Rs 320/kg', availability: 'Available' },
+  { id: 'roasted-peanut-chikki', name: 'Roasted Peanut Chikki', slug: 'roasted-peanut-chikki', category: 'winter-specials', season: 'winter', image: '/products/roastedpeanut-chikki.png', price: 'Rs 350/kg', availability: 'Available' },
+  { id: 'murmura-patti', name: 'Murmura Patti', slug: 'murmura-patti', category: 'winter-specials', season: 'winter', image: '/products/murmura-patti.png', price: 'Rs 280/kg', availability: 'Available' },
+  { id: 'gur-ke-sev', name: 'Gur Ke Sev', slug: 'gur-ke-sev', category: 'winter-specials', season: 'winter', image: '/products/gur-ke-sev.png', price: 'Rs 380/kg', availability: 'Available' },
+  { id: 'til-bugga', name: 'Til Bugga', slug: 'til-bugga', category: 'winter-specials', season: 'winter', image: '/products/til-bugga.png', price: 'Rs 600/kg', availability: 'Available' },
+  { id: 'alsi-ke-laddoo', name: 'Alsi Ke Laddoo', slug: 'alsi-ke-laddoo', category: 'winter-specials', season: 'winter', image: '/products/alsi-ke-laddoo.png', price: 'Rs 700/kg', availability: 'Available' },
+  { id: 'dry-fruit-laddoo', name: 'Dry Fruit Laddoo', slug: 'dry-fruit-laddoo', category: 'winter-specials', season: 'winter', image: '/products/dryfruitladdoo.png', price: 'Rs 850/kg', availability: 'Available', bestseller: true },
+  { id: 'khajoor-laddoo', name: 'Khajoor Laddoo', slug: 'khajoor-laddoo', category: 'winter-specials', season: 'winter', image: '/products/khajoor-laddo.png', price: 'Rs 800/kg', availability: 'Available' },
+  { id: 'special-pishori-pinni', name: 'Special Pishori Pinni', slug: 'special-pishori-pinni', category: 'winter-specials', season: 'winter', image: '/products/pishori-pinni.png', price: 'Rs 700/kg', availability: 'Available' },
+  { id: 'desi-ghee-gajar-ka-halwa', name: 'Desi Ghee Gajar Ka Halwa', slug: 'desi-ghee-gajar-ka-halwa', category: 'winter-specials', season: 'winter', image: '/products/gajar-halwa.png', price: 'Rs 480/kg', availability: 'Available' },
+  { id: 'special-kheer', name: 'Special Kheer', slug: 'special-kheer', category: 'winter-specials', season: 'winter', image: '/products/kheer.png', price: 'Rs 250/kg', availability: 'Available' },
+  { id: 'fresh-special-salad', name: 'Fresh Special Salad', slug: 'fresh-special-salad', category: 'summer-specials', season: 'summer', image: '/products/salad.png', price: 'Rs 120/plate', availability: 'Available' },
+  { id: 'healthy-sprouts', name: 'Healthy Sprouts', slug: 'healthy-sprouts', category: 'summer-specials', season: 'summer', image: '/products/sprouts.png', price: 'Rs 100/plate', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-1', name: 'Dry Fruit Gift Tray 1', slug: 'dry-fruit-gift-tray-1', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray1.png', price: 'Rs 1100', availability: 'Available', bestseller: true },
+  { id: 'dry-fruit-gift-tray-2', name: 'Dry Fruit Gift Tray 2', slug: 'dry-fruit-gift-tray-2', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray2.png', price: 'Rs 1350', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-3', name: 'Dry Fruit Gift Tray 3', slug: 'dry-fruit-gift-tray-3', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray3.png', price: 'Rs 1500', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-4', name: 'Dry Fruit Gift Tray 4', slug: 'dry-fruit-gift-tray-4', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray4.png', price: 'Rs 1750', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-5', name: 'Dry Fruit Gift Tray 5', slug: 'dry-fruit-gift-tray-5', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray5.png', price: 'Rs 2000', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-6', name: 'Dry Fruit Gift Tray 6', slug: 'dry-fruit-gift-tray-6', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray6.png', price: 'Rs 2250', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-7', name: 'Dry Fruit Gift Tray 7', slug: 'dry-fruit-gift-tray-7', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray7.png', price: 'Rs 2500', availability: 'Available' }
 ];
 
 export default function CategoryLanding({ type }) {
@@ -118,7 +150,7 @@ export default function CategoryLanding({ type }) {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-border">
+            <div className="text-center py-12 bg-white/50 dark:bg-card/30 rounded-2xl border border-dashed border-border">
               <p className="text-muted-foreground">No products available in this category at the moment. Please contact us for custom orders.</p>
             </div>
           )}
@@ -129,7 +161,7 @@ export default function CategoryLanding({ type }) {
           <h3 className="font-serif text-3xl mb-8">Frequently Asked Questions</h3>
           <div className="space-y-4">
             {config.faqs.map((faq, idx) => (
-              <div key={idx} className="card-warm p-6 bg-white/60">
+              <div key={idx} className="card-warm p-6 bg-white/60 dark:bg-card/40">
                 <h4 className="font-serif text-lg font-bold flex gap-2 items-center text-foreground mb-2">
                   <HelpCircle className="w-5 h-5 text-primary shrink-0" /> {faq.question}
                 </h4>

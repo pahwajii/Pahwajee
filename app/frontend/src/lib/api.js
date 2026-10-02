@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
 async function request(path, options = {}) {
   const needsCredentials = path.startsWith('/auth') || path.startsWith('/admin') || options.credentials;
@@ -6,6 +6,7 @@ async function request(path, options = {}) {
     credentials: needsCredentials ? 'include' : 'omit',
     headers: {
       'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
       ...(options.headers || {}),
     },
     ...options,
@@ -34,7 +35,8 @@ export const BUSINESS = {
   mapEmbed: "https://www.google.com/maps?q=19+Abu+Lane+Meerut&output=embed",
   mapLink: "https://goo.gl/maps/LitsbZD5w865XZux5?g_st=aw",
   hours: "9:00 AM – 10:30 PM (Open All Days)",
-  instagram: "https://instagram.com",
+  instagram: "https://www.instagram.com/pahwajee/",
+  instagramOther: "https://www.instagram.com/food_adda_pahwajee/",
   facebook: "https://facebook.com",
 };
 

@@ -145,7 +145,7 @@ export default function Diwali() {
       </section>
 
       {/* Gifting Quality Pillars */}
-      <section className="container-x my-16 bg-white/40 border border-border/50 rounded-3xl p-8 md:p-12 grid gap-8 md:grid-cols-3">
+      <section className="container-x my-16 bg-white/40 dark:bg-card/30 border border-border/50 rounded-3xl p-8 md:p-12 grid gap-8 md:grid-cols-3">
         <div className="flex gap-4">
           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
             <Gift className="w-5 h-5" />
@@ -182,7 +182,7 @@ export default function Diwali() {
         <h3 className="font-serif text-3xl text-center mb-8">Diwali Order Information</h3>
         <div className="space-y-4">
           {diwaliFAQs.map((faq, idx) => (
-            <div key={idx} className="card-warm p-6 bg-white/60">
+            <div key={idx} className="card-warm p-6 bg-white/60 dark:bg-card/40">
               <h4 className="font-serif text-lg font-bold flex gap-2 items-center text-foreground mb-2">
                 <HelpCircle className="w-5 h-5 text-primary shrink-0" /> {faq.question}
               </h4>

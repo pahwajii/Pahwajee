@@ -13,6 +13,7 @@ import FAQs from './pages/FAQs';
 import Contact from './pages/Contact';
 import Diwali from './pages/Diwali';
 import CorporateGifting from './pages/CorporateGifting';
+import Gallery from './pages/Gallery';
 import CategoryLanding from './pages/CategoryLanding';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/contact" element={<Contact />} />
           <Route path="/diwali" element={<Diwali />} />
           <Route path="/gifting" element={<CorporateGifting />} />
+          <Route path="/gallery" element={<Gallery />} />
           
           {/* Category Landing Pages */}
           <Route path="/nankhatai-meerut" element={<CategoryLanding type="nankhatai" />} />

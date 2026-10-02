@@ -163,7 +163,7 @@ export default function Contact() {
           </div>
 
           {/* Enquiry Form */}
-          <div className="card-warm p-8 bg-white/60 backdrop-blur-md">
+          <div className="card-warm p-8 bg-white/60 dark:bg-card/40 backdrop-blur-md">
             <h2 className="text-2xl font-serif font-bold text-foreground mb-6">Send an Inquiry</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

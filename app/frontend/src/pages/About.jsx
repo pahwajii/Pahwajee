@@ -31,7 +31,7 @@ export default function About() {
       <div className="container-x">
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto py-12">
-          <p className="eyebrow">A Sweet Legacy in Meerut</p>
+          <p className="eyebrow">A Legacy in Rewri & Gazak</p>
           <h1 className="mt-4 text-5xl md:text-6xl font-serif leading-tight">
             Crafting Taste & Memories <span className="italic text-primary">Since Generations</span>
           </h1>
@@ -74,13 +74,13 @@ export default function About() {
         </section>
 
         {/* Narrative Section */}
-        <section className="grid md:grid-cols-2 gap-12 items-center my-16 bg-white/40 p-8 md:p-12 rounded-3xl border border-border/55 backdrop-blur-md">
+        <section className="grid md:grid-cols-2 gap-12 items-center my-16 bg-white/40 dark:bg-card/30 p-8 md:p-12 rounded-3xl border border-border/55 backdrop-blur-md">
           <div>
             <h2 className="text-3xl md:text-4xl font-serif mb-6 leading-tight">
               The Legend of Abu Lane: Sweets, Bakery & Gifting
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              At PAHWAJEE, we believe food is more than sustenance—it is a celebration of life. What started as a humble local endeavor has blossomed into one of Meerut's most loved food brands. 
+              At PAHWAJEE, we believe food is more than sustenance—it is a celebration of life. Formerly known as <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>, what started as a humble local endeavor has blossomed into one of Meerut's most loved food brands. 
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               While we are famous for our winter specialties like Gajak and Til Patti, we serve fresh artisan bread, customized birthday cakes, thick milkshakes, and premium namkeen year-round.
@@ -91,8 +91,8 @@ export default function About() {
           </div>
           <div className="relative">
             <img 
-              src="/gallery/2.jpeg" 
-              alt="PAHWAJEE Store Front in Abu Lane Meerut" 
+              src="/our_shop_main.jpeg" 
+              alt="PAHWA JEE Main Shop Front in Abu Lane Meerut" 
               className="rounded-2xl object-cover w-full h-[400px] shadow-lg border border-white/80" 
             />
             <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground p-5 rounded-2xl shadow-xl flex items-center gap-3">
@@ -101,6 +101,24 @@ export default function About() {
                 <p className="text-xs uppercase tracking-widest text-primary-foreground/75 font-semibold">Store Location</p>
                 <p className="font-serif font-bold text-lg">19 Abu Lane, Meerut</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The People Behind PAHWAJEE - Owner Placeholder Section */}
+        <section className="my-16 card-warm p-8 md:p-12 bg-white/60 dark:bg-card/40">
+          <div className="grid md:grid-cols-3 gap-8 items-center">
+            <div className="aspect-[3/4] rounded-2xl bg-muted/80 border border-dashed border-primary/40 flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
+              <span className="font-semibold text-foreground text-sm mb-1">[ OWNER PHOTO ]</span>
+              <span className="text-xs">Photo to be provided</span>
+            </div>
+            <div className="md:col-span-2">
+              <p className="eyebrow">The People Behind PAHWAJEE</p>
+              <h3 className="font-serif text-3xl font-bold mt-2 mb-2 text-foreground">[ OWNER NAME — TO BE PROVIDED ]</h3>
+              <p className="text-sm font-semibold text-secondary mb-4">[ ROLE — TO BE CONFIRMED ]</p>
+              <p className="text-muted-foreground leading-relaxed text-sm">
+                [ SHORT STORY & HERITAGE DETAILS — TO BE PROVIDED BY BUSINESS ]
+              </p>
             </div>
           </div>
         </section>

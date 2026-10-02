@@ -57,21 +57,11 @@ const fallbackProducts = [
 
 const filters = [
   { label: 'All Products', value: 'all', match: () => true },
-  { label: 'Summer Specials', value: 'summer-specials', match: (product) => product.season === 'summer' || matchesCategory(product, ['summer-specials', 'summer']) },
-  { label: 'Winter Specials', value: 'winter-specials', match: (product) => product.season === 'winter' || matchesCategory(product, ['winter-specials', 'winter']) },
-  {
-    label: 'All Season Favourites',
-    value: 'all-season-favourites',
-    match: (product) => product.season === 'all' || (!product.season && !matchesCategory(product, ['summer-specials', 'summer', 'winter-specials', 'winter', 'festival-collection'])),
-  },
-  { label: 'Cakes', value: 'cakes', match: (product) => matchesCategory(product, ['cakes', 'cake', 'bakery']) || includesAny(product.name, ['cake']) },
-  { label: 'Bread', value: 'bread', match: (product) => matchesCategory(product, ['bread', 'bakery']) || includesAny(product.name, ['bread']) },
-  { label: 'Cookies', value: 'cookies', match: (product) => matchesCategory(product, ['cookies', 'cookie', 'bakery']) || includesAny(product.name, ['cookie', 'cookies']) },
-  { label: 'Rusks', value: 'rusks', match: (product) => matchesCategory(product, ['rusks', 'rusk', 'bakery']) || includesAny(product.name, ['rusk', 'rusks']) },
-  { label: 'Namkeen', value: 'namkeen', match: (product) => matchesCategory(product, ['namkeen']) || includesAny(product.name, ['namkeen']) },
-  { label: 'Festival Specials', value: 'festival-specials', match: (product) => product.festivalSpecial || matchesCategory(product, ['festival-specials', 'festival-collection']) },
-  { label: 'Best Sellers', value: 'best-sellers', match: (product) => product.bestSeller || product.bestseller },
-  { label: 'New Arrivals', value: 'new-arrivals', match: (product) => product.newArrival },
+  { label: 'Rewri & Gajak', value: 'rewri-gajak', match: (product) => includesAny(product.name, ['rewri', 'gazak', 'gajak', 'chikki', 'til', 'patti']) },
+  { label: 'Desi Ghee Nankhatai', value: 'nankhatai', match: (product) => includesAny(product.name, ['nankhatai', 'nankhatayi']) },
+  { label: 'Gift Hampers & Trays', value: 'hampers', match: (product) => includesAny(product.name, ['tray', 'hamper', 'gifting']) || product.category === 'festival-collection' },
+  { label: 'Laddoo & Sweets', value: 'sweets', match: (product) => includesAny(product.name, ['laddoo', 'laddo', 'pinni', 'bite', 'halwa', 'kheer', 'sev', 'sweet', 'mithai']) },
+  { label: 'Fresh Healthy Specials', value: 'healthy', match: (product) => includesAny(product.name, ['salad', 'sprouts']) || product.category === 'summer-specials' }
 ];
 
 function normalize(value = '') {
@@ -159,7 +149,7 @@ export default function Products() {
                   className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold shadow-sm transition-all duration-300 ${
                     isActive
                       ? 'bg-primary text-primary-foreground shadow-primary/20'
-                      : 'border border-border bg-white/80 text-foreground hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary'
+                      : 'border border-border bg-white/80 dark:bg-card/70 text-foreground hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary'
                   }`}
                 >
                   {filter.label}
@@ -174,7 +164,7 @@ export default function Products() {
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="h-12 w-full rounded-full border border-border bg-white/80 pl-12 pr-4 text-sm outline-none ring-primary/20 placeholder:text-muted-foreground focus:ring-4"
+            className="h-12 w-full rounded-full border border-border bg-white/80 dark:bg-card/70 pl-12 pr-4 text-sm outline-none ring-primary/20 placeholder:text-muted-foreground focus:ring-4"
             placeholder="Search products, e.g. nankhatai, mango shake..."
           />
         </div>
