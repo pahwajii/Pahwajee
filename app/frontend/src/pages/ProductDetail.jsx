@@ -1,44 +1,60 @@
+import OptimizedImage from '../components/OptimizedImage';
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { productSchema } from '../lib/seo';
+import { usePageData } from '../context/PageData';
 import api, { waLink, telLink } from '../lib/api';
 import ProductCard from '../components/ProductCard';
+import AddToCart from '../components/AddToCart';
 import { ChevronRight, ChevronLeft, Phone, MessageCircle, ShieldAlert, Calendar, Box } from 'lucide-react';
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const initialProducts = usePageData().products || [];
+  const initialProduct = initialProducts.find(item => item.slug === slug);
+  const [product, setProduct] = useState(initialProduct || null);
+  const [relatedProducts, setRelatedProducts] = useState(() => initialProducts.filter(item => item.slug !== slug && item.category === initialProduct?.category).slice(0, 4));
+  const [loading, setLoading] = useState(!initialProduct);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
 
   useEffect(() => {
     if (!slug) return;
-    setLoading(true);
-    
+    let active = true;
+    const cached = initialProducts.find(item => item.slug === slug);
+    setProduct(cached || null);
+    setLoading(!cached);
+    setActiveImgIndex(0);
+    setRelatedProducts(initialProducts.filter(item => item.slug !== slug && item.category === cached?.category).slice(0, 4));
+
     api.get(`/products/${slug}`)
       .then((data) => {
+        if (!active) return;
         setProduct(data);
         setActiveImgIndex(0);
         // Fetch related products of the same category
         api.get(`/products?category=${data.category}`)
           .then((items) => {
             // Filter out current product
-            setRelatedProducts(items.filter(item => item.slug !== data.slug).slice(0, 4));
+            if (active) setRelatedProducts(items.filter(item => item.slug !== data.slug).slice(0, 4));
           })
-          .catch(() => setRelatedProducts([]));
+          .catch(() => { if (active) setRelatedProducts([]); });
       })
-      .catch(() => setProduct(null))
-      .finally(() => setLoading(false));
+      // Keep the public snapshot during temporary API failures. A confirmed 404
+      // still removes deleted products and switches their metadata to noindex.
+      .catch((error) => { if (active && error.status === 404) setProduct(null); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [slug]);
 
   if (loading) {
-    return <div className="section-y container-x noise-bg text-center font-serif text-2xl">Loading product details...</div>;
+    return <div className="section-y container-x noise-bg text-center font-serif text-2xl"><SEO title="Product Details | PAHWA JEE Meerut" />Loading product details...</div>;
   }
 
   if (!product) {
     return (
       <div className="section-y container-x noise-bg text-center">
+        <SEO title="Product Not Found | PAHWA JEE" noindex />
         <h1 className="text-4xl font-serif mb-4">Product Not Found</h1>
         <p className="text-muted-foreground mb-6">The product you are looking for might have been moved or is currently unavailable.</p>
         <Link to="/products" className="btn-primary">View Full Menu</Link>
@@ -51,7 +67,9 @@ export default function ProductDetail() {
     const text = name.toLowerCase();
     if (text.includes('nankhatai')) {
       return {
-        ingredients: "Pure Desi Ghee, Wheat Flour (Maida/Atta), Sugar, Cardamom.",
+        ingredients: text.includes('vanaspati')
+          ? "Made with Vanaspati Ghee. Please contact us for the full ingredient list."
+          : "Pure Desi Ghee, Wheat Flour (Maida/Atta), Sugar, Cardamom.",
         storage: "Store in a cool, dry place inside an airtight container. Protect from moisture.",
         shelfLife: "30 Days",
         suitability: "Perfect for tea-time snacking, corporate gifts, and festive occasions."
@@ -88,27 +106,15 @@ export default function ProductDetail() {
     : (product && product.image ? [product.image] : []);
   const currentImage = images[activeImgIndex] || '/placeholder.jpg';
 
-  // Generate dynamic product schema
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "image": product.image || "https://pahwajee.com/gallery/2.jpeg",
-    "description": product.description,
-    "offers": {
-      "@type": "Offer",
-      "price": product.price ? product.price.replace(/[^0-9]/g, '') : "0",
-      "priceCurrency": "INR",
-      "availability": product.availability === "Available" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-    }
-  };
+  const schema = productSchema(product);
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO 
+      <SEO
         title={`${product.name} in Meerut | PAHWAJEE`}
         description={`${product.description || `Buy fresh ${product.name} at PAHWAJEE Abu Lane, Meerut.`} Order on WhatsApp or call us directly.`}
         schema={schema}
+        image={product.image}
       />
 
       <div className="container-x">
@@ -127,12 +133,14 @@ export default function ProductDetail() {
           <div className="flex flex-col gap-4 w-full">
             {/* Main Image Container */}
             <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted border border-white/60 shadow-lg group">
-              <img 
-                src={currentImage} 
-                alt={product.name} 
-                className="w-full h-full object-cover transition-all duration-300" 
+              <OptimizedImage
+                loading="eager"
+                fetchPriority="high"
+                src={currentImage}
+                alt={product.name}
+                className="w-full h-full object-cover transition-all duration-300"
               />
-              
+
               {/* Navigation Arrows (only if multiple images exist) */}
               {images.length > 1 && (
                 <>
@@ -168,12 +176,12 @@ export default function ProductDetail() {
                       key={idx}
                       onClick={() => setActiveImgIndex(idx)}
                       className={`relative aspect-square w-16 shrink-0 rounded-lg overflow-hidden border-2 bg-muted transition-all duration-200 ${
-                        isActive 
-                          ? 'border-primary scale-[1.03] shadow' 
+                        isActive
+                          ? 'border-primary scale-[1.03] shadow'
                           : 'border-transparent hover:border-primary/40'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} variant ${idx + 1}`} className="h-full w-full object-cover" />
+                      <OptimizedImage sizes="80px" src={img} alt={`${product.name} variant ${idx + 1}`} className="h-full w-full object-cover" />
                     </button>
                   );
                 })}
@@ -196,9 +204,9 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">{product.name}</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">{product.name}</h1>
             <p className="text-secondary text-2xl md:text-3xl font-serif font-bold mb-6">{product.price || 'Price on request'}</p>
-            
+
             <p className="text-muted-foreground leading-relaxed text-base mb-8 border-b border-border/30 pb-6">
               {product.description || "Freshly prepared daily with the finest ingredients at our store in Meerut. Crafted with generational recipes for authentic taste."}
             </p>
@@ -231,8 +239,9 @@ export default function ProductDetail() {
             )}
 
             {/* CTAs */}
+            <div className="mb-6"><AddToCart product={product} /></div>
             <div className="flex flex-wrap gap-4 pt-2">
-              <a 
+              <a
                 href={waLink(`Hi PAHWAJEE, I am interested in ordering: ${product.name} (${product.price || 'Price on Request'}). Please share availability.`)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -240,8 +249,8 @@ export default function ProductDetail() {
               >
                 <MessageCircle size={18} /> Order on WhatsApp
               </a>
-              <a 
-                href={telLink()} 
+              <a
+                href={telLink()}
                 className="btn-primary flex items-center justify-center gap-2"
               >
                 <Phone size={18} /> Call PAHWAJEE
@@ -254,7 +263,7 @@ export default function ProductDetail() {
         {relatedProducts.length > 0 && (
           <section className="my-16">
             <h3 className="font-serif text-3xl mb-8">You May Also Like</h3>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

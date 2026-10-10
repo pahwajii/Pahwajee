@@ -1,0 +1,23 @@
+.admin-app { min-height: 100vh; background: hsl(var(--background)); color: hsl(var(--foreground)); }
+.admin-app h1, .admin-app h2, .admin-app h3 { font-family: 'Outfit', system-ui, sans-serif; letter-spacing: -.035em; }
+.admin-app :is(button, a, input, select, textarea):focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 3px; }
+.admin-app button:disabled { opacity: .5; cursor: not-allowed; }
+  .admin-panel { @apply relative rounded-2xl border border-border bg-card shadow-sm; }
+  .admin-input { @apply min-h-11 w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm text-foreground; }
+  .admin-label { @apply mb-1.5 block text-sm font-medium; }
+  .admin-button, .admin-primary, .admin-icon-button { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium transition-colors; }
+  .admin-button:hover, .admin-icon-button:hover { @apply bg-muted; }
+  .admin-primary { @apply border-primary bg-primary text-primary-foreground; }
+  .admin-primary:hover { @apply bg-primary/90; }
+  .admin-icon-button { @apply w-11 shrink-0 !px-0; }
+  .admin-empty { @apply flex min-h-52 flex-col items-center justify-center gap-3 px-5 py-12 text-center text-muted-foreground; }
+  .admin-error { @apply flex items-start gap-2 rounded-xl border border-destructive/25 bg-destructive/5 p-3 text-sm text-destructive; }
+  .admin-badge { @apply inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium; }
+  .admin-badge-success { @apply bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200; }
+  .admin-badge-muted { @apply bg-muted text-muted-foreground; }
+  .admin-badge-attention { @apply bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200; }
+  .admin-badge-neutral { @apply bg-primary/10 text-primary dark:text-foreground; }
+  .admin-table { @apply w-full text-left text-sm; }
+  .admin-table th { @apply bg-muted/40 px-5 py-3 text-xs font-medium text-muted-foreground; }
+  .admin-table td { @apply border-t border-border/60 px-5 py-4 align-middle; }
+  .admin-table tbody tr { @apply hover:bg-muted/20; }

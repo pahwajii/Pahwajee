@@ -1,33 +1,17 @@
+import OptimizedImage from '../components/OptimizedImage';
 import SEO from '../components/SEO';
 import { BUSINESS } from '../lib/api';
 import { MapPin, Sparkles, Heart, ShieldCheck } from 'lucide-react';
 
 export default function About() {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Bakery",
-    "name": "PAHWAJEE",
-    "image": "https://pahwajee.com/gallery/2.jpeg",
-    "url": "https://pahwajee.com/about",
-    "telephone": "+916396339806",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "19 Abu Lane",
-      "addressLocality": "Meerut",
-      "addressRegion": "Uttar Pradesh",
-      "postalCode": "250001",
-      "addressCountry": "IN"
-    }
-  };
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO 
+      <SEO
         title="Our Story: Meerut's Favorite Food Brand | PAHWAJEE"
         description="Learn about PAHWAJEE's roots in Meerut, Uttar Pradesh. Discover our heritage of crafting legendary Desi Ghee Nankhatai, traditional Punjabi Rewri, flaky Gajak, and fresh bakery products."
-        schema={schema}
       />
-      
+
       <div className="container-x">
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto py-12">
@@ -80,7 +64,7 @@ export default function About() {
               The Legend of Abu Lane: Sweets, Bakery & Gifting
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              At PAHWAJEE, we believe food is more than sustenance—it is a celebration of life. Formerly known as <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>, what started as a humble local endeavor has blossomed into one of Meerut's most loved food brands. 
+              At PAHWAJEE, we believe food is more than sustenance—it is a celebration of life. Formerly known as <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>, what started as a humble local endeavor has blossomed into one of Meerut's most loved food brands.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               While we are famous for our winter specialties like Gajak and Til Patti, we serve fresh artisan bread, customized birthday cakes, thick milkshakes, and premium namkeen year-round.
@@ -90,10 +74,10 @@ export default function About() {
             </p>
           </div>
           <div className="relative">
-            <img 
-              src="/our_shop_main.jpeg" 
-              alt="PAHWA JEE Main Shop Front in Abu Lane Meerut" 
-              className="rounded-2xl object-cover w-full h-[400px] shadow-lg border border-white/80" 
+            <OptimizedImage
+              src="/our_shop_main.jpeg"
+              alt="PAHWA JEE Main Shop Front in Abu Lane Meerut"
+              className="rounded-2xl object-cover w-full h-[400px] shadow-lg border border-white/80"
             />
             <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground p-5 rounded-2xl shadow-xl flex items-center gap-3">
               <MapPin className="w-6 h-6 shrink-0" />
@@ -105,19 +89,28 @@ export default function About() {
           </div>
         </section>
 
-        {/* The People Behind PAHWAJEE - Owner Placeholder Section */}
-        <section className="my-16 card-warm p-8 md:p-12 bg-white/60 dark:bg-card/40">
-          <div className="grid md:grid-cols-3 gap-8 items-center">
-            <div className="aspect-[3/4] rounded-2xl bg-muted/80 border border-dashed border-primary/40 flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
-              <span className="font-semibold text-foreground text-sm mb-1">[ OWNER PHOTO ]</span>
-              <span className="text-xs">Photo to be provided</span>
+        {/* The People Behind PAHWA JEE - The Pahwa Family */}
+        <section className="my-16 card-warm p-8 md:p-12 bg-white/70 dark:bg-card/40 border border-border/60 shadow-lg">
+          <div className="grid md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-5 relative group">
+              <OptimizedImage
+                src="/pahwa_family.jpg"
+                alt="The Pahwa Brothers at PAHWA JEE 19 Abu Lane Meerut"
+                className="rounded-2xl object-cover w-full h-[340px] shadow-md border-2 border-white/80 group-hover:scale-[1.01] transition duration-300"
+              />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
+                The Pahwa Brothers · 19 Abu Lane
+              </div>
             </div>
-            <div className="md:col-span-2">
-              <p className="eyebrow">The People Behind PAHWAJEE</p>
-              <h3 className="font-serif text-3xl font-bold mt-2 mb-2 text-foreground">[ OWNER NAME — TO BE PROVIDED ]</h3>
-              <p className="text-sm font-semibold text-secondary mb-4">[ ROLE — TO BE CONFIRMED ]</p>
+            <div className="md:col-span-7">
+              <p className="eyebrow">Custodians of Heritage</p>
+              <h3 className="font-serif text-3xl md:text-4xl font-bold mt-2 mb-2 text-foreground">The Pahwa Family</h3>
+              <p className="text-sm font-semibold text-secondary uppercase tracking-wider mb-4">Three Brothers Continuing a Generational Legacy</p>
+              <p className="text-muted-foreground leading-relaxed text-sm mb-4">
+                At the heart of PAHWA JEE are the three Pahwa brothers, sons of <strong>Late Shri Kasturi Lal Pahwa</strong>. Working side by side, they carry forward their father's legacy and the heritage of <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>, a name trusted by generations of families in Meerut.
+              </p>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                [ SHORT STORY & HERITAGE DETAILS — TO BE PROVIDED BY BUSINESS ]
+                From carefully selecting ingredients to welcoming customers at the Abu Lane counter, the brothers remain personally involved every day. Their care and commitment keep the familiar taste of Nankhatai, Rewri, and winter Gajak alive, sharing a cherished family tradition with every generation.
               </p>
             </div>
           </div>

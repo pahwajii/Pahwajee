@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, MessageCircle, Phone, Sparkles, Star, Award, ShieldCheck, Clock, Gift, Heart } from 'lucide-react';
 import SEO from '../components/SEO';
-import api, { BUSINESS, waLink, telLink } from '../lib/api';
+import AddToCart from '../components/AddToCart';
+import { useCart } from '../context/CartContext';
+import { BUSINESS, waLink, telLink } from '../lib/api';
 
 const realHeroImage = '/our_shop_main.jpeg';
 
 const signatureRewri = {
+  slug: "khasta-rewri",
   name: "Khasta Rewri",
   desc: "Crispy sesame and organic jaggery drops, hand-rolled in authentic Punjabi tradition. Made fresh for winter in Meerut.",
   price: "Rs 480/kg",
@@ -15,6 +18,7 @@ const signatureRewri = {
 };
 
 const signatureGajak = {
+  slug: "dilkhush-gazak",
   name: "Dilkhush Gazak",
   desc: "Light, flaky, melt-in-mouth sesame gazak prepared with organic jaggery, cardamom, and premium nuts.",
   price: "Rs 640/kg",
@@ -23,17 +27,18 @@ const signatureGajak = {
 };
 
 const signatureNankhatai = {
+  slug: "pure-desi-ghee-nankhatai",
   name: "Pure Desi Ghee Nankhatai",
   desc: "Meerut's legendary traditional cookie baked with 100% pure desi ghee. Crumbly, rich, and unforgettable.",
-  price: "Rs 500/kg",
+  price: "Rs 600/kg",
   image: "/products/nankhatayi.png",
   link: "/nankhatai-meerut"
 };
 
 const winterFavourites = [
-  { name: "Til Bugga", desc: "Traditional winter delicacy made of roasted sesame, khoya & cardamom.", price: "Rs 600/kg", image: "/products/til-bugga.png" },
-  { name: "Peanut Chikki", desc: "Snap-crisp roasted peanut & jaggery chikki.", price: "Rs 320/kg", image: "/products/peanut-chikki.png" },
-  { name: "Dry Fruit Laddoo", desc: "Sugar-free laddoos packed with dates, figs & nuts.", price: "Rs 850/kg", image: "/products/dryfruitladdoo.png" }
+  { slug: "til-bugga", name: "Til Bugga", desc: "Traditional winter delicacy made of roasted sesame, khoya & cardamom.", price: "Rs 600/kg", image: "/products/til-bugga.png" },
+  { slug: "peanut-chikki", name: "Peanut Chikki", desc: "Snap-crisp roasted peanut & jaggery chikki.", price: "Rs 320/kg", image: "/products/peanut-chikki.png" },
+  { slug: "dry-fruit-laddoo", name: "Dry Fruit Laddoo", desc: "Sugar-free laddoos packed with dates, figs & nuts.", price: "Rs 850/kg", image: "/products/dryfruitladdoo.png" }
 ];
 
 const giftHampers = [
@@ -52,50 +57,15 @@ const homeCategories = [
 ];
 
 export default function Home() {
-  const [bestsellers, setBestsellers] = useState([]);
+  const { catalog } = useCart();
+  const currentPrice = (item) => catalog[item.slug]?.price || item.price;
 
-  useEffect(() => {
-    api.get('/products?bestseller=true')
-      .then((items) => setBestsellers(items.slice(0, 4)))
-      .catch(() => setBestsellers([]));
-  }, []);
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Bakery",
-    "name": "PAHWAJEE",
-    "image": "https://pahwajee.com/gallery/2.jpeg",
-    "@id": "https://pahwajee.com/#bakery",
-    "url": "https://pahwajee.com",
-    "telephone": "+916396339806",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "19 Abu Lane",
-      "addressLocality": "Meerut",
-      "addressRegion": "Uttar Pradesh",
-      "postalCode": "250001",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 29.0060,
-      "longitude": 77.7064
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "09:00",
-      "closes": "22:30"
-    }
-  };
 
   return (
     <div className="noise-bg">
-      <SEO 
+      <SEO
         title="PAHWAJEE Meerut | Rewri, Gajak, Nankhatai & Gift Hampers"
         description="Meerut's trusted brand for authentic Rewri, Gazak, Desi Ghee Nankhatai, Dry Fruit Hampers, and Diwali festive gifting. Order on WhatsApp."
-        schema={schema}
       />
 
       {/* 1. Hero Section */}
@@ -125,10 +95,13 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <img 
-            src={realHeroImage} 
-            alt="PAHWAJEE Store Front in Abu Lane Meerut" 
-            className="h-[480px] w-full rounded-3xl object-cover shadow-2xl border border-white/60" 
+          <OptimizedImage
+            loading="eager"
+            fetchPriority="high"
+            sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
+            src={realHeroImage}
+            alt="PAHWAJEE Store Front in Abu Lane Meerut"
+            className="h-[480px] w-full rounded-3xl object-cover shadow-2xl border border-white/60"
           />
           <div className="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/70 dark:border-white/10 bg-white/90 dark:bg-card/90 p-5 shadow-xl backdrop-blur-md">
             <div className="flex items-start gap-3">
@@ -150,18 +123,16 @@ export default function Home() {
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureRewri.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureRewri.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{signatureRewri.price}</span>
+              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureRewri)}</span>
               <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Fresh Winter Batch</span>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <a href={waLink(`Hi PAHWAJEE, I'd like to order: ${signatureRewri.name}.`)} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-600 !text-white flex items-center gap-2">
-                <MessageCircle size={16} /> Order Rewri on WhatsApp
-              </a>
+            <div className="space-y-4">
+              <AddToCart product={signatureRewri} />
               <Link to={signatureRewri.link} className="btn-outline">View Rewri Collection</Link>
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <img src={signatureRewri.image} alt={signatureRewri.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage src={signatureRewri.image} alt={signatureRewri.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
           </div>
         </div>
       </section>
@@ -170,20 +141,18 @@ export default function Home() {
       <section className="py-16">
         <div className="container-x grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <img src={signatureGajak.image} alt={signatureGajak.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage src={signatureGajak.image} alt={signatureGajak.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
           </div>
           <div>
             <span className="eyebrow">Signature #2</span>
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureGajak.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureGajak.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{signatureGajak.price}</span>
+              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureGajak)}</span>
               <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Organic Jaggery</span>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <a href={waLink(`Hi PAHWAJEE, I'd like to order: ${signatureGajak.name}.`)} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-600 !text-white flex items-center gap-2">
-                <MessageCircle size={16} /> Order Gazak on WhatsApp
-              </a>
+            <div className="space-y-4">
+              <AddToCart product={signatureGajak} />
               <Link to={signatureGajak.link} className="btn-outline">View Gazak Collection</Link>
             </div>
           </div>
@@ -198,18 +167,16 @@ export default function Home() {
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureNankhatai.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureNankhatai.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{signatureNankhatai.price}</span>
+              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureNankhatai)}</span>
               <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-semibold">100% Pure Desi Ghee</span>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <a href={waLink(`Hi PAHWAJEE, I'd like to order: ${signatureNankhatai.name}.`)} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-600 !text-white flex items-center gap-2">
-                <MessageCircle size={16} /> Order Nankhatai on WhatsApp
-              </a>
-              <Link to={signatureNankhatai.link} className="btn-outline">View Nankhatai Details</Link>
+            <div className="space-y-4">
+              <AddToCart product={signatureNankhatai} />
+              <Link to={signatureNankhatai.link} className="btn-outline">View Both Nankhatai Varieties</Link>
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <img src={signatureNankhatai.image} alt={signatureNankhatai.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage src={signatureNankhatai.image} alt={signatureNankhatai.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
           </div>
         </div>
       </section>
@@ -224,15 +191,13 @@ export default function Home() {
           {winterFavourites.map((item, idx) => (
             <div key={idx} className="card-warm p-5 flex flex-col justify-between">
               <div>
-                <img src={item.image} alt={item.name} className="h-44 w-full object-cover rounded-xl mb-4" />
+                <OptimizedImage sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={item.image} alt={item.name} className="h-44 w-full object-cover rounded-xl mb-4" />
                 <h3 className="font-serif text-xl font-bold mb-1">{item.name}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">{item.desc}</p>
               </div>
-              <div className="flex items-center justify-between border-t border-border/30 pt-3">
-                <span className="text-sm font-bold text-secondary">{item.price}</span>
-                <a href={waLink(`Hi PAHWAJEE, I'd like to order: ${item.name}.`)} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-primary hover:underline">
-                  Order &rarr;
-                </a>
+              <div className="space-y-3 border-t border-border/30 pt-3">
+                <span className="text-sm font-bold text-secondary">{currentPrice(item)}</span>
+                <AddToCart product={item} />
               </div>
             </div>
           ))}
@@ -254,7 +219,7 @@ export default function Home() {
             {giftHampers.map((hamper, idx) => (
               <div key={idx} className="card-warm p-6 flex flex-col justify-between">
                 <div>
-                  <img src={hamper.image} alt={hamper.name} className="h-48 w-full object-cover rounded-xl mb-4" />
+                  <OptimizedImage sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={hamper.image} alt={hamper.name} className="h-48 w-full object-cover rounded-xl mb-4" />
                   <h3 className="font-serif text-2xl font-bold mb-2">{hamper.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mb-4">{hamper.desc}</p>
                 </div>
@@ -335,20 +300,29 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Owner Placeholder Preview */}
-          <div className="card-warm p-8 bg-white/60 dark:bg-card/45 max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-6 items-center">
-              <div className="aspect-square rounded-xl bg-muted/80 border border-dashed border-primary/40 flex flex-col items-center justify-center p-4 text-center text-muted-foreground">
-                <span className="font-semibold text-foreground text-xs">[ OWNER PHOTO ]</span>
-                <span className="text-[10px]">Photo to be provided</span>
+          {/* Pahwa Family Section */}
+          <div className="card-warm p-8 bg-white/70 dark:bg-card/50 max-w-4xl mx-auto border border-border/60 shadow-lg">
+            <div className="grid md:grid-cols-12 gap-8 items-center">
+              <div className="md:col-span-5 relative group">
+                <OptimizedImage
+                  src="/pahwa_family.jpg"
+                  alt="The Pahwa Brothers at PAHWA JEE Abu Lane Meerut"
+                  className="rounded-2xl object-cover w-full h-[280px] shadow-md border-2 border-white/80 group-hover:scale-[1.02] transition duration-300"
+                />
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-semibold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+                  Custodians of Abu Lane
+                </div>
               </div>
-              <div className="md:col-span-2">
-                <p className="eyebrow">The People Behind PAHWAJEE</p>
-                <h3 className="font-serif text-2xl font-bold mt-1 text-foreground">[ OWNER NAME — TO BE PROVIDED ]</h3>
-                <p className="text-xs font-semibold text-secondary mb-3">[ ROLE — TO BE CONFIRMED ]</p>
-                <p className="text-muted-foreground text-xs leading-relaxed">
-                  [ SHORT STORY — TO BE PROVIDED BY BUSINESS ]
+              <div className="md:col-span-7">
+                <p className="eyebrow">The Heart of PAHWA JEE</p>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold mt-1.5 mb-1.5 text-foreground">The Pahwa Family</h3>
+                <p className="text-xs font-semibold text-secondary uppercase tracking-wider mb-3">Three Brothers · Decades of Craftsmanship & Trust</p>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  The three Pahwa brothers, sons of <strong>Late Shri Kasturi Lal Pahwa</strong>, carry forward their father's legacy and the traditions of <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>. From overseeing fresh batches to welcoming customers at Abu Lane, they bring personal care to the flavours Meerut families have loved for generations.
                 </p>
+                <Link to="/about" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  Read our family story &rarr;
+                </Link>
               </div>
             </div>
           </div>

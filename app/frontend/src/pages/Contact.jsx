@@ -33,40 +33,12 @@ export default function Contact() {
     }
   };
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Bakery",
-    "name": "PAHWAJEE",
-    "image": "https://pahwajee.com/gallery/2.jpeg",
-    "telephone": "+916396339806",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "19 Abu Lane",
-      "addressLocality": "Meerut",
-      "addressRegion": "Uttar Pradesh",
-      "postalCode": "250001",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 29.0060,
-      "longitude": 77.7064
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "09:00",
-      "closes": "22:30"
-    }
-  };
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO 
         title="Contact Us & Store Directions | PAHWAJEE Meerut"
         description="Visit PAHWAJEE sweet & bakery shop at 19 Abu Lane, Meerut. Get directions, contact phone numbers, business hours, and submit product or bulk orders enquiries."
-        schema={schema}
       />
 
       <div className="container-x">

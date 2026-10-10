@@ -1,3 +1,4 @@
+import { usePageData } from '../context/PageData';
 import { useEffect, useState } from 'react';
 import SEO from '../components/SEO';
 import api, { waLink, telLink } from '../lib/api';
@@ -6,14 +7,25 @@ import { MessageCircle, Phone, ArrowLeft, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CONFIGS = {
+  specialities: {
+    title: "Our Specialities: Rewri, Gazak & Nankhatai | PAHWAJEE",
+    description: "Explore PAHWAJEE's Rewri, Gazak and Desi Ghee Nankhatai in one collection. Order on WhatsApp or visit our Abu Lane store in Meerut.",
+    h1: "Our Specialities",
+    intro: "Discover our signature Rewri, flaky Gazak and buttery Desi Ghee Nankhatai, together in one collection.",
+    filterMatch: (p) => /rewri|g[ae]z{1,2}ak|gajak|nankhata[iy]/i.test(`${p.slug || ''} ${p.name || ''}`),
+    faqs: [
+      { question: "Are Rewri and Gazak available throughout the year?", answer: "These are seasonal winter specials. Contact us to check the current selection and availability." },
+      { question: "Which Nankhatai varieties do you offer?", answer: "Choose Pure Desi Ghee Nankhatai at Rs 600/kg or Vanaspati Ghee Nankhatai at Rs 380/kg." }
+    ]
+  },
   nankhatai: {
-    title: "Best Desi Ghee Nankhatai in Meerut | PAHWAJEE",
-    description: "Taste the legacy of authentic Desi Ghee Nankhatai in Meerut. Crumbly, buttery, and baked daily at Abu Lane. Order on WhatsApp or visit our store.",
-    h1: "Authentic Desi Ghee Nankhatai in Meerut",
-    intro: "For generations, PAHWAJEE has been synonymous with the finest Desi Ghee Nankhatai in Meerut. Made with pure ghee, premium cardamoms, and traditional recipes, our nankhatais are baked fresh daily, offering a buttery, melt-in-mouth texture that is legendary.",
+    title: "Desi Ghee & Vanaspati Ghee Nankhatai in Meerut | PAHWAJEE",
+    description: "Choose Desi Ghee Nankhatai at Rs 600/kg or Vanaspati Ghee Nankhatai at Rs 380/kg at PAHWAJEE, Abu Lane, Meerut.",
+    h1: "Nankhatai in Meerut",
+    intro: "Choose from our two Nankhatai varieties: Pure Desi Ghee at Rs 600/kg and Vanaspati Ghee at Rs 380/kg.",
     filterMatch: (p) => p.slug.includes('nankhatai'),
     faqs: [
-      { question: "Is your Nankhatai made with pure ghee?", answer: "Yes, our signature nankhatai is made using 100% pure desi ghee with no hydrogenated vegetable oils or additives." },
+      { question: "Are both varieties made with desi ghee?", answer: "The Desi Ghee variety is made with pure desi ghee. The Vanaspati Ghee variety is prepared with Vanaspati Ghee." },
       { question: "What is the shelf life of Nankhatai?", answer: "Our nankhatai has a shelf life of up to 30 days when stored in a cool, dry place inside an airtight container." }
     ]
   },
@@ -63,7 +75,8 @@ const fallbackProducts = [
   { id: 'sugar-gazak', name: 'Sugar Gazak', slug: 'sugar-gazak', category: 'signature', season: 'winter', image: '/products/sugar gazzak.png', price: 'Rs 460/kg', availability: 'Available' },
   { id: 'til-patti-gazak', name: 'Til Patti Gazak', slug: 'til-patti-gazak', category: 'signature', season: 'winter', image: '/products/tilpattigazzak.png', price: 'Rs 520/kg', availability: 'Available' },
   { id: 'til-peanut-khasta', name: 'Til Peanut Khasta', slug: 'til-peanut-khasta', category: 'signature', season: 'winter', image: '/products/til-peanut-khasta.png', price: 'Rs 490/kg', availability: 'Available' },
-  { id: 'pure-desi-ghee-nankhatai', name: 'Pure Desi Ghee Nankhatai', slug: 'pure-desi-ghee-nankhatai', category: 'signature', season: 'all', image: '/products/nankhatayi.png', price: 'Rs 500/kg', availability: 'Available', bestseller: true, bestSeller: true },
+  { id: 'pure-desi-ghee-nankhatai', name: 'Pure Desi Ghee Nankhatai', slug: 'pure-desi-ghee-nankhatai', category: 'signature', season: 'all', image: '/products/nankhatayi.png', price: 'Rs 600/kg', availability: 'Available', bestseller: true, bestSeller: true },
+  { id: 'vanaspati-ghee-nankhatai', name: 'Vanaspati Ghee Nankhatai', slug: 'vanaspati-ghee-nankhatai', description: 'Traditional Nankhatai prepared with Vanaspati Ghee.', category: 'signature', season: 'all', image: '/products/nankhatayi.png', price: 'Rs 380/kg', availability: 'Available' },
   { id: 'besan-laddoo', name: 'Besan Laddoo', slug: 'besan-laddoo', category: 'signature', season: 'all', image: '/products/besan-laddo.png', price: 'Rs 400/kg', availability: 'Available' },
   { id: 'mango-bite', name: 'Mango Bite', slug: 'mango-bite', category: 'signature', season: 'all', image: '/products/mangobit.png', price: 'Rs 600/kg', availability: 'Available' },
   { id: 'peanut-chikki', name: 'Peanut Chikki', slug: 'peanut-chikki', category: 'winter-specials', season: 'winter', image: '/products/peanut-chikki.png', price: 'Rs 320/kg', availability: 'Available' },
@@ -77,19 +90,18 @@ const fallbackProducts = [
   { id: 'special-pishori-pinni', name: 'Special Pishori Pinni', slug: 'special-pishori-pinni', category: 'winter-specials', season: 'winter', image: '/products/pishori-pinni.png', price: 'Rs 700/kg', availability: 'Available' },
   { id: 'desi-ghee-gajar-ka-halwa', name: 'Desi Ghee Gajar Ka Halwa', slug: 'desi-ghee-gajar-ka-halwa', category: 'winter-specials', season: 'winter', image: '/products/gajar-halwa.png', price: 'Rs 480/kg', availability: 'Available' },
   { id: 'special-kheer', name: 'Special Kheer', slug: 'special-kheer', category: 'winter-specials', season: 'winter', image: '/products/kheer.png', price: 'Rs 250/kg', availability: 'Available' },
-  { id: 'fresh-special-salad', name: 'Fresh Special Salad', slug: 'fresh-special-salad', category: 'summer-specials', season: 'summer', image: '/products/salad.png', price: 'Rs 120/plate', availability: 'Available' },
   { id: 'healthy-sprouts', name: 'Healthy Sprouts', slug: 'healthy-sprouts', category: 'summer-specials', season: 'summer', image: '/products/sprouts.png', price: 'Rs 100/plate', availability: 'Available' },
-  { id: 'dry-fruit-gift-tray-1', name: 'Dry Fruit Gift Tray 1', slug: 'dry-fruit-gift-tray-1', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray1.png', price: 'Rs 1100', availability: 'Available', bestseller: true },
-  { id: 'dry-fruit-gift-tray-2', name: 'Dry Fruit Gift Tray 2', slug: 'dry-fruit-gift-tray-2', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray2.png', price: 'Rs 1350', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-1', name: 'Dry Fruit Gift Tray 1', slug: 'dry-fruit-gift-tray-1', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray1.png', price: 'Rs 400', availability: 'Available', bestseller: true },
+  { id: 'dry-fruit-gift-tray-2', name: 'Dry Fruit Gift Tray 2', slug: 'dry-fruit-gift-tray-2', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray2.png', price: 'Rs 800', availability: 'Available' },
   { id: 'dry-fruit-gift-tray-3', name: 'Dry Fruit Gift Tray 3', slug: 'dry-fruit-gift-tray-3', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray3.png', price: 'Rs 1500', availability: 'Available' },
-  { id: 'dry-fruit-gift-tray-4', name: 'Dry Fruit Gift Tray 4', slug: 'dry-fruit-gift-tray-4', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray4.png', price: 'Rs 1750', availability: 'Available' },
-  { id: 'dry-fruit-gift-tray-5', name: 'Dry Fruit Gift Tray 5', slug: 'dry-fruit-gift-tray-5', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray5.png', price: 'Rs 2000', availability: 'Available' },
-  { id: 'dry-fruit-gift-tray-6', name: 'Dry Fruit Gift Tray 6', slug: 'dry-fruit-gift-tray-6', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray6.png', price: 'Rs 2250', availability: 'Available' },
-  { id: 'dry-fruit-gift-tray-7', name: 'Dry Fruit Gift Tray 7', slug: 'dry-fruit-gift-tray-7', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray7.png', price: 'Rs 2500', availability: 'Available' }
+  { id: 'dry-fruit-gift-tray-4', name: 'Dry Fruit Gift Tray 4', slug: 'dry-fruit-gift-tray-4', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray4.png', price: 'Rs 2200', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-5', name: 'Dry Fruit Gift Tray 5', slug: 'dry-fruit-gift-tray-5', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray5.png', price: 'Rs 3000', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-6', name: 'Dry Fruit Gift Tray 6', slug: 'dry-fruit-gift-tray-6', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray6.png', price: 'Rs 4000', availability: 'Available' },
+  { id: 'dry-fruit-gift-tray-7', name: 'Dry Fruit Gift Tray 7', slug: 'dry-fruit-gift-tray-7', category: 'festival-collection', season: 'all', image: '/products/Dryfruit-tray7.png', price: 'Rs 5000', availability: 'Available' }
 ];
 
 export default function CategoryLanding({ type }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(usePageData().products || []);
   const config = CONFIGS[type] || CONFIGS.nankhatai;
 
   useEffect(() => {
@@ -117,11 +129,11 @@ export default function CategoryLanding({ type }) {
 
         {/* Hero Area */}
         <section className="max-w-3xl mb-12">
-          <p className="eyebrow">Local Speciality</p>
-          <h1 className="text-4xl md:text-5xl font-serif leading-tight mt-3 mb-6">
+          {type !== 'specialities' && <p className="eyebrow">Local Speciality</p>}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif leading-tight mt-3 mb-6">
             {config.h1}
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
             {config.intro}
           </p>
 
@@ -142,9 +154,9 @@ export default function CategoryLanding({ type }) {
 
         {/* Product List */}
         <section className="my-12">
-          <h2 className="text-3xl font-serif mb-8 border-b border-border/40 pb-4 text-foreground">Available Selection</h2>
+          <h2 className="text-2xl sm:text-3xl font-serif mb-6 sm:mb-8 border-b border-border/40 pb-4 text-foreground">Available Selection</h2>
           {filtered.length ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
               {filtered.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

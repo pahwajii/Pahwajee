@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 .Python
+.vercel/
 
 node_modules/
 dist/
@@ -10,6 +11,9 @@ build/
 .env
 .env.*
 !.env.example
+!.env.orders.example
+
+app/backend/*-api.*.log
 
 .DS_Store
 Thumbs.db

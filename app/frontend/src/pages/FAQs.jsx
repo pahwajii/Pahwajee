@@ -1,3 +1,4 @@
+import { usePageData } from '../context/PageData';
 import { useEffect, useState } from 'react';
 import SEO from '../components/SEO';
 import api from '../lib/api';
@@ -26,7 +27,7 @@ const fallbackFAQs = [
   },
   {
     question: "Are your products made with pure desi ghee?",
-    answer: "Our signature nankhatai and select sweets are made with 100% pure desi ghee. Each product mentions its key ingredients - just ask us anything!"
+    answer: "Our Desi Ghee Nankhatai and select sweets are made with pure desi ghee. We also offer Vanaspati Ghee Nankhatai, prepared with Vanaspati Ghee. Ask us for product ingredients."
   },
   {
     question: "Can I schedule a cake for a specific time?",
@@ -35,7 +36,7 @@ const fallbackFAQs = [
 ];
 
 export default function FAQs() {
-  const [faqs, setFaqs] = useState([]);
+  const [faqs, setFaqs] = useState(usePageData().faqs || []);
   const [search, setSearch] = useState("");
   const [openIdx, setOpenIdx] = useState(null);
 

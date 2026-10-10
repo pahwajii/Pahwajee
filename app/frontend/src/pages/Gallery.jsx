@@ -1,3 +1,5 @@
+import OptimizedImage from '../components/OptimizedImage';
+import { usePageData } from '../context/PageData';
 import { useEffect, useMemo, useState } from 'react';
 import { Camera, ImageOff, LoaderCircle, Search, X } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -6,14 +8,15 @@ const fallbackPhotos = [];
 
 const categories = [
   { label: 'All Photos', value: 'all' },
-  { label: 'Rewri', value: 'Rewri' },
-  { label: 'Gajak', value: 'Gajak' },
-  { label: 'Nankhatai', value: 'Nankhatai' },
-  { label: 'Gift Hampers', value: 'Hampers' },
-  { label: 'Sweets', value: 'Sweets' },
-  { label: 'Store Front', value: 'Store' },
-  { label: 'Food Adda Vertical', value: 'Food Adda' }
+  { label: 'Rewri, Gazak & Chikki', value: 'Rewri & Gazak' },
+  { label: 'Sweets & Halwa', value: 'Sweets' },
+  { label: 'Dry Fruits & Gifting', value: 'Hampers' },
+  { label: 'Salads', value: 'Salads' },
+  { label: 'Our Store', value: 'Store' },
+  { label: 'Menus & Posters', value: 'Posters' }
 ];
+
+const categoryLabel = (value) => categories.find((category) => category.value === value)?.label || value;
 
 function titleFromPath(src) {
   const file = src.split('/').pop() || 'Gallery photo';
@@ -30,7 +33,8 @@ function normalizePhoto(item, index) {
       src: item.startsWith('/') ? item : `/${item}`,
       title: titleFromPath(item),
       alt: titleFromPath(item),
-      category: 'Store'
+      category: 'Store',
+      index: index + 1
     };
   }
 
@@ -41,15 +45,16 @@ function normalizePhoto(item, index) {
     title: item.title || titleFromPath(src),
     alt: item.alt || item.title || titleFromPath(src),
     category: item.category || 'Store',
+    index: index + 1
   };
 }
 
 export default function Gallery() {
-  const [photos, setPhotos] = useState(fallbackPhotos);
+  const [photos, setPhotos] = useState((usePageData().gallery || fallbackPhotos).map(normalizePhoto));
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!usePageData().gallery);
 
   useEffect(() => {
     fetch('/gallery.json')
@@ -76,32 +81,32 @@ export default function Gallery() {
     <div className="noise-bg pb-16 pt-8">
       <SEO 
         title="Store Gallery & Product Photography | PAHWAJEE Meerut"
-        description="Browse authentic photos of PAHWAJEE's Desi Ghee Nankhatai, Punjabi Rewri, winter Gajak, festive dry fruit hampers, and Abu Lane store front in Meerut."
+        description="Explore PAHWAJEE's gallery of Rewri, Gazak, sweets, dry fruit gifts, salads, shop photographs and menu posters."
       />
 
       <section className="container-x">
         <div className="grid gap-8 pt-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <p className="eyebrow">PAHWAJEE Photo Gallery</p>
-            <h1 className="mt-4 max-w-3xl text-5xl leading-none md:text-6xl font-serif">Sweets, hampers, and store counters.</h1>
+            <h1 className="mt-4 max-w-3xl text-5xl leading-none md:text-6xl font-serif">Our Gallery</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-              A visual tour of our traditional sweets, winter rewri & gajak, desi ghee nankhatai, and festive gifting collections in Meerut.
+              Explore our sweets, gifts, salads and Abu Lane store in pictures.
             </p>
           </div>
 
           <div className="glass rounded-xl p-4">
-            <label className="flex items-center gap-3 rounded-lg border border-border bg-white px-4 py-3">
+            <label className="flex items-center gap-3 rounded-lg border border-border bg-background px-4 py-3">
               <Search size={18} className="shrink-0 text-primary" />
               <input
+                aria-label="Search gallery photos"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search photos e.g. rewri, nankhatai, hampers..."
+                placeholder="Search photos, e.g. gazak, gifts, salads..."
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </label>
             <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
               <Camera size={16} className="text-secondary" />
-              <span>Showing {filteredPhotos.length} of {photos.length} real photos</span>
+              <span>Showing {filteredPhotos.length} of {photos.length} images</span>
             </div>
           </div>
         </div>
@@ -114,6 +119,7 @@ export default function Gallery() {
               <button
                 key={cat.value}
                 type="button"
+                aria-pressed={isActive}
                 onClick={() => setActiveCategory(cat.value)}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition-all duration-300 ${
                   isActive
@@ -133,26 +139,33 @@ export default function Gallery() {
           </div>
         ) : filteredPhotos.length ? (
           <div className="mt-10 columns-1 gap-5 sm:columns-2 lg:columns-3">
-            {filteredPhotos.map((photo, index) => (
-              <button
+            {filteredPhotos.map((photo) => (
+              <figure
                 key={photo.id}
-                type="button"
-                onClick={() => setSelectedPhoto(photo)}
-                className="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-border/70 bg-white text-left shadow-sm hover:shadow-lg transition-all duration-300"
+                className="group mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-lg"
               >
-                <div className="relative overflow-hidden">
-                  <img
+                <button
+                  type="button"
+                  aria-label={`Enlarge ${photo.title}`}
+                  onClick={() => setSelectedPhoto(photo)}
+                  className="relative block w-full overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+                >
+                  <span className="absolute left-3 top-3 z-10 rounded-md bg-black/75 px-2.5 py-1 font-mono text-xs font-bold text-white shadow-md backdrop-blur-sm">
+                    #{photo.index}
+                  </span>
+                  <OptimizedImage
+                    sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     src={photo.src}
                     alt={photo.alt}
                     className="w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                     loading="lazy"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-white font-serif text-sm font-semibold">{photo.title}</p>
-                    <span className="text-[10px] text-secondary tracking-widest uppercase font-medium">{photo.category}</span>
-                  </div>
-                </div>
-              </button>
+                </button>
+                <figcaption className="border-t border-border/60 px-4 py-4">
+                  <h2 className="font-serif text-xl font-semibold leading-snug text-foreground">{photo.title}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{categoryLabel(photo.category)}</p>
+                </figcaption>
+              </figure>
             ))}
           </div>
         ) : (
@@ -173,19 +186,21 @@ export default function Gallery() {
           <button
             type="button"
             aria-label="Close gallery photo"
-            className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white text-foreground hover:scale-110 transition"
+            className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white text-black hover:scale-110 transition"
             onClick={() => setSelectedPhoto(null)}
           >
             <X size={20} />
           </button>
           <div className="max-h-[90vh] max-w-[92vw] text-center" onClick={(e) => e.stopPropagation()}>
-            <img
+            <OptimizedImage
+              loading="eager"
+              sizes="92vw"
               src={selectedPhoto.src}
               alt={selectedPhoto.alt}
               className="max-h-[80vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl mx-auto"
             />
             <p className="text-white font-serif text-xl mt-4 font-semibold">{selectedPhoto.title}</p>
-            <p className="text-secondary text-xs uppercase tracking-wider">{selectedPhoto.category}</p>
+            <p className="text-secondary text-xs uppercase tracking-wider font-semibold">#{selectedPhoto.index} • {categoryLabel(selectedPhoto.category)}</p>
           </div>
         </div>
       ) : null}

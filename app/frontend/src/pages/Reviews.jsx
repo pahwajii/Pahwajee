@@ -1,3 +1,5 @@
+import OptimizedImage from '../components/OptimizedImage';
+import { usePageData } from '../context/PageData';
 import { useEffect, useState } from 'react';
 import SEO from '../components/SEO';
 import api, { waLink } from '../lib/api';
@@ -49,8 +51,8 @@ const fallbackTestimonials = [
 ];
 
 export default function Reviews() {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState(usePageData().testimonials || []);
+  const [loading, setLoading] = useState(!usePageData().testimonials);
 
   useEffect(() => {
     api.get('/testimonials')
@@ -59,31 +61,12 @@ export default function Reviews() {
       .finally(() => setLoading(false));
   }, []);
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "AggregateRating",
-    "itemReviewed": {
-      "@type": "Bakery",
-      "name": "PAHWAJEE",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "19 Abu Lane",
-        "addressLocality": "Meerut",
-        "addressRegion": "Uttar Pradesh",
-        "postalCode": "250001",
-        "addressCountry": "IN"
-      }
-    },
-    "ratingValue": "4.9",
-    "reviewCount": "254"
-  };
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO 
+      <SEO
         title="Customer Reviews & Testimonials | PAHWAJEE Meerut"
         description="Read genuine customer reviews for PAHWAJEE Meerut. Discover why families trust us for authentic Desi Ghee Nankhatai, Punjabi Rewri, Gajak, customized cakes, and gift hampers."
-        schema={schema}
       />
 
       <div className="container-x">
@@ -97,18 +80,6 @@ export default function Reviews() {
             We are deeply grateful to be a part of your daily celebrations, family gatherings, and festive seasons. Here is what local food lovers say about PAHWAJEE.
           </p>
 
-          <div className="mt-8 flex justify-center items-center gap-6 bg-white/50 dark:bg-card/30 border border-border/50 py-4 px-8 rounded-full inline-flex">
-            <div className="text-left">
-              <p className="text-2xl font-bold font-serif text-primary">4.9 / 5.0</p>
-              <p className="text-xs text-muted-foreground">Aggregate Rating</p>
-            </div>
-            <div className="h-8 w-px bg-border/60"></div>
-            <div className="flex gap-0.5 text-secondary">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-current" />
-              ))}
-            </div>
-          </div>
         </section>
 
         {/* Reviews Grid */}
@@ -126,11 +97,12 @@ export default function Reviews() {
                   "{r.review}"
                 </p>
               </div>
-              
+
               <div className="flex items-center gap-3 border-t border-border/40 pt-4 mt-auto">
-                <img 
-                  src={r.avatar || `https://i.pravatar.cc/150?img=${idx + 10}`} 
-                  alt={r.name} 
+                <OptimizedImage
+                  width="40" height="40" sizes="40px"
+                  src={r.avatar || `https://i.pravatar.cc/150?img=${idx + 10}`}
+                  alt={r.name}
                   className="w-10 h-10 rounded-full object-cover border border-white"
                   loading="lazy"
                 />
@@ -150,7 +122,7 @@ export default function Reviews() {
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
             Your feedback keeps us baking and preparing sweets with love. If you enjoyed our Desi Ghee Nankhatai, cakes, or winter Rewri, please share your thoughts on WhatsApp or leave us a review.
           </p>
-          <a 
+          <a
             href={waLink("Sharing my feedback")}
             target="_blank"
             rel="noopener noreferrer"

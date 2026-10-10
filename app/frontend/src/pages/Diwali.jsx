@@ -1,3 +1,4 @@
+import OptimizedImage from '../components/OptimizedImage';
 import SEO from '../components/SEO';
 import { waLink, telLink } from '../lib/api';
 import { MessageCircle, Phone, Sparkles, Gift, ShieldCheck, HelpCircle, ArrowRight } from 'lucide-react';
@@ -7,26 +8,26 @@ const packages = [
   {
     name: "Dry Fruit Trays",
     desc: "Premium wooden trays filled with handpicked cashew, almond, pistachio, and raisin assortments.",
-    price: "Rs 1200+",
-    image: "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=1200&auto=format&fit=crop"
+    price: "Rs 1100 – Rs 2500",
+    image: "/products/Dryfruit-tray1.png"
   },
   {
     name: "Diwali Gift Hampers",
-    desc: "Exquisite celebratory boxes curated with premium dry fruits, authentic laddoos, candles, and decorative diyas.",
+    desc: "Exquisite celebratory boxes curated with premium dry fruits, authentic laddoos, candles, and decorative packaging.",
     price: "Rs 1500+",
-    image: "https://images.unsplash.com/photo-1573648952759-a4e0e01e9e6b?w=1200&auto=format&fit=crop"
+    image: "/products/Dryfruit-tray3.png"
   },
   {
-    name: "Dry Fruit Sweets",
-    desc: "Luxury Indian mithai assortments including Kaju Katli, Badam Barfi, and Anjeer Roll made with pure desi ghee.",
-    price: "Rs 950/kg",
-    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&auto=format&fit=crop"
+    name: "Dry Fruit Sweets & Laddoos",
+    desc: "Luxury Indian mithai assortments including Dry Fruit Laddoos, Khajoor rolls, and pinni made with pure desi ghee.",
+    price: "Rs 850/kg",
+    image: "/products/dryfruitladdoo.png"
   },
   {
-    name: "Premium Customized Hampers",
-    desc: "Tailored to your needs. Pick your own selection of signature sweets, cookies, bakery products, and packaging boxes.",
+    name: "Executive Custom Hampers",
+    desc: "Tailored to your needs. Pick your own selection of signature sweets, cookies, bakery products, and custom corporate branding.",
     price: "On Request",
-    image: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1200&auto=format&fit=crop"
+    image: "/products/Dryfruit-tray7.png"
   }
 ];
 
@@ -61,7 +62,7 @@ export default function Diwali() {
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO 
+      <SEO
         title="Diwali Sweets & Gift Hampers in Meerut | PAHWAJEE"
         description="Celebrate Diwali with PAHWAJEE Meerut. Browse premium Diwali gift boxes, customized corporate hampers, dry fruit trays, and pure desi ghee sweets. Order on WhatsApp."
         schema={schema}
@@ -71,7 +72,7 @@ export default function Diwali() {
       <section className="container-x py-12">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-950 via-primary to-amber-950 text-white p-8 md:p-16 shadow-2xl flex flex-col items-center text-center">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
-          
+
           <div className="h-14 w-14 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mb-6 border border-secondary/30">
             <Sparkles className="w-7 h-7" />
           </div>
@@ -85,10 +86,10 @@ export default function Diwali() {
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a 
+            <a
               href={waLink("Hi PAHWAJEE, I am interested in your Diwali gift hampers. Please share catalog & price details.")}
-              target="_blank" 
-              rel="noopener noreferrer" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-gold !bg-emerald-600 !text-white hover:!bg-emerald-700 flex items-center gap-2"
             >
               <MessageCircle size={18} /> Order on WhatsApp
@@ -117,9 +118,10 @@ export default function Diwali() {
           {packages.map((pkg, idx) => (
             <article key={idx} className="card-warm group hover:shadow-xl transition-all duration-300">
               <div className="aspect-[4/3] overflow-hidden bg-muted">
-                <img 
-                  src={pkg.image} 
-                  alt={pkg.name} 
+                <OptimizedImage
+                  sizes="(min-width: 1280px) 300px, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  src={pkg.image}
+                  alt={pkg.name}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
@@ -129,7 +131,7 @@ export default function Diwali() {
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4 min-h-[48px]">{pkg.desc}</p>
                 <div className="flex items-center justify-between border-t border-border/40 pt-4 mt-2">
                   <span className="text-sm font-bold text-secondary">{pkg.price}</span>
-                  <a 
+                  <a
                     href={waLink(`Hi PAHWAJEE, I'd like to order: ${pkg.name}.`)}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -155,7 +157,7 @@ export default function Diwali() {
             <p className="text-xs text-muted-foreground leading-relaxed">Mix and match premium sweets, traditional nankhatai, gourmet cookies, and savories in custom packaging.</p>
           </div>
         </div>
-        
+
         <div className="flex gap-4">
           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
             <ShieldCheck className="w-5 h-5" />

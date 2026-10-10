@@ -41,20 +41,12 @@ export default function CorporateGifting() {
     }
   };
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "PAHWAJEE Corporate Gifting",
-    "description": "Request custom bulk quotes for corporate gift hampers and festive sweets in Meerut.",
-    "url": "https://pahwajee.com/gifting"
-  };
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO 
         title="Corporate & Bulk Gifting Hampers in Meerut | PAHWAJEE"
         description="Premium corporate gifts, customized client hampers, employee boxes, and bulk sweets in Meerut by PAHWAJEE. Custom branding, logo tags, and local delivery."
-        schema={schema}
       />
 
       <div className="container-x">

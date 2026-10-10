@@ -5,27 +5,46 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 import os
+import asyncio
+from contextlib import asynccontextmanager, suppress
 import uuid
 import logging
+import hmac
+from ipaddress import ip_address
 import bcrypt
 import jwt
 from datetime import datetime, timezone, timedelta
 from typing import Optional, List
 
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, Query
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
+from pymongo.errors import DuplicateKeyError
+from admin import create_admin_router
+from orders import GALLERY_ONLY_SLUGS, OrderService, OrderRequest, OrderBodyLimitMiddleware, migrate_purchase_fields, purchasable_product, purchase_fields, smtp_ready
 
 # ------------------- Setup -------------------
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+order_service = OrderService(db)
 
 JWT_ALGORITHM = "HS256"
 JWT_SECRET = os.environ["JWT_SECRET"]
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+COOKIE_SECURE = IS_VERCEL or os.environ.get("COOKIE_SECURE", "").lower() == "true"
 
-app = FastAPI(title="PAHWA JEE API")
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    try:
+        await startup()
+        yield
+    finally:
+        await shutdown()
+
+
+app = FastAPI(title="PAHWA JEE API", lifespan=lifespan)
 api_router = APIRouter(prefix="/api")
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -53,8 +72,8 @@ def create_refresh_token(user_id: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 def set_auth_cookies(response: Response, access: str, refresh: str):
-    response.set_cookie("access_token", access, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
-    response.set_cookie("refresh_token", refresh, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
+    response.set_cookie("access_token", access, httponly=True, secure=COOKIE_SECURE, samesite="lax", max_age=3600, path="/")
+    response.set_cookie("refresh_token", refresh, httponly=True, secure=COOKIE_SECURE, samesite="lax", max_age=604800, path="/")
 
 async def get_current_user(request: Request) -> dict:
     token = request.cookies.get("access_token")
@@ -97,6 +116,10 @@ class Product(BaseModel):
     image: str = ""
     images: List[str] = []
     price: Optional[str] = None
+    unit_price_paise: Optional[int] = None
+    sale_unit: Optional[str] = None
+    cart_eligible: bool = False
+    pack_sizes_grams: List[int] = []
     availability: str = "Available"
     tags: List[str] = []
     season: str = "all"
@@ -108,11 +131,12 @@ class Product(BaseModel):
     order: int = 0
 
 class ProductIn(BaseModel):
-    name: str
-    slug: Optional[str] = None
-    description: str = ""
-    category: str
-    image: str = ""
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    name: str = Field(min_length=1, max_length=160)
+    slug: Optional[str] = Field(default=None, max_length=160, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    description: str = Field(default="", max_length=5000)
+    category: str = Field(min_length=1, max_length=100)
+    image: str = Field(default="", max_length=2000)
     images: List[str] = []
     price: Optional[str] = None
     availability: str = "Available"
@@ -124,6 +148,13 @@ class ProductIn(BaseModel):
     festivalSpecial: bool = False
     newArrival: bool = False
     order: int = 0
+
+    @field_validator("image")
+    @classmethod
+    def safe_image(cls, value):
+        if value and not ((value.startswith("/") and not value.startswith("//")) or value.startswith("https://")):
+            raise ValueError("Use a local image path or an HTTPS image URL")
+        return value
 
 class Category(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -221,7 +252,8 @@ SEED_PRODUCTS = [
     _p("Sugar Gazak", "signature", "Classic white sugar sesame gazak.", "/products/sugar gazzak.png", "Rs 460/kg"),
     _p("Til Patti Gazak", "signature", "Golden thin-layer caramelized sesame patti gazak.", "/products/tilpattigazzak.png", "Rs 520/kg"),
     _p("Til Peanut Khasta", "signature", "Crispy sesame & roasted peanut jaggery khasta.", "/products/til-peanut-khasta.png", "Rs 490/kg"),
-    _p("Pure Desi Ghee Nankhatai", "signature", "Legendary Meerut traditional cookie baked with 100% pure desi ghee.", "/products/nankhatayi.png", "Rs 500/kg", True, True),
+    _p("Pure Desi Ghee Nankhatai", "signature", "Legendary Meerut traditional cookie baked with 100% pure desi ghee.", "/products/nankhatayi.png", "Rs 600/kg", True, True),
+    _p("Vanaspati Ghee Nankhatai", "signature", "Traditional Nankhatai prepared with Vanaspati Ghee.", "/products/nankhatayi.png", "Rs 380/kg"),
     _p("Besan Laddoo", "signature", "Traditional roasted gram flour laddoos prepared in pure desi ghee.", "/products/besan-laddo.png", "Rs 400/kg"),
     _p("Mango Bite", "signature", "Delicate mango flavor dry fruit bite sweet.", "/products/mangobit.png", "Rs 600/kg"),
 
@@ -258,7 +290,7 @@ SEED_PRODUCTS = [
             "/products/Dryfruit-tray6.png",
             "/products/Dryfruit-tray7.png"
         ],
-        "price": "Rs 1100 – Rs 2500",
+        "price": "Rs 400 – Rs 5000",
         "featured": True,
         "bestseller": True,
         "bestSeller": True,
@@ -301,7 +333,7 @@ SEED_FAQS = [
     {"question": "What are your business hours?", "answer": "We are open every day from 9:00 AM to 10:30 PM, including Sundays and public holidays.", "order": 3},
     {"question": "Do you deliver in Meerut?", "answer": "Yes, we offer local delivery in Meerut. Delivery charges depend on your location and order value. Please call us to confirm.", "order": 4},
     {"question": "Which payment methods do you accept?", "answer": "We accept cash, UPI, all major cards, and digital wallets at the store. For online orders, we can share UPI details when confirming.", "order": 5},
-    {"question": "Are your products made with pure desi ghee?", "answer": "Our signature nankhatai and select sweets are made with 100% pure desi ghee. Each product mentions its key ingredients - just ask us anything!", "order": 6},
+    {"question": "Are your products made with pure desi ghee?", "answer": "Our Desi Ghee Nankhatai and select sweets are made with pure desi ghee. We also offer Vanaspati Ghee Nankhatai, prepared with Vanaspati Ghee. Ask us for product ingredients.", "order": 6},
     {"question": "Can I schedule a cake for a specific time?", "answer": "Yes, once your order is confirmed we deliver at your preferred time slot. For same-day delivery, please order before 12 PM.", "order": 7},
 ]
 
@@ -357,17 +389,26 @@ async def seed_admin():
         logger.info(f"Updated admin password: {email}")
 
 
-@app.on_event("startup")
 async def startup():
     await db.users.create_index("email", unique=True)
     await db.products.create_index("slug", unique=True)
     await db.categories.create_index("slug", unique=True)
-    await seed_admin()
-    await seed_data()
+    if not IS_VERCEL:
+        await seed_admin()
+        await seed_data()
+        await migrate_purchase_fields(db)
+    await order_service.initialize()
+    if not IS_VERCEL:
+        app.state.order_email_task = asyncio.create_task(order_service.worker())
 
 
-@app.on_event("shutdown")
 async def shutdown():
+    task = getattr(app.state, "order_email_task", None)
+    if task:
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            await task
+        app.state.order_email_task = None
     client.close()
 
 
@@ -407,7 +448,7 @@ async def refresh_token(request: Request, response: Response):
         if not user:
             raise HTTPException(401, "User not found")
         new_access = create_access_token(user["id"], user["email"])
-        response.set_cookie("access_token", new_access, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
+        response.set_cookie("access_token", new_access, httponly=True, secure=COOKIE_SECURE, samesite="lax", max_age=3600, path="/")
         return {"ok": True}
     except jwt.InvalidTokenError:
         raise HTTPException(401, "Invalid refresh token")
@@ -424,7 +465,7 @@ async def get_categories():
 
 @api_router.get("/products")
 async def get_products(category: Optional[str] = None, featured: Optional[bool] = None, bestseller: Optional[bool] = None, q: Optional[str] = None, limit: int = 200):
-    query = {}
+    query = {"slug": {"$nin": list(GALLERY_ONLY_SLUGS)}}
     if category:
         query["category"] = category
     if featured is not None:
@@ -433,14 +474,58 @@ async def get_products(category: Optional[str] = None, featured: Optional[bool] 
         query["bestseller"] = bestseller
     if q:
         query["$or"] = [{"name": {"$regex": q, "$options": "i"}}, {"description": {"$regex": q, "$options": "i"}}]
-    return await db.products.find(query, {"_id": 0}).sort("order", 1).to_list(limit)
+    products = await db.products.find(query, {"_id": 0}).sort("order", 1).to_list(min(max(limit, 1), 500))
+    return [purchasable_product(product) for product in products]
 
 @api_router.get("/products/{slug}")
 async def get_product(slug: str):
+    if slug in GALLERY_ONLY_SLUGS:
+        raise HTTPException(404, "Product not found")
     p = await db.products.find_one({"slug": slug}, {"_id": 0})
     if not p:
         raise HTTPException(404, "Product not found")
-    return p
+    return purchasable_product(p)
+
+
+@api_router.post("/orders", status_code=201)
+async def create_order(body: OrderRequest, request: Request, response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    client_ip = request.client.host if request.client else "unknown"
+    if IS_VERCEL:
+        # Vercel replaces this header at its edge; never trust it on local servers.
+        forwarded = request.headers.get("x-vercel-forwarded-for", "").split(",")[0].strip()
+        try:
+            client_ip = str(ip_address(forwarded))
+        except ValueError:
+            pass
+    result = await order_service.submit(body, client_ip)
+    if IS_VERCEL:
+        await order_service.deliver_saved_order(result["reference"])
+    return result
+
+
+@api_router.get("/internal/order-email-retry", include_in_schema=False)
+async def retry_queued_emails(request: Request, response: Response):
+    secret = os.environ.get("CRON_SECRET", "")
+    if not secret or not hmac.compare_digest(request.headers.get("Authorization", ""), f"Bearer {secret}"):
+        raise HTTPException(401, "Not authenticated")
+    response.headers["Cache-Control"] = "no-store"
+    return await order_service.drain_outbox()
+
+
+@api_router.get("/admin/orders")
+async def admin_orders(response: Response, limit: int = Query(50, ge=1, le=200), _: dict = Depends(require_admin)):
+    response.headers["Cache-Control"] = "no-store"
+    orders = await db.orders.find({}, {"_id": 0, "fingerprint": 0, "idempotency_key": 0}).sort("created_at", -1).to_list(limit)
+    return {"orders": orders, "smtp_configured": smtp_ready()}
+
+
+@api_router.post("/admin/orders/{reference}/retry-email")
+async def retry_order_email(reference: str, _: dict = Depends(require_admin)):
+    result = await order_service.retry_email(reference)
+    if IS_VERCEL:
+        await order_service.deliver_saved_order(reference)
+    return result
 
 @api_router.get("/testimonials")
 async def get_testimonials():
@@ -463,6 +548,7 @@ async def create_inquiry(body: InquiryIn):
     doc = body.model_dump()
     doc["id"] = str(uuid.uuid4())
     doc["created_at"] = datetime.now(timezone.utc).isoformat()
+    doc["status"] = "new"
     await db.inquiries.insert_one(doc)
     return {"ok": True, "id": doc["id"]}
 
@@ -491,10 +577,17 @@ async def admin_create_product(body: ProductIn, _: dict = Depends(require_admin)
     data = body.model_dump()
     if not data.get("slug"):
         data["slug"] = _slugify(data["name"])
+    if not data["slug"]:
+        raise HTTPException(422, "Enter a product URL using English letters or numbers.")
+    if not await db.categories.find_one({"slug": data["category"]}):
+        raise HTTPException(422, "Choose an existing category.")
     if await db.products.find_one({"slug": data["slug"]}):
         raise HTTPException(400, "Slug already exists")
-    prod = Product(**data)
-    await db.products.insert_one(prod.model_dump())
+    prod = Product(**{**data, **purchase_fields(data)})
+    try:
+        await db.products.insert_one(prod.model_dump())
+    except DuplicateKeyError:
+        raise HTTPException(409, "Another product already uses this URL.")
     return prod.model_dump()
 
 @api_router.put("/admin/products/{pid}")
@@ -502,7 +595,17 @@ async def admin_update_product(pid: str, body: ProductIn, _: dict = Depends(requ
     data = body.model_dump()
     if not data.get("slug"):
         data["slug"] = _slugify(data["name"])
-    res = await db.products.update_one({"id": pid}, {"$set": data})
+    if not data["slug"]:
+        raise HTTPException(422, "Enter a product URL using English letters or numbers.")
+    if not await db.categories.find_one({"slug": data["category"]}):
+        raise HTTPException(422, "Choose an existing category.")
+    if await db.products.find_one({"slug": data["slug"], "id": {"$ne": pid}}):
+        raise HTTPException(409, "Another product already uses this URL.")
+    data.update(purchase_fields(data))
+    try:
+        res = await db.products.update_one({"id": pid}, {"$set": data})
+    except DuplicateKeyError:
+        raise HTTPException(409, "Another product already uses this URL.")
     if res.matched_count == 0:
         raise HTTPException(404, "Product not found")
     return await db.products.find_one({"id": pid}, {"_id": 0})
@@ -536,7 +639,17 @@ async def admin_delete_gallery(gid: str, _: dict = Depends(require_admin)):
 
 
 # ------------------- Wire up -------------------
+@app.middleware("http")
+async def private_admin_responses(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(("/api/admin", "/api/auth")):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 app.include_router(api_router)
+app.include_router(create_admin_router(db, require_admin))
+app.add_middleware(OrderBodyLimitMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

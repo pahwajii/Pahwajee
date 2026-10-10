@@ -1,16 +1,17 @@
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Menu, X, Phone, MessageCircle, Sun, Moon, MapPin, Clock, Instagram, Facebook } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
+import { Menu, X, Phone, MessageCircle, Sun, Moon, MapPin, Clock, Instagram, Facebook, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BUSINESS, waLink, telLink } from "@/lib/api";
+import { useCart } from "../context/CartContext";
+import BrandLogo from './BrandLogo';
 
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/products", label: "Shop" },
-  { to: "/rewri-gajak-meerut", label: "Rewri & Gajak" },
-  { to: "/nankhatai-meerut", label: "Nankhatai" },
-  { to: "/gifting", label: "Gift Hampers" },
   { to: "/diwali", label: "Diwali" },
+  { to: "/products", label: "Shop" },
+  { to: "/our-specialities", label: "Our Specialities" },
+  { to: "/gifting", label: "Gift Hampers" },
+  { to: "/gallery", label: "Gallery" },
   { to: "/about", label: "About" },
   { to: "/testimonials", label: "Reviews" },
   { to: "/contact", label: "Contact" },
@@ -30,10 +31,10 @@ function useDarkMode() {
   return [dark, setDark];
 }
 
-function Navbar() {
+function Navbar({ dark, onToggleTheme }) {
+  const { count } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useDarkMode();
   const location = useLocation();
 
   useEffect(() => {
@@ -51,25 +52,21 @@ function Navbar() {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? "py-2" : "py-4"}`}
     >
       <div className="container-x">
-        <div className={`glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
-          <Link to="/" data-testid="nav-logo" className="flex items-center gap-2 group">
-            <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition">
-              <span className="font-serif text-secondary text-xl font-bold">P</span>
-            </div>
-            <div className="leading-tight">
-              <div className="font-serif text-xl sm:text-2xl font-bold tracking-tight">PAHWA JEE</div>
-              <div className="text-[10px] tracking-[0.24em] text-secondary uppercase -mt-0.5">Since Generations · Meerut</div>
-            </div>
+        <div className={`glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between gap-4 xl:gap-12 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
+          <Link to="/" data-testid="nav-logo" className="flex shrink-0 items-center gap-2 group">
+            <BrandLogo
+              className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex flex-1 items-center justify-center gap-2">
             {NAV.map((n) => (
               <NavLink
                 key={n.to}
                 to={n.to}
                 data-testid={`nav-link-${n.label.toLowerCase()}`}
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-full text-sm font-medium transition-colors ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-primary/5"}`
+                  `px-2 py-2.5 rounded-full text-base whitespace-nowrap font-semibold transition-colors ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-primary/5"}`
                 }
               >
                 {n.label}
@@ -77,36 +74,25 @@ function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
+            <NavLink to="/cart" aria-label={`Cart, ${count} item${count === 1 ? '' : 's'}`} data-testid="nav-cart" className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full text-primary hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary">
+              <ShoppingBag className="h-5 w-5" />
+              {count > 0 && <span aria-hidden="true" className="absolute -right-0.5 top-0 min-w-5 rounded-full bg-primary px-1 text-center text-[10px] font-bold leading-5 text-primary-foreground">{count > 99 ? '99+' : count}</span>}
+            </NavLink>
             <button
               data-testid="theme-toggle"
-              onClick={() => setDark(!dark)}
+              onClick={onToggleTheme}
               aria-label="Toggle theme"
               className="p-2 rounded-full hover:bg-primary/10 transition"
             >
               {dark ? <Sun className="w-5 h-5 text-secondary" /> : <Moon className="w-5 h-5 text-primary" />}
             </button>
-            <a
-              data-testid="nav-whatsapp-btn"
-              href={waLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex btn-gold !py-2 !px-4 !text-sm !bg-emerald-600 !text-white hover:!bg-emerald-700 shadow-md shadow-emerald-600/20"
-            >
-              <MessageCircle className="w-4 h-4" /> WhatsApp
-            </a>
-            <a
-              data-testid="nav-call-btn"
-              href={telLink(BUSINESS.phones[0])}
-              className="hidden md:inline-flex btn-primary !py-2 !px-4 !text-sm"
-            >
-              <Phone className="w-4 h-4" /> Call
-            </a>
             <button
               data-testid="nav-menu-toggle"
-              className="lg:hidden p-2 rounded-full hover:bg-primary/10"
+              className="xl:hidden p-2 rounded-full hover:bg-primary/10"
               onClick={() => setOpen(!open)}
               aria-label="Menu"
+              aria-expanded={open}
             >
               {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -119,7 +105,7 @@ function Navbar() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="lg:hidden mt-2 glass rounded-2xl p-3"
+              className="xl:hidden mt-2 glass rounded-2xl p-3 max-h-[75vh] overflow-y-auto"
               data-testid="mobile-menu"
             >
               {NAV.map((n) => (
@@ -127,7 +113,7 @@ function Navbar() {
                   key={n.to}
                   to={n.to}
                   className={({ isActive }) =>
-                    `block px-4 py-3 rounded-xl text-sm font-medium ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:bg-primary/5"}`
+                    `block px-4 py-3 rounded-xl text-base font-semibold ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:bg-primary/5"}`
                   }
                 >
                   {n.label}
@@ -150,8 +136,10 @@ function Navbar() {
 }
 
 function FloatingButtons() {
+  const { pathname } = useLocation();
+  const shoppingPage = pathname.startsWith('/products') || ['/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3" data-testid="floating-buttons">
+    <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons">
       <a
         aria-label="WhatsApp order"
         href={waLink()}
@@ -177,17 +165,18 @@ function FloatingButtons() {
 }
 
 export default function Layout() {
+  const [dark, setDark] = useDarkMode();
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      <Navbar />
+      <Navbar dark={dark} onToggleTheme={() => setDark((value) => !value)} />
       <main className="flex-grow pt-24">
-        <Outlet />
+        <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>
       <FloatingButtons />
       <footer className="bg-card border-t border-border mt-auto py-12">
         <div className="container-x grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <h3 className="font-serif text-2xl font-bold mb-4 text-primary">PAHWA JEE</h3>
+            <BrandLogo className="h-11 w-auto mb-3" />
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
             <div className="flex flex-wrap gap-4 items-center">
               <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5 flex items-center gap-1.5" title="Instagram (Abu Lane Branch)">
@@ -209,10 +198,11 @@ export default function Layout() {
               <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
               <li><Link to="/rewri-gajak-meerut" className="text-muted-foreground hover:text-primary transition-colors">Rewri & Gajak</Link></li>
-              <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Desi Ghee Nankhatai</Link></li>
+              <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Nankhatai</Link></li>
               <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Gift Hampers</Link></li>
               <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About PAHWAJEE</Link></li>
+              <li><Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors">Store Gallery</Link></li>
               <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Customer Reviews</Link></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
             </ul>

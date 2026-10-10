@@ -1,6 +1,10 @@
+import { isStoreProduct, isGalleryOnlySlug } from './storefront';
+
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
-async function request(path, options = {}) {
+let refreshPromise;
+
+async function request(path, options = {}, retried = false) {
   const needsCredentials = path.startsWith('/auth') || path.startsWith('/admin') || options.credentials;
   const response = await fetch(`${API_BASE}${path}`, {
     credentials: needsCredentials ? 'include' : 'omit',
@@ -13,16 +17,40 @@ async function request(path, options = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`API ${response.status}: ${path}`);
+    if (response.status === 401 && (path.startsWith('/admin') || path === '/auth/me')) {
+      if (!retried) {
+        refreshPromise ||= fetch(`${API_BASE}/auth/refresh`, { method: 'POST', credentials: 'include' }).finally(() => { refreshPromise = null; });
+        const refreshed = await refreshPromise;
+        if (refreshed.ok) return request(path, options, true);
+      }
+      window.dispatchEvent(new Event('pahwa-auth-expired'));
+    }
+    const payload = await response.json().catch(() => ({}));
+    const detail = payload.detail;
+    const error = new Error(typeof detail === 'string' ? detail : detail?.message || (Array.isArray(detail) ? 'Please check the customer details and cart quantities.' : 'Something went wrong. Please try again.'));
+    error.status = response.status;
+    error.detail = detail;
+    throw error;
   }
 
   return response.json();
 }
 
+async function get(path) {
+  if (path.startsWith('/products/') && isGalleryOnlySlug(path.slice('/products/'.length).split('?')[0])) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
+  }
+  const data = await request(path);
+  return /^\/products(?:\?|$)/.test(path) && Array.isArray(data) ? data.filter(isStoreProduct) : data;
+}
+
 export default {
-  get: (path) => request(path),
+  get,
   post: (path, body) => request(path, { method: 'POST', body: JSON.stringify(body) }),
   put: (path, body) => request(path, { method: 'PUT', body: JSON.stringify(body) }),
+  patch: (path, body) => request(path, { method: 'PATCH', body: JSON.stringify(body) }),
   delete: (path) => request(path, { method: 'DELETE' }),
 };
 
