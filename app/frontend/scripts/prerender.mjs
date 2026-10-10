@@ -4,7 +4,7 @@ import { createServer, loadEnv } from 'vite';
 
 const root = process.cwd();
 const env = {...loadEnv('production', root, ''), ...process.env};
-const api = (env.PRERENDER_API_URL || 'https://pahwajee.vercel.app/api').replace(/\/$/, '');
+const api = (env.PRERENDER_API_URL || 'https://pahwajee.in/api').replace(/\/$/, '');
 async function readPublic(path) {
   const response = await fetch(`${api}/${path}`, {signal: AbortSignal.timeout(30000)});
   if (!response.ok) throw new Error(`Prerender ${path} failed: HTTP ${response.status}`);

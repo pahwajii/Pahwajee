@@ -91,8 +91,7 @@ edge-supplied IP header only when the Vercel runtime is detected.
 
 `npm run build` in `app/frontend` builds the app and pre-renders public pages,
 product details, metadata, JSON-LD, `sitemap.xml`, and `robots.txt`. The canonical
-origin currently defaults to `https://pahwajee.vercel.app`; set `VITE_SITE_URL`
-at build time only after a replacement custom domain is connected.
+origin is `https://pahwajee.in`, shared by metadata, structured data and the sitemap.
 
 The build reads public products, FAQs, and testimonials from the live `/api`.
 Use `PRERENDER_API_URL` to build against another public API, such as
@@ -109,5 +108,5 @@ Verify a successful build with `node src/lib/seo.test.js` and
 `node src/lib/cart.test.js` from `app/frontend`.
 
 Google Search Console verification and sitemap submission are separate account
-steps. Submit `https://pahwajee.vercel.app/sitemap.xml` for the URL-prefix property
-`https://pahwajee.vercel.app/` once ownership is verified.
+steps. Submit `https://pahwajee.in/sitemap.xml` for the URL-prefix property
+`https://pahwajee.in/` once ownership is verified.

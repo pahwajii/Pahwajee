@@ -8,6 +8,28 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "pahwajee\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://pahwajee.in/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www\\.pahwajee\\.in"
+        }
+      ],
+      "destination": "https://pahwajee.in/:path*",
+      "permanent": true
+    },
+    {
       "source": "/reviews",
       "destination": "/testimonials",
       "permanent": true
