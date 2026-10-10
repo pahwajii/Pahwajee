@@ -65,7 +65,7 @@ export const BUSINESS = {
   hours: "9:00 AM – 10:30 PM (Open All Days)",
   instagram: "https://www.instagram.com/pahwajee/",
   instagramOther: "https://www.instagram.com/food_adda_pahwajee/",
-  facebook: "https://facebook.com",
+  facebook: "https://www.facebook.com/p/PAHWA-JEE-REWRI-WALE-61568193482637/",
 };
 
 export function waLink(product) {

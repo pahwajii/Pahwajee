@@ -23,7 +23,7 @@ export function businessSchema() {
     address: {'@type': 'PostalAddress', streetAddress: '19 Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
     openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '22:30'},
     hasMap: 'https://www.google.com/maps/search/?api=1&query=PAHWA+JEE+19+Abu+Lane+Meerut',
-    sameAs: ['https://www.instagram.com/pahwajee/'],
+    sameAs: ['https://www.instagram.com/pahwajee/', 'https://www.facebook.com/p/PAHWA-JEE-REWRI-WALE-61568193482637/'],
   };
 }
 
