@@ -1,5 +1,5 @@
-// Change VITE_SITE_URL when a verified custom domain replaces the Vercel domain.
-export const SITE_URL = (import.meta.env?.VITE_SITE_URL || 'https://pahwajee.vercel.app').replace(/\/$/, '');
+// Public canonical origin, shared by metadata, structured data and the sitemap.
+export const SITE_URL = 'https://pahwajee.in';
 export const PUBLIC_PATHS = ['/', '/products', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs'];
 export const DEFAULT_TITLE = 'PAHWA JEE Meerut | Nankhatai, Rewri, Gajak & Gift Hampers';
 export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19 Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';

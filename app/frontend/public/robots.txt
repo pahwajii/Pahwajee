@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pahwajee.vercel.app/sitemap.xml
+Sitemap: https://pahwajee.in/sitemap.xml
