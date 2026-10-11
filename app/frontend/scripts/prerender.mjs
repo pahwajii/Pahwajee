@@ -13,8 +13,9 @@ async function readPublic(path) {
   return data;
 }
 
+const releaseData = env.RELEASE_DATA_FILE ? JSON.parse(await readFile(env.RELEASE_DATA_FILE, 'utf8')) : null;
 const [allProducts, faqs, testimonials, gallery] = await Promise.all([
-  env.PRERENDER_CATALOG_SNAPSHOT === '1' ? readFile(resolve(root, 'src/generated/catalog.json'), 'utf8').then(JSON.parse) : readPublic('products?limit=500'), readPublic('faqs'), readFile(resolve(root, '../google-reviews.json'), 'utf8').then(JSON.parse).then(data => data.reviews),
+  releaseData ? releaseData.products : env.PRERENDER_CATALOG_SNAPSHOT === '1' ? readFile(resolve(root, 'src/generated/catalog.json'), 'utf8').then(JSON.parse) : readPublic('products?limit=500'), releaseData ? releaseData.faqs : readPublic('faqs'), readFile(resolve(root, '../google-reviews.json'), 'utf8').then(JSON.parse).then(data => data.reviews),
   readFile(resolve(root, 'public/gallery.json'), 'utf8').then(JSON.parse),
 ]);
 const galleryOnlySlugs = JSON.parse(await readFile(resolve(root, '../gallery-only-products.json'), 'utf8'));

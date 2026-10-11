@@ -1,6 +1,6 @@
-# Prepared locally: 1 kg boxes and custom enquiries
+# Released: 1 kg boxes and custom enquiries
 
-Do not publish until the owner requests the batch release. No production database changes were made during development.
+Released to production on 11 October 2026, including the approved database changes. Future pushes use the automatic release process in DEPLOYMENT.md. The manual steps below are historical release instructions.
 
 - Priority best sellers: Khasta Rewri, Gol Gazak, Dilkhush Gazak, Pure Desi Ghee Nankhatai (in that order). All best sellers are grouped before regular products.
 - Three fixed 1 kg boxes: Signature Rs 750, Winter Rs 750, Mixed Fruit Rs 700.
