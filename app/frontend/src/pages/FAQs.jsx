@@ -15,7 +15,7 @@ const fallbackFAQs = [
   },
   {
     question: "What are your business hours?",
-    answer: "We are open every day from 9:00 AM to 10:30 PM, including Sundays and public holidays."
+    answer: "We are open every day from 10:00 AM to 11:00 PM, including Sundays and public holidays."
   },
   {
     question: "Do you deliver in Meerut?",

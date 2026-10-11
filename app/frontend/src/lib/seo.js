@@ -22,7 +22,7 @@ export function businessSchema() {
     alternateName: 'Ram Chandra Deewan Chandra Rewri Wale', url: `${SITE_URL}/`,
     image: absoluteUrl('/our_shop_main.jpeg'), logo: absoluteUrl('/brand/pahwajee-day.png'), telephone: '+916396339806',
     address: {'@type': 'PostalAddress', streetAddress: '19 Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
-    openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '22:30'},
+    openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '10:00', closes: '23:00'},
     hasMenu: `${SITE_URL}/in-store-menu`,
     hasMap: 'https://www.google.com/maps/search/?api=1&query=PAHWA+JEE+19+Abu+Lane+Meerut',
     sameAs: ['https://www.instagram.com/pahwajee/', 'https://www.facebook.com/p/PAHWA-JEE-REWRI-WALE-61568193482637/'],

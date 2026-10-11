@@ -65,7 +65,7 @@ export const BUSINESS = {
   address: "19 Abu Lane, Meerut, Uttar Pradesh, India",
   mapEmbed: "https://www.google.com/maps?q=19+Abu+Lane+Meerut&output=embed",
   mapLink: "https://goo.gl/maps/LitsbZD5w865XZux5?g_st=aw",
-  hours: "9:00 AM – 10:30 PM (Open All Days)",
+  hours: "10:00 AM – 11:00 PM (Open All Days)",
   instagram: "https://www.instagram.com/pahwajee/",
   instagramOther: "https://www.instagram.com/food_adda_pahwajee/",
   facebook: "https://www.facebook.com/p/PAHWA-JEE-REWRI-WALE-61568193482637/",

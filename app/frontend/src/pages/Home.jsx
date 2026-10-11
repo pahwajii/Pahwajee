@@ -110,7 +110,7 @@ export default function Home() {
               <MapPin className="mt-1 text-primary shrink-0" size={20} />
               <div>
                 <p className="font-semibold font-serif text-lg text-foreground">Visit our local store</p>
-                <p className="text-xs text-muted-foreground mt-0.5">19 Abu Lane, Meerut Cantt. Open daily 9:00 AM to 10:30 PM.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">19 Abu Lane, Meerut Cantt. Open daily 10:00 AM to 11:00 PM.</p>
               </div>
             </div>
           </div>

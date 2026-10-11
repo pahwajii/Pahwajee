@@ -326,7 +326,7 @@ SEED_GALLERY = [
 SEED_FAQS = [
     {"question": "Do you take custom cake orders?", "answer": "Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call 6396339806 to discuss designs.", "order": 1},
     {"question": "Do you offer bulk / corporate orders?", "answer": "Yes - we specialize in corporate gifting, weddings & bulk festival hampers with custom packaging & branding options. Contact us for a personalized quote.", "order": 2},
-    {"question": "What are your business hours?", "answer": "We are open every day from 9:00 AM to 10:30 PM, including Sundays and public holidays.", "order": 3},
+    {"question": "What are your business hours?", "answer": "We are open every day from 10:00 AM to 11:00 PM, including Sundays and public holidays.", "order": 3},
     {"question": "Do you deliver in Meerut?", "answer": "Yes, we offer local delivery in Meerut. Delivery charges depend on your location and order value. Please call us to confirm.", "order": 4},
     {"question": "Which payment methods do you accept?", "answer": "We accept cash, UPI, all major cards, and digital wallets at the store. For online orders, we can share UPI details when confirming.", "order": 5},
     {"question": "Are your products made with pure desi ghee?", "answer": "Our Desi Ghee Nankhatai and select sweets are made with pure desi ghee. We also offer Vanaspati Ghee Nankhatai, prepared with Vanaspati Ghee. Ask us for product ingredients.", "order": 6},
