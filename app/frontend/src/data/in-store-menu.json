@@ -40,17 +40,17 @@
     "priceLabel": null
   },
   {
-    "name": "Maggi",
+    "name": "Plain Maggi",
     "price": 50,
     "category": "Snacks",
     "slug": "maggi",
-    "image": "/menu/maggi.webp",
+    "image": "/menu/plain-maggi.webp",
     "representative": true,
     "iceCream": false,
     "priceLabel": null
   },
   {
-    "name": "Butter Veggie Maggi",
+    "name": "Veggie Maggi (2 packets)",
     "price": 120,
     "category": "Snacks",
     "slug": "butter-veggie-maggi",
@@ -61,7 +61,7 @@
   },
   {
     "name": "Lassi",
-    "price": 50,
+    "price": 60,
     "category": "Drinks",
     "slug": "lassi",
     "image": "/menu/lassi.webp",
@@ -126,7 +126,7 @@
     "slug": "cold-coffee",
     "image": "/menu/cold-coffee.webp",
     "representative": true,
-    "iceCream": false,
+    "iceCream": true,
     "priceLabel": null
   },
   {

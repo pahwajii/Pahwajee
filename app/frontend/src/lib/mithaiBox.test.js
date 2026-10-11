@@ -51,6 +51,12 @@ test('all listed laddoos and confirmed fruit/barfi choices have individual produ
   for (const product of products.filter(product => product.slug.includes('laddoo'))) assert.ok(customSweetSlugs.includes(product.slug));
   for (const slug of ['strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi']) {
     assert.ok(customSweetSlugs.includes(slug));
-    assert.equal(catalog[slug].unit_price_paise, slug === 'khajoor-barfi' ? 80000 : 70000);
+    assert.equal(catalog[slug].unit_price_paise, slug === 'khajoor-barfi' ? 90000 : 70000);
   }
+});
+
+test('khajoor laddoo and barfi use the same rate in a custom box', () => {
+  const quote = quoteCustomBox(['khajoor-laddoo', 'khajoor-barfi', 'khajoor-laddoo', 'khajoor-barfi'], catalog);
+  assert.equal(quote.totalPaise, 90000);
+  assert.deepEqual(quote.lines.map(line => line.pricePaise), [22500, 22500, 22500, 22500]);
 });

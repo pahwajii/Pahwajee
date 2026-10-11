@@ -1,0 +1,17 @@
+{
+  "updates": [
+    {
+      "slug": "khajoor-laddoo",
+      "fields": {
+        "price": "Rs 900/kg"
+      }
+    },
+    {
+      "slug": "khajoor-barfi",
+      "fields": {
+        "price": "Rs 900/kg"
+      }
+    }
+  ],
+  "new_products": []
+}
