@@ -48,6 +48,22 @@ class PricingTests(unittest.TestCase):
             price_order(OrderRequest(**body).items, [product])
         self.assertEqual(caught.exception.detail["code"], "unavailable_items")
 
+    def test_reviewed_packs_and_old_saved_pack_rejection(self):
+        for slug, grams, rate, expected in [("roasted-peanut-chikki", 400, 325, 13000), ("murmura-patti", 200, 350, 7000), ("gur-ke-sev", 200, 300, 6000)]:
+            product = {**PRODUCTS[0], "slug": slug, "price": f"Rs {rate}/kg"}
+            body = payload()
+            body["items"] = [{"slug": slug, "pack_grams": grams, "quantity": 1, "expected_unit_price_paise": rate * 100}]
+            self.assertEqual(price_order(OrderRequest(**body).items, [product])[1], expected)
+            body["items"][0]["pack_grams"] = 500
+            with self.assertRaises(HTTPException) as caught:
+                price_order(OrderRequest(**body).items, [product])
+            self.assertEqual(caught.exception.detail["code"], "invalid_pack")
+
+    def test_offline_removed_and_special_order_items_are_not_purchasable(self):
+        for slug in ("fresh-special-salad", "healthy-sprouts", "special-kheer", "peanut-chikki"):
+            self.assertFalse(purchase_fields({**PRODUCTS[0], "slug": slug})["cart_eligible"])
+        self.assertFalse(purchase_fields({**PRODUCTS[0], "slug": "jachha-bachha-panjeeri", "availability": "Special order only"})["cart_eligible"])
+
     def test_pack_prices_and_distinct_nankhatai(self):
         items, subtotal = price_order(OrderRequest(**payload()).items, PRODUCTS)
         self.assertEqual([p["line_total_paise"] for p in items], [30000, 19000, 24000])

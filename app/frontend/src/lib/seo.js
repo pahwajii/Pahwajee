@@ -1,9 +1,10 @@
+import productPacks from '../../../product-packs.json' with { type: 'json' };
 // Public canonical origin, shared by metadata, structured data and the sitemap.
 export const SITE_URL = 'https://pahwajee.in';
-export const PUBLIC_PATHS = ['/', '/products', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs'];
+export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs'];
 export const DEFAULT_TITLE = 'PAHWA JEE Meerut | Nankhatai, Rewri, Gajak & Gift Hampers';
 export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19 Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';
-const labels = {products: 'Shop', 'our-specialities': 'Our Specialities', 'nankhatai-meerut': 'Nankhatai', 'rewri-gajak-meerut': 'Rewri & Gajak', 'sweets-meerut': 'Sweets', 'bakery-meerut': 'Bakery', gifting: 'Gift Hampers', diwali: 'Diwali Gifts', about: 'Our Story', contact: 'Contact', gallery: 'Gallery', testimonials: 'Customer Reviews', faqs: 'FAQs'};
+const labels = {'in-store-menu': 'In-store Menu', products: 'Shop', 'our-specialities': 'Our Specialities', 'nankhatai-meerut': 'Nankhatai', 'rewri-gajak-meerut': 'Rewri & Gajak', 'sweets-meerut': 'Sweets', 'bakery-meerut': 'Bakery', gifting: 'Gift Hampers', diwali: 'Diwali Gifts', about: 'Our Story', contact: 'Contact', gallery: 'Gallery', testimonials: 'Customer Reviews', faqs: 'FAQs'};
 
 export function absoluteUrl(value = '/') {
   const url = new URL(value, `${SITE_URL}/`);
@@ -22,6 +23,7 @@ export function businessSchema() {
     image: absoluteUrl('/our_shop_main.jpeg'), logo: absoluteUrl('/brand/pahwajee-day.png'), telephone: '+916396339806',
     address: {'@type': 'PostalAddress', streetAddress: '19 Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
     openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '22:30'},
+    hasMenu: `${SITE_URL}/in-store-menu`,
     hasMap: 'https://www.google.com/maps/search/?api=1&query=PAHWA+JEE+19+Abu+Lane+Meerut',
     sameAs: ['https://www.instagram.com/pahwajee/', 'https://www.facebook.com/p/PAHWA-JEE-REWRI-WALE-61568193482637/'],
   };
@@ -38,9 +40,11 @@ export function productSchema(product) {
   const amount = product.unit_price_paise;
   // Ranges, unpriced gifts and enquiry-only products must not advertise invented offers.
   if (product.cart_eligible && Number.isSafeInteger(amount) && amount > 0) {
+    const fixedPack = product.sale_unit === 'kg' ? productPacks[product.slug]?.[0] : null;
+    const offerAmount = fixedPack ? Math.round(amount * fixedPack / 1000) : amount;
     const unit = product.sale_unit === 'kg' ? {unitCode: 'KGM'} : {unitText: product.sale_unit};
     schema.offers = {
-      '@type': 'Offer', url, priceCurrency: 'INR', price: (amount / 100).toFixed(2), seller: {'@id': `${SITE_URL}/#business`},
+      '@type': 'Offer', url, ...(fixedPack ? {name: `${fixedPack} g pack`} : {}), priceCurrency: 'INR', price: (offerAmount / 100).toFixed(2), seller: {'@id': `${SITE_URL}/#business`},
       priceSpecification: {'@type': 'UnitPriceSpecification', priceCurrency: 'INR', price: (amount / 100).toFixed(2), referenceQuantity: {'@type': 'QuantitativeValue', value: 1, ...unit}},
     };
     if (product.availability === 'Available') schema.offers.availability = 'https://schema.org/InStock';

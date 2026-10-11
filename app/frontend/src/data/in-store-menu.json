@@ -1,0 +1,282 @@
+[
+  {
+    "name": "Sandwich",
+    "price": 35,
+    "category": "Sandwiches",
+    "slug": "sandwich",
+    "image": "/menu/sandwich.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Tandoori Sandwich",
+    "price": 40,
+    "category": "Sandwiches",
+    "slug": "tandoori-sandwich",
+    "image": "/menu/tandoori-sandwich.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Cheese Corn Sandwich",
+    "price": 60,
+    "category": "Sandwiches",
+    "slug": "cheese-corn-sandwich",
+    "image": "/menu/cheese-corn-sandwich.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Cheese Grilled Sandwich",
+    "price": 80,
+    "category": "Sandwiches",
+    "slug": "cheese-grilled-sandwich",
+    "image": "/menu/cheese-grilled-sandwich.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Maggi",
+    "price": 50,
+    "category": "Snacks",
+    "slug": "maggi",
+    "image": "/menu/maggi.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Butter Veggie Maggi",
+    "price": 120,
+    "category": "Snacks",
+    "slug": "butter-veggie-maggi",
+    "image": "/menu/butter-veggie-maggi.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Lassi",
+    "price": 50,
+    "category": "Drinks",
+    "slug": "lassi",
+    "image": "/menu/lassi.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Mango Shake",
+    "price": 60,
+    "category": "Shakes",
+    "slug": "mango-shake",
+    "image": "/menu/mango-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Strawberry Shake",
+    "price": 60,
+    "category": "Shakes",
+    "slug": "strawberry-shake",
+    "image": "/menu/strawberry-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Chocolate Shake",
+    "price": 60,
+    "category": "Shakes",
+    "slug": "chocolate-shake",
+    "image": "/menu/chocolate-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Khajoor Shake",
+    "price": 80,
+    "category": "Shakes",
+    "slug": "khajoor-shake",
+    "image": "/menu/khajoor-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Pineapple Shake",
+    "price": 60,
+    "category": "Shakes",
+    "slug": "pineapple-shake",
+    "image": "/menu/pineapple-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Cold Coffee",
+    "price": 60,
+    "category": "Drinks",
+    "slug": "cold-coffee",
+    "image": "/menu/cold-coffee.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Oreo Shake",
+    "price": 80,
+    "category": "Shakes",
+    "slug": "oreo-shake",
+    "image": "/menu/oreo-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "KitKat Shake",
+    "price": 80,
+    "category": "Shakes",
+    "slug": "kitkat-shake",
+    "image": "/menu/kitkat-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Shikanji",
+    "price": 50,
+    "category": "Drinks",
+    "slug": "shikanji",
+    "image": "/menu/shikanji.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Banana Shake",
+    "price": 60,
+    "category": "Shakes",
+    "slug": "banana-shake",
+    "image": "/menu/banana-shake.webp",
+    "representative": true,
+    "iceCream": true,
+    "priceLabel": null
+  },
+  {
+    "name": "Badam Milk Bottle",
+    "price": 60,
+    "category": "Drinks",
+    "slug": "badam-milk",
+    "image": "/menu/badam-milk.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Makhana Kheer",
+    "price": 50,
+    "category": "Kheer",
+    "slug": "makhana-kheer",
+    "image": "/menu/kulhad-kheer.webp",
+    "representative": false,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Vrat Kheer",
+    "price": 50,
+    "category": "Kheer",
+    "slug": "vrat-kheer",
+    "image": "/menu/kulhad-kheer.webp",
+    "representative": false,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Espresso Coffee",
+    "price": 40,
+    "category": "Drinks",
+    "slug": "espresso-coffee",
+    "image": "/menu/espresso-coffee.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Bakery Biscuits",
+    "price": 120,
+    "category": "Store Favourites",
+    "slug": "bakery-biscuits",
+    "image": "/menu/bakery-biscuits.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "From Rs 120"
+  },
+  {
+    "name": "Salads",
+    "price": 50,
+    "category": "Snacks",
+    "slug": "salads",
+    "image": "/gallery/WhatsApp Image 2026-07-05 at 15.42.27 (3).jpeg",
+    "representative": false,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Sprouts",
+    "price": 50,
+    "category": "Snacks",
+    "slug": "sprouts",
+    "image": "/products/sprouts.png",
+    "representative": false,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Peanut Chaat",
+    "price": 70,
+    "category": "Snacks",
+    "slug": "peanut-chaat",
+    "image": "/menu/peanut-chaat.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  },
+  {
+    "name": "Haldiram Namkeens",
+    "price": null,
+    "category": "Store Favourites",
+    "slug": "namkeens",
+    "image": "/menu/namkeens.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "At MRP"
+  },
+  {
+    "name": "Dry Fruits",
+    "price": null,
+    "category": "Store Favourites",
+    "slug": "dry-fruits",
+    "image": "/menu/dry-fruits.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "Ask in store"
+  },
+  {
+    "name": "Kulhad Tea",
+    "price": 30,
+    "category": "Drinks",
+    "slug": "kulhad-tea",
+    "image": "/menu/kulhad-tea.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": null
+  }
+]

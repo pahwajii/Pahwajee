@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCartItem, restoreCart, lineKey, packPrice, reconcileCart } from './cart.js';
+import { addCartItem, restoreCart, lineKey, packPrice, reconcileCart, displayPrice, validCartPack } from './cart.js';
 
 const product = { slug: 'pure-desi-ghee-nankhatai', name: 'Pure Desi Ghee Nankhatai', image: '/products/nankhatayi.png', sale_unit: 'kg', unit_price_paise: 60000, cart_eligible: true, availability: 'Available' };
 
@@ -47,4 +47,21 @@ test('current prices replace stale prices with a review notice', () => {
   assert.equal(result.items[0].unit_price_paise, 65000);
   assert.equal(result.items[0].quantity, 1);
   assert.equal(reconcileCart(items, {}).items.length, 1); // Keep removed items visible for explicit removal.
+});
+
+
+test('reviewed fixed packs retain correct totals and reject old pack sizes', () => {
+  for (const [slug, grams, rate, total] of [['roasted-peanut-chikki', 400, 32500, 13000], ['murmura-patti', 200, 35000, 7000], ['gur-ke-sev', 200, 30000, 6000]]) {
+    const current = {...product, slug, unit_price_paise: rate};
+    const cart = addCartItem([], current, grams, 2);
+    assert.equal(packPrice(rate, grams), total);
+    assert.deepEqual(restoreCart(JSON.stringify(cart)), cart);
+    assert.throws(() => addCartItem([], current, 500, 1));
+    assert.equal(validCartPack({...cart[0], pack_grams: 500}, current), false);
+    assert.match(displayPrice(current), new RegExp(String(total / 100)));
+  }
+});
+
+test('special-order panjeeri cannot enter the cart', () => {
+  assert.throws(() => addCartItem([], {...product, slug: 'jachha-bachha-panjeeri', availability: 'Special order only'}, 500, 1));
 });

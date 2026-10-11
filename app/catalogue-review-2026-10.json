@@ -1,0 +1,300 @@
+{
+  "updates": [
+    {
+      "slug": "khasta-rewri",
+      "fields": {
+        "price": "Rs 540/kg"
+      }
+    },
+    {
+      "slug": "til-peanut-khasta",
+      "fields": {
+        "price": "Rs 500/kg"
+      }
+    },
+    {
+      "slug": "til-patti-gazak",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "til-bugga",
+      "fields": {
+        "image": "/menu/til-bugga.webp",
+        "images": [
+          "/menu/til-bugga.webp"
+        ]
+      }
+    },
+    {
+      "slug": "sugar-gazak",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "special-pishori-pinni",
+      "fields": {
+        "price": "Rs 800/kg"
+      }
+    },
+    {
+      "slug": "roasted-peanut-chikki",
+      "fields": {
+        "price": "Rs 325/kg",
+        "description": "Roasted Peanut Chikki. Available in 400 g packs at Rs 130 each."
+      }
+    },
+    {
+      "slug": "murmura-patti",
+      "fields": {
+        "price": "Rs 350/kg",
+        "description": "Murmura Patti. Available in 200 g packs at Rs 70 each."
+      }
+    },
+    {
+      "slug": "mawa-roll-gazak",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "mango-bite",
+      "fields": {
+        "price": "Rs 700/kg"
+      }
+    },
+    {
+      "slug": "alsi-ke-laddoo",
+      "fields": {
+        "price": "Rs 800/kg"
+      }
+    },
+    {
+      "slug": "khajoor-laddoo",
+      "fields": {
+        "price": "Rs 900/kg"
+      }
+    },
+    {
+      "slug": "kaju-gazak-roll",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "gur-ke-sev",
+      "fields": {
+        "price": "Rs 300/kg",
+        "description": "Gur Ke Sev at Rs 300/kg. Available in 200 g packs at Rs 60 each."
+      }
+    },
+    {
+      "slug": "gol-gazak",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "dry-fruit-laddoo",
+      "fields": {
+        "price": "Rs 900/kg"
+      }
+    },
+    {
+      "slug": "dilkhush-gazak",
+      "fields": {
+        "price": "Rs 700/kg"
+      }
+    },
+    {
+      "slug": "desi-ghee-gajar-ka-halwa",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "chocolate-gazak",
+      "fields": {
+        "price": "Rs 600/kg"
+      }
+    },
+    {
+      "slug": "chips-rewri",
+      "fields": {
+        "price": "Rs 580/kg"
+      }
+    },
+    {
+      "slug": "besan-laddoo",
+      "fields": {
+        "price": "Rs 460/kg",
+        "name": "Besan Laddoo Desi Ghee",
+        "description": "Traditional besan laddoo made with desi ghee."
+      }
+    }
+  ],
+  "new_products": [
+    {
+      "id": "gheeye-ki-louch",
+      "slug": "gheeye-ki-louch",
+      "name": "Gheeye Ki Louch",
+      "price": "Rs 500/kg",
+      "category": "signature",
+      "image": "/menu/gheeye-ki-louch.webp",
+      "images": [
+        "/menu/gheeye-ki-louch.webp"
+      ],
+      "description": "Gheeye Ki Louch from PAHWA JEE, Meerut.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "mawa-malai-gajar-barfi",
+      "slug": "mawa-malai-gajar-barfi",
+      "name": "Mawa Malai Gajar Barfi",
+      "price": "Rs 600/kg",
+      "category": "signature",
+      "image": "/menu/mawa-malai-gajar-barfi.webp",
+      "images": [
+        "/menu/mawa-malai-gajar-barfi.webp"
+      ],
+      "description": "Mawa Malai Gajar Barfi from PAHWA JEE, Meerut.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "mawa-barfi",
+      "slug": "mawa-barfi",
+      "name": "Mawa Barfi",
+      "price": "Rs 500/kg",
+      "category": "signature",
+      "image": "/menu/mawa-barfi.webp",
+      "images": [
+        "/menu/mawa-barfi.webp"
+      ],
+      "description": "Mawa Barfi from PAHWA JEE, Meerut.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "mawa-til-laddoo",
+      "slug": "mawa-til-laddoo",
+      "name": "Mawa Til Laddoo",
+      "price": "Rs 600/kg",
+      "category": "signature",
+      "image": "/menu/mawa-til-laddoo.webp",
+      "images": [
+        "/menu/mawa-til-laddoo.webp"
+      ],
+      "description": "Mawa Til Laddoo from PAHWA JEE, Meerut.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "jachha-bachha-panjeeri",
+      "slug": "jachha-bachha-panjeeri",
+      "name": "Jachha Bachha Panjeeri",
+      "price": "Rs 1000/kg",
+      "category": "winter-specials",
+      "image": "/menu/jachha-bachha-panjeeri.webp",
+      "images": [
+        "/menu/jachha-bachha-panjeeri.webp"
+      ],
+      "description": "Prepared only on special order. Not available at all times. Contact the store to arrange your order.",
+      "availability": "Special order only",
+      "season": "all",
+      "tags": [
+        "special order"
+      ],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "gond-laddoo",
+      "slug": "gond-laddoo",
+      "name": "Gond Laddoo",
+      "price": "Rs 700/kg",
+      "category": "winter-specials",
+      "image": "/menu/gond-laddoo.webp",
+      "images": [
+        "/menu/gond-laddoo.webp"
+      ],
+      "description": "Traditional Gond Laddoo at Rs 700/kg.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "pahwa-signature-mithai-box",
+      "slug": "pahwa-signature-mithai-box",
+      "name": "Pahwa Signature Mithai Box",
+      "price": "Rs 700/kg",
+      "category": "festival-collection",
+      "image": "/menu/pahwa-signature-mithai-box.webp",
+      "images": [
+        "/menu/pahwa-signature-mithai-box.webp"
+      ],
+      "description": "A mixed mithai box with Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. Rs 700/kg. The selection can be customised; contact us to arrange your box.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [
+        "Customisable"
+      ],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "pahwa-winter-mithai-box",
+      "slug": "pahwa-winter-mithai-box",
+      "name": "Pahwa Winter Mithai Box",
+      "price": "Rs 800/kg",
+      "category": "festival-collection",
+      "image": "/menu/pahwa-winter-mithai-box.webp",
+      "images": [
+        "/menu/pahwa-winter-mithai-box.webp"
+      ],
+      "description": "A mixed mithai box with Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. Rs 800/kg. Contact the store to arrange your box.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "mixed-fruit-special-bites-combo",
+      "slug": "mixed-fruit-special-bites-combo",
+      "name": "Mixed Fruit Special Bites Combo",
+      "price": "Rs 700/kg",
+      "category": "signature",
+      "image": "/menu/mixed-fruit-special-bites-combo.webp",
+      "images": [
+        "/menu/mixed-fruit-special-bites-combo.webp"
+      ],
+      "description": "A colourful assortment of Mango, Kachha Aam and Strawberry bites. Rs 700/kg.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [
+        "fruit bites",
+        "combo"
+      ],
+      "newArrival": true,
+      "order": 0
+    }
+  ]
+}

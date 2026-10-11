@@ -1,3 +1,4 @@
+import InStoreMenu from './pages/InStoreMenu';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import About from './pages/About';
@@ -14,7 +15,7 @@ import { StaticRouter } from 'react-router-dom';
 import App from './App';
 import { SeoCollectorContext } from './context/PageData';
 
-const pages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding };
+const pages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu };
 
 export function render(path, data) {
   const collector = {current: null};

@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle2, Copy, LoaderCircle, MapPin, MessageCircle, Min
 import SEO from '../components/SEO';
 import BrandLogo from '../components/BrandLogo';
 import { useCart } from '../context/CartContext';
-import { PACK_SIZES, canPurchase, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
+import { productPackSizes, validCartPack, canPurchase, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
 import api from '../lib/api';
 
 const ATTEMPT_KEY = 'pahwa-order-attempt-v1';
@@ -143,7 +143,7 @@ export default function Cart() {
           <div className="card-warm divide-y divide-border">
             {items.map((item) => {
               const key = lineKey(item);
-              const unavailable = catalogStatus === 'ready' && (!canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit);
+              const unavailable = catalogStatus === 'ready' && (!canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit || !validCartPack(item, catalog[item.slug]));
               return <div key={key} className="p-4 sm:p-6">
                 <div className="flex gap-4">
                   <Link to={`/products/${item.slug}`} className="shrink-0">{item.image ? <OptimizedImage sizes="96px" src={item.image} alt={item.name} className="h-20 w-20 rounded-xl object-cover sm:h-24 sm:w-24" /> : <BrandLogo alt={item.name} className="h-20 w-20 rounded-xl p-2 sm:h-24 sm:w-24" />}</Link>
@@ -155,7 +155,7 @@ export default function Cart() {
                   <button type="button" onClick={() => removeItem(key)} disabled={submitting} aria-label={`Remove ${item.name} ${packLabel(item.pack_grams, item.sale_unit)}`} className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive"><Trash2 size={18} /></button>
                 </div>
                 <div className="mt-4 flex flex-wrap items-end gap-3">
-                  {item.sale_unit === 'kg' && <label className="text-xs text-muted-foreground">Pack size<select value={item.pack_grams} onChange={(e) => changePack(key, Number(e.target.value))} aria-label={`Cart pack size for ${item.name} ${packLabel(item.pack_grams)}`} disabled={submitting || unavailable} className="commerce-input mt-1 !w-24">{PACK_SIZES.map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}</select></label>}
+                  {item.sale_unit === 'kg' && <label className="text-xs text-muted-foreground">Pack size<select value={item.pack_grams} onChange={(e) => changePack(key, Number(e.target.value))} aria-label={`Cart pack size for ${item.name} ${packLabel(item.pack_grams)}`} disabled={submitting || unavailable} className="commerce-input mt-1 !w-24">{productPackSizes(catalog[item.slug]).map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}</select></label>}
                   <div><p className="mb-1 text-xs text-muted-foreground">{item.sale_unit === 'kg' ? 'Packs' : item.sale_unit === 'plate' ? 'Plates' : 'Quantity'}</p><QuantityControl item={item} disabled={submitting || unavailable} onChange={(value) => changeQuantity(key, value)} /></div>
                   <span className="ml-auto pb-2 text-lg font-semibold whitespace-nowrap">{formatMoney(packPrice(item.unit_price_paise, item.pack_grams) * item.quantity)}</span>
                 </div>

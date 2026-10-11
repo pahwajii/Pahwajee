@@ -1,9 +1,14 @@
+import ProductCard from '../components/ProductCard';
+import { useCart } from '../context/CartContext';
+import fallbackProducts from '../generated/catalog.json';
 import { useState } from 'react';
 import SEO from '../components/SEO';
 import api, { waLink, telLink } from '../lib/api';
 import { Send, CheckCircle2, AlertCircle, MessageCircle, Phone, Award, Truck, Palette } from 'lucide-react';
 
 export default function CorporateGifting() {
+  const { catalog } = useCart();
+  const giftBoxes = ['pahwa-signature-mithai-box', 'pahwa-winter-mithai-box'].map(slug => catalog[slug] || fallbackProducts.find(item => item.slug === slug)).filter(Boolean);
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -53,7 +58,7 @@ export default function CorporateGifting() {
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto py-12">
           <p className="eyebrow">B2B & Bulk Gifting Solutions</p>
-          <h1 className="mt-4 text-5xl font-serif leading-tight">
+          <h1 className="mt-4 text-3xl sm:text-5xl font-serif leading-tight">
             Elevate Your Corporate Gifting <span className="italic text-primary">with PAHWAJEE</span>
           </h1>
           <p className="mt-5 text-base text-muted-foreground leading-relaxed">
@@ -73,6 +78,11 @@ export default function CorporateGifting() {
               <Phone size={18} /> Call Store Manager
             </a>
           </div>
+        </section>
+
+        <section className="my-10" aria-labelledby="mithai-gift-boxes">
+          <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-5">Mithai Gift Boxes</h2>
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-3xl">{giftBoxes.map(product => <ProductCard key={product.slug} product={product} />)}</div>
         </section>
 
         {/* Pillars / Value Prop */}

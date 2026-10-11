@@ -1,5 +1,13 @@
 export const CART_STORAGE_KEY = 'pahwa-cart-v1';
-export const PACK_SIZES = [500, 1000];
+import productPacks from '../../../product-packs.json' with { type: 'json' };
+export const PACK_SIZES = [200, 400, 500, 1000];
+export const productPackSizes = (product) => productPacks[product?.slug] || product?.pack_sizes_grams?.filter(value => PACK_SIZES.includes(value)) || [500, 1000];
+export const validCartPack = (item, product) => product?.sale_unit !== 'kg' ? item.pack_grams === null : productPackSizes(product).includes(item.pack_grams);
+export function displayPrice(product) {
+  const pack = productPacks[product?.slug]?.[0];
+  const amount = product?.unit_price_paise || Number(product?.price?.match(/(?:Rs|INR|\u20b9)\s*(\d+(?:\.\d+)?)/)?.[1]) * 100;
+  return pack && amount ? `${formatMoney(packPrice(amount, pack))} / ${packLabel(pack)} pack` : product?.price || 'Price on request';
+}
 export const formatMoney = (paise) => new Intl.NumberFormat('en-IN', {
   style: 'currency', currency: 'INR', maximumFractionDigits: 2,
 }).format(paise / 100).replace(/\.00$/, '');
@@ -41,7 +49,7 @@ export function restoreCart(raw) {
 export function addCartItem(items, product, pack, quantity) {
   if (!canPurchase(product)) throw new Error('This item is not available to add.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error('Choose a quantity from 1 to 99.');
-  if ((product.sale_unit === 'kg' && !PACK_SIZES.includes(pack)) || (product.sale_unit !== 'kg' && pack !== null)) throw new Error('Choose a valid pack size.');
+  if ((product.sale_unit === 'kg' && !productPackSizes(product).includes(pack)) || (product.sale_unit !== 'kg' && pack !== null)) throw new Error('Choose a valid pack size.');
   const key = lineKey({ slug: product.slug, pack_grams: pack });
   const existing = items.find((item) => lineKey(item) === key);
   if (existing && existing.quantity + quantity > 99) throw new Error('Maximum 99 packs per cart item.');

@@ -5,6 +5,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 import os
+import json
 import asyncio
 from contextlib import asynccontextmanager, suppress
 import uuid
@@ -340,6 +341,14 @@ SEED_FAQS = [
 SEED_BANNERS = [
     {"title": "Fresh Every Day. Trusted for Generations.", "subtitle": "Loved Across Meerut for Nankhatai, Rewri, Gazak, Shakes & Premium Gift Hampers.", "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1920&auto=format&fit=crop", "cta_text": "Explore Products", "cta_link": "/products", "active": True, "order": 1},
 ]
+
+
+# Apply the reviewed catalogue only when seeding an empty database.
+# Existing products are updated solely by the explicit backed-up migration.
+_review = json.loads((ROOT_DIR.parent / "catalogue-review-2026-10.json").read_text(encoding="utf-8"))
+_review_updates = {item["slug"]: item["fields"] for item in _review["updates"]}
+SEED_PRODUCTS = [{**product, **_review_updates.get(product["slug"], {})} for product in SEED_PRODUCTS if product["slug"] not in GALLERY_ONLY_SLUGS]
+SEED_PRODUCTS.extend(_review["new_products"])
 
 
 async def seed_data():

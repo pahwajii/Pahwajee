@@ -1,0 +1,142 @@
+[
+  {
+    "asset": "/menu/strawberry-shake.webp",
+    "prompt": "strawberry milkshake with strawberries beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/chocolate-shake.webp",
+    "prompt": "chocolate milkshake with chocolate squares beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/khajoor-shake.webp",
+    "prompt": "date milkshake with whole brown dates beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/pineapple-shake.webp",
+    "prompt": "pineapple milkshake with pineapple pieces beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/cold-coffee.webp",
+    "prompt": "iced cold coffee in a tall glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/oreo-shake.webp",
+    "prompt": "cookies and cream milkshake with dark sandwich cookies beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/kitkat-shake.webp",
+    "prompt": "chocolate wafer milkshake with chocolate coated wafer fingers beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/banana-shake.webp",
+    "prompt": "banana milkshake with banana slices beside the glass",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/sandwich.webp",
+    "prompt": "fresh Indian vegetable sandwich cut into triangles, untoasted white bread, green chutney tomato cucumber",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/tandoori-sandwich.webp",
+    "prompt": "toasted tandoori vegetable sandwich cut into triangles with orange spiced vegetable filling",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/cheese-corn-sandwich.webp",
+    "prompt": "toasted cheese and sweetcorn sandwich cut into triangles",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/cheese-grilled-sandwich.webp",
+    "prompt": "golden grilled cheese sandwich triangles with melted cheese",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/maggi.webp",
+    "prompt": "a small bowl of Indian instant masala noodles",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/butter-veggie-maggi.webp",
+    "prompt": "a bowl of Indian instant masala noodles with chopped carrots peas capsicum and a pat of butter",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/lassi.webp",
+    "prompt": "a glass of creamy white sweet Indian lassi",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/shikanji.webp",
+    "prompt": "a glass of Indian lemon shikanji with lemon slices and mint",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/badam-milk.webp",
+    "prompt": "a clear small glass bottle of saffron almond milk with almonds beside it",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/espresso-coffee.webp",
+    "prompt": "a small white espresso cup filled with espresso coffee with crema",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/peanut-chaat.webp",
+    "prompt": "an Indian bowl of roasted peanut chaat with chopped onion tomato coriander",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/kulhad-tea.webp",
+    "prompt": "Indian milk tea in a simple terracotta kulhad",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/mawa-barfi.webp",
+    "prompt": "Indian mawa barfi, pale ivory milk fudge squares on a plate",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/mawa-til-laddoo.webp",
+    "prompt": "Indian mawa sesame laddoo, beige round milk-solid sweets covered lightly in sesame seeds on a plate",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/bakery-biscuits.webp",
+    "prompt": "Square representative food photo for an Indian cafe menu. assorted simple Indian bakery biscuits on a cream plate. Plain warm cream table and background, soft daylight, realistic natural textures, modest complete serving. No text, no logos, no watermark.",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/namkeens.webp",
+    "prompt": "Square representative food photo for an Indian cafe menu. three small bowls of Indian namkeen mixtures, sev, boondi and peanuts; no packages or branding. Plain warm cream table and background, soft daylight, realistic natural textures, modest complete serving. No text, no logos, no watermark.",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/dry-fruits.webp",
+    "prompt": "Square representative food photo for an Indian cafe menu. almonds cashews raisins pistachios and walnuts in small bowls. Plain warm cream table and background, soft daylight, realistic natural textures, modest complete serving. No text, no logos, no watermark.",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/gond-laddoo.webp",
+    "prompt": "Gond Laddoo from the third column of the supplied box photo",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/mango-shake.webp",
+    "prompt": "Mango milkshake, warm cream tabletop, no ice cream topping",
+    "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/gheeye-ki-louch.webp",
+    "prompt": "Edit supplied green Gheeye Ki Louch photo; preserve green colour, texture and almond garnish; cream plate and tabletop",
+    "method": "Built-in image_gen"
+  }
+]

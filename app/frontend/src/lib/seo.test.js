@@ -63,3 +63,11 @@ test('built sitemap pages contain one canonical, page-specific HTML and valid sc
   assert.match(await readFile('dist/404.html', 'utf8'), /name="robots" content="noindex/);
   for (const path of ['cart', 'admin']) assert.match(await readFile(`dist/${path}.html`, 'utf8'), /name="robots" content="noindex/);
 });
+
+
+test('fixed-pack offer uses the purchasable pack price with an accurate kg reference', () => {
+  const schema = productSchema({slug: 'roasted-peanut-chikki', name: 'Roasted Peanut Chikki', cart_eligible: true, unit_price_paise: 32500, sale_unit: 'kg', availability: 'Available'});
+  assert.equal(schema.offers.price, '130.00');
+  assert.equal(schema.offers.name, '400 g pack');
+  assert.equal(schema.offers.priceSpecification.price, '325.00');
+});

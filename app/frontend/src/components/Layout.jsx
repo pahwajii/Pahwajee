@@ -9,6 +9,7 @@ import BrandLogo from './BrandLogo';
 const NAV = [
   { to: "/diwali", label: "Diwali" },
   { to: "/products", label: "Shop" },
+  { to: "/in-store-menu", label: "In-store Menu" },
   { to: "/our-specialities", label: "Our Specialities" },
   { to: "/gifting", label: "Gift Hampers" },
   { to: "/gallery", label: "Gallery" },
@@ -52,7 +53,7 @@ function Navbar({ dark, onToggleTheme }) {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? "py-2" : "py-4"}`}
     >
       <div className="container-x">
-        <div className={`glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between gap-4 xl:gap-12 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
+        <div className={`glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between gap-4 xl:gap-4 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
           <Link to="/" data-testid="nav-logo" className="flex shrink-0 items-center gap-2 group">
             <BrandLogo
               className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-105"
@@ -66,7 +67,7 @@ function Navbar({ dark, onToggleTheme }) {
                 to={n.to}
                 data-testid={`nav-link-${n.label.toLowerCase()}`}
                 className={({ isActive }) =>
-                  `px-2 py-2.5 rounded-full text-base whitespace-nowrap font-semibold transition-colors ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-primary/5"}`
+                  `px-2 py-2.5 rounded-full text-sm whitespace-nowrap font-semibold transition-colors ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-primary/5"}`
                 }
               >
                 {n.label}
@@ -137,7 +138,7 @@ function Navbar({ dark, onToggleTheme }) {
 
 function FloatingButtons() {
   const { pathname } = useLocation();
-  const shoppingPage = pathname.startsWith('/products') || ['/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
+  const shoppingPage = pathname.startsWith('/products') || ['/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
     <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons">
       <a
@@ -197,6 +198,7 @@ export default function Layout() {
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
+              <li><Link to="/in-store-menu" className="text-muted-foreground hover:text-primary transition-colors">In-store Menu</Link></li>
               <li><Link to="/rewri-gajak-meerut" className="text-muted-foreground hover:text-primary transition-colors">Rewri & Gajak</Link></li>
               <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Nankhatai</Link></li>
               <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Gift Hampers</Link></li>

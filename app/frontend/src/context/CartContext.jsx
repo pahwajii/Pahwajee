@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import api from '../lib/api';
-import { CART_STORAGE_KEY, PACK_SIZES, addCartItem, canPurchase, lineKey, packPrice, reconcileCart, restoreCart } from '../lib/cart';
+import { CART_STORAGE_KEY, PACK_SIZES, validCartPack, addCartItem, canPurchase, lineKey, packPrice, reconcileCart, restoreCart } from '../lib/cart';
 
 const CartContext = createContext(null);
 
@@ -65,7 +65,7 @@ export function CartProvider({ children, initialProducts }) {
     } catch (error) { setNotice(error.message); }
   }
 
-  const invalidItems = items.filter((item) => !canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit);
+  const invalidItems = items.filter((item) => !canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit || !validCartPack(item, catalog[item.slug]));
   const subtotal = items.reduce((total, item) => total + packPrice(item.unit_price_paise, item.pack_grams) * item.quantity, 0);
 
   return <CartContext.Provider value={{

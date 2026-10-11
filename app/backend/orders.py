@@ -24,6 +24,7 @@ from pymongo.errors import DuplicateKeyError
 logger = logging.getLogger(__name__)
 GALLERY_ONLY_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] / "gallery-only-products.json").read_text(encoding="utf-8")))
 PACKS = (500, 1000)
+PRODUCT_PACKS = json.loads((Path(__file__).resolve().parents[1] / "product-packs.json").read_text(encoding="utf-8"))
 DELIVERY_INFO = (
     "FREE delivery within Meerut on orders over ₹1,000. "
     "Additional delivery charges apply to the rest of India. "
@@ -35,7 +36,7 @@ def purchase_fields(product):
     """Strictly derive numeric pricing from the existing editable price field."""
     price = (product.get("price") or "").strip()
     match = re.fullmatch(r"(?:Rs\.?|INR|₹)\s*(\d+(?:\.\d{1,2})?)\s*(?:/\s*(kg|plate|piece))?", price, re.I)
-    excluded = product.get("slug") in GALLERY_ONLY_SLUGS or product.get("category") == "festival-collection" or bool(
+    excluded = product.get("availability") == "Special order only" or product.get("slug") in GALLERY_ONLY_SLUGS or product.get("category") == "festival-collection" or bool(
         re.search(r"\b(?:trays?|hampers?|gifting)\b", f"{product.get('name', '')} {product.get('slug', '').replace('-', ' ')}", re.I)
     )
     amount = int(Decimal(match[1]) * 100) if match else None
@@ -45,7 +46,7 @@ def purchase_fields(product):
         "unit_price_paise": amount if eligible else None,
         "sale_unit": unit if eligible else None,
         "cart_eligible": eligible,
-        "pack_sizes_grams": list(PACKS) if eligible and unit == "kg" else [],
+        "pack_sizes_grams": PRODUCT_PACKS.get(product.get("slug"), list(PACKS)) if eligible and unit == "kg" else [],
     }
 
 
@@ -108,7 +109,7 @@ class Fulfilment(InputModel):
 
 class OrderItem(InputModel):
     slug: str = Field(min_length=1, max_length=160, pattern=r"^[a-z0-9-]+$")
-    pack_grams: Literal[500, 1000] | None = None
+    pack_grams: Literal[200, 400, 500, 1000] | None = None
     quantity: int = Field(ge=1, le=99, strict=True)
     expected_unit_price_paise: int = Field(gt=0, le=100_000_000, strict=True)
 
@@ -142,7 +143,7 @@ def price_order(items, products):
         if not product or not product["cart_eligible"] or product.get("availability") != "Available":
             unavailable.append(item.slug)
             continue
-        if (product["sale_unit"] == "kg" and item.pack_grams not in PACKS) or (product["sale_unit"] != "kg" and item.pack_grams is not None):
+        if (product["sale_unit"] == "kg" and item.pack_grams not in product["pack_sizes_grams"]) or (product["sale_unit"] != "kg" and item.pack_grams is not None):
             raise HTTPException(422, {"code": "invalid_pack", "message": "Choose a valid pack size for each item."})
         if item.expected_unit_price_paise != product["unit_price_paise"]:
             changed.append({k: product[k] for k in ("slug", "name", "unit_price_paise", "sale_unit", "cart_eligible", "pack_sizes_grams", "availability")})

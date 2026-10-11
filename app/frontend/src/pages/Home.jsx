@@ -1,3 +1,4 @@
+import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, MessageCircle, Phone, Sparkles, Star, Award, ShieldCheck, Clock, Gift, Heart } from 'lucide-react';
@@ -12,7 +13,7 @@ const signatureRewri = {
   slug: "khasta-rewri",
   name: "Khasta Rewri",
   desc: "Crispy sesame and organic jaggery drops, hand-rolled in authentic Punjabi tradition. Made fresh for winter in Meerut.",
-  price: "Rs 480/kg",
+  price: "Rs 540/kg",
   image: "/products/Khasta-rewri.png",
   link: "/rewri-gajak-meerut"
 };
@@ -21,7 +22,7 @@ const signatureGajak = {
   slug: "dilkhush-gazak",
   name: "Dilkhush Gazak",
   desc: "Light, flaky, melt-in-mouth sesame gazak prepared with organic jaggery, cardamom, and premium nuts.",
-  price: "Rs 640/kg",
+  price: "Rs 700/kg",
   image: "/products/dilkhush-gazzak.png",
   link: "/rewri-gajak-meerut"
 };
@@ -36,9 +37,9 @@ const signatureNankhatai = {
 };
 
 const winterFavourites = [
-  { slug: "til-bugga", name: "Til Bugga", desc: "Traditional winter delicacy made of roasted sesame, khoya & cardamom.", price: "Rs 600/kg", image: "/products/til-bugga.png" },
-  { slug: "peanut-chikki", name: "Peanut Chikki", desc: "Snap-crisp roasted peanut & jaggery chikki.", price: "Rs 320/kg", image: "/products/peanut-chikki.png" },
-  { slug: "dry-fruit-laddoo", name: "Dry Fruit Laddoo", desc: "Sugar-free laddoos packed with dates, figs & nuts.", price: "Rs 850/kg", image: "/products/dryfruitladdoo.png" }
+  { slug: "til-bugga", name: "Til Bugga", desc: "Traditional winter delicacy made of roasted sesame, khoya & cardamom.", price: "Rs 600/kg", image: "/menu/til-bugga.webp" },
+  { slug: "roasted-peanut-chikki", name: "Roasted Peanut Chikki", desc: "Snap-crisp roasted peanut & jaggery chikki.", price: "Rs 325/kg", image: "/products/roastedpeanut-chikki.png" },
+  { slug: "dry-fruit-laddoo", name: "Dry Fruit Laddoo", desc: "Sugar-free laddoos packed with dates, figs & nuts.", price: "Rs 900/kg", image: "/products/dryfruitladdoo.png" }
 ];
 
 const giftHampers = [
@@ -53,12 +54,12 @@ const homeCategories = [
   { name: "Gift Hampers", image: "/products/Dryfruit-tray1.png", link: "/gifting" },
   { name: "Diwali Specials", image: "/products/Dryfruit-tray3.png", link: "/diwali" },
   { name: "Traditional Sweets", image: "/products/dryfruitladdoo.png", link: "/sweets-meerut" },
-  { name: "Healthy Specials", image: "/products/sprouts.png", link: "/products?filter=healthy" }
+  { name: "In-store Menu", image: "/menu/mango-shake.webp", link: "/in-store-menu" }
 ];
 
 export default function Home() {
   const { catalog } = useCart();
-  const currentPrice = (item) => catalog[item.slug]?.price || item.price;
+  const currentPrice = (item) => displayPrice(catalog[item.slug] || item);
 
 
   return (

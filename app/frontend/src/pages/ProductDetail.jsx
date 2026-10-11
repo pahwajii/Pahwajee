@@ -1,3 +1,4 @@
+import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -65,6 +66,7 @@ export default function ProductDetail() {
   // Get specific local parameters based on name (to avoid inventing random facts)
   const getProductSpecs = (name) => {
     const text = name.toLowerCase();
+    if (text.includes('mawa') || text.includes('louch') || text.includes('panjeeri') || text.includes('mithai box') || text.includes('gond')) return {ingredients: 'Ask the store for ingredients and allergen information.', storage: 'Follow the storage instructions supplied with your order.', shelfLife: 'Confirm with the store', suitability: 'Contact us to confirm availability and your preferred quantity.'};
     if (text.includes('nankhatai')) {
       return {
         ingredients: text.includes('vanaspati')
@@ -75,6 +77,7 @@ export default function ProductDetail() {
         suitability: "Perfect for tea-time snacking, corporate gifts, and festive occasions."
       };
     }
+    if (text.includes('chikki')) return {ingredients: 'Contains peanuts. Ask the store for the full ingredient and allergen list.', storage: 'Follow the storage instructions on the pack.', shelfLife: 'Refer to package label', suitability: 'Available in the pack size shown below.'};
     if (text.includes('rewri') || text.includes('gajak') || text.includes('chikki') || text.includes('til')) {
       return {
         ingredients: "Roasted Sesame Seeds (Til), Organic Jaggery (Gur), Pure Ghee, Cardamom.",
@@ -205,7 +208,8 @@ export default function ProductDetail() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">{product.name}</h1>
-            <p className="text-secondary text-2xl md:text-3xl font-serif font-bold mb-6">{product.price || 'Price on request'}</p>
+            <p className="text-secondary text-2xl md:text-3xl font-serif font-bold mb-6">{displayPrice(product)}</p>
+            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo'].includes(product.slug) && <p className="mb-4 text-xs text-muted-foreground">Product photo is illustrative.</p>}
 
             <p className="text-muted-foreground leading-relaxed text-base mb-8 border-b border-border/30 pb-6">
               {product.description || "Freshly prepared daily with the finest ingredients at our store in Meerut. Crafted with generational recipes for authentic taste."}
@@ -242,7 +246,7 @@ export default function ProductDetail() {
             <div className="mb-6"><AddToCart product={product} /></div>
             <div className="flex flex-wrap gap-4 pt-2">
               <a
-                href={waLink(`Hi PAHWAJEE, I am interested in ordering: ${product.name} (${product.price || 'Price on Request'}). Please share availability.`)}
+                href={waLink(`Hi PAHWAJEE, I am interested in ordering: ${product.name} (${displayPrice(product)}). Please share availability.`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gold !bg-emerald-600 !text-white flex items-center justify-center gap-2 hover:!bg-emerald-700"

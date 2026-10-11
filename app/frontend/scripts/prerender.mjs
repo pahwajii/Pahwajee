@@ -14,7 +14,7 @@ async function readPublic(path) {
 }
 
 const [allProducts, faqs, testimonials, gallery] = await Promise.all([
-  readPublic('products?limit=500'), readPublic('faqs'), readPublic('testimonials'),
+  env.PRERENDER_CATALOG_SNAPSHOT === '1' ? readFile(resolve(root, 'src/generated/catalog.json'), 'utf8').then(JSON.parse) : readPublic('products?limit=500'), readPublic('faqs'), readPublic('testimonials'),
   readFile(resolve(root, 'public/gallery.json'), 'utf8').then(JSON.parse),
 ]);
 const galleryOnlySlugs = JSON.parse(await readFile(resolve(root, '../gallery-only-products.json'), 'utf8'));

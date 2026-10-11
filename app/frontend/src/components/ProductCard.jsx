@@ -1,3 +1,4 @@
+import { displayPrice } from '../lib/cart';
 import OptimizedImage from './OptimizedImage';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Phone } from 'lucide-react';
@@ -17,9 +18,10 @@ export default function ProductCard({ product }) {
               sizes="(min-width: 1280px) 300px, (min-width: 1024px) 33vw, 50vw"
               src={image || '/placeholder.jpg'}
               alt={name}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className={`h-full w-full ${category === "festival-collection" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-105`}
               loading="lazy"
             />
+            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo'].includes(slug) && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-[11px]">Illustrative</span>}
             {(isBestSeller || featured) && (
               <span className="absolute left-2 top-2 sm:left-3 sm:top-3 rounded-full bg-secondary px-2 sm:px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:tracking-[0.18em] text-secondary-foreground shadow">
                 {isBestSeller ? 'Best Seller' : 'Featured'}
@@ -31,7 +33,9 @@ export default function ProductCard({ product }) {
           <Link to={`/products/${slug}`} className="font-serif text-base sm:text-lg font-semibold hover:text-primary transition-colors block leading-tight mb-1">
             {name}
           </Link>
-          <p className="text-xs font-semibold text-secondary mb-1 sm:mb-3">{price || 'Price on request'}</p>
+          <p className="text-xs font-semibold text-secondary mb-1 sm:mb-3">{displayPrice(product)}</p>
+          {slug.endsWith('mithai-box') && <p className="text-xs text-muted-foreground mb-2">{slug === 'pahwa-signature-mithai-box' ? 'Khajoor Laddoo, Mango Bite, Mawa Til Laddoo & Gond Laddoo' : 'Alsi Laddoo, Gond Laddoo, Mawa Barfi & Khajoor Barfi'}</p>}
+          {slug === 'pahwa-signature-mithai-box' && <p className="text-xs text-muted-foreground">Customisable selection</p>}
         </div>
       </div>
 

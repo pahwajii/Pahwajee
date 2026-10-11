@@ -1,8 +1,9 @@
 import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, ShoppingBag } from 'lucide-react';
+import { waLink } from '../lib/api';
 import { useCart } from '../context/CartContext';
-import { PACK_SIZES, canPurchase, formatMoney, packLabel, packPrice } from '../lib/cart';
+import { productPackSizes, canPurchase, formatMoney, packLabel, packPrice } from '../lib/cart';
 
 export default function AddToCart({ product }) {
   const { catalog, catalogStatus, addItem, submitting, refreshCatalog } = useCart();
@@ -13,12 +14,15 @@ export default function AddToCart({ product }) {
   const [added, setAdded] = useState(false);
   const id = useId();
 
+  if (product.availability === 'Special order only' || item?.availability === 'Special order only') return <a href={waLink(`${product.name} - special order enquiry`)} className="btn-outline justify-center !px-3 !py-2.5 text-sm">Enquire for special order</a>;
   if (product.category === 'festival-collection' || (item && !item.cart_eligible)) {
-    return <Link to="/gifting" className="btn-outline justify-center !px-4 !py-2.5 text-sm">Enquire about this item</Link>;
+    return <a href={waLink(product.name + (product.slug === "pahwa-signature-mithai-box" ? " - customise my box" : ""))} className="btn-outline justify-center !px-4 !py-2.5 text-sm">{product.slug === "pahwa-signature-mithai-box" ? "Customise this box" : "Enquire about this item"}</a>;
   }
   if (catalogStatus === 'error') return <button type="button" onClick={() => refreshCatalog().catch(() => {})} className="text-sm underline min-h-11">Reload catalogue to order</button>;
   if (catalogStatus === 'ready' && !canPurchase(item)) return <p className="text-sm text-muted-foreground py-2">Currently unavailable to order.</p>;
-  const weight = item?.sale_unit === 'kg' ? pack : null;
+  const packs = productPackSizes(item || product);
+  const selectedPack = packs.includes(pack) ? pack : packs[0];
+  const weight = item?.sale_unit === 'kg' ? selectedPack : null;
   const amount = item ? packPrice(item.unit_price_paise, weight) * quantity : null;
 
   function add() {
@@ -33,8 +37,8 @@ export default function AddToCart({ product }) {
     <div className="cart-options flex flex-wrap items-end gap-3">
       {item?.sale_unit === 'kg' && <div className="cart-pack flex-1 min-w-24">
         <label htmlFor={`${id}-pack`} className="mb-1 block text-xs font-medium text-muted-foreground">Pack size</label>
-        <select id={`${id}-pack`} aria-label={`Pack size for ${product.name}`} disabled={submitting} value={pack} onChange={(e) => { setPack(Number(e.target.value)); setFeedback(''); setAdded(false); }} className="commerce-input">
-          {PACK_SIZES.map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}
+        <select id={`${id}-pack`} aria-label={`Pack size for ${product.name}`} disabled={submitting} value={selectedPack} onChange={(e) => { setPack(Number(e.target.value)); setFeedback(''); setAdded(false); }} className="commerce-input">
+          {packs.map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}
         </select>
       </div>}
       <div className="cart-quantity w-20">
