@@ -15,6 +15,7 @@ export default {
     },
     extend: {
       colors: {
+        "gold-ink": "hsl(var(--gold-ink))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

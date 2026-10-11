@@ -3,7 +3,6 @@ import FssaiNotice from './FssaiNotice';
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import { Menu, X, Phone, MessageCircle, Sun, Moon, Clock, Instagram, Facebook, ShoppingBag, Heart } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { BUSINESS, waLink, telLink } from "@/lib/api";
 import { useCart } from "../context/CartContext";
 import BrandLogo from './BrandLogo';
@@ -21,16 +20,20 @@ const NAV = [
 ];
 
 function useDarkMode() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const s = localStorage.getItem("pahwa-theme");
-    if (s) return s === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  // Match prerendered markup; restore the visitor's preference after hydration.
+  const [dark, setDark] = useState(false);
+  const [themeReady, setThemeReady] = useState(false);
   useEffect(() => {
+    let preference;
+    try { preference = localStorage.getItem("pahwa-theme"); } catch { /* Storage can be disabled. */ }
+    setDark(preference ? preference === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setThemeReady(true);
+  }, []);
+  useEffect(() => {
+    if (!themeReady) return;
     document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("pahwa-theme", dark ? "dark" : "light");
-  }, [dark]);
+    try { localStorage.setItem("pahwa-theme", dark ? "dark" : "light"); } catch { /* Theme still works in memory. */ }
+  }, [dark, themeReady]);
   return [dark, setDark];
 }
 
@@ -104,13 +107,9 @@ function Navbar({ dark, onToggleTheme }) {
           </div>
         </div>
 
-        <AnimatePresence>
           {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="xl:hidden mt-2 glass rounded-2xl p-3 max-h-[75vh] overflow-y-auto"
+            <div
+              className="mobile-menu-enter xl:hidden mt-2 glass rounded-2xl p-3 max-h-[75vh] overflow-y-auto"
               data-testid="mobile-menu"
             >
               {NAV.map((n) => (
@@ -127,16 +126,15 @@ function Navbar({ dark, onToggleTheme }) {
               <NavLink to="/favourites" className="block px-4 py-3 rounded-xl text-base font-semibold">Favourites ({favourites.length})</NavLink>
               <button type="button" onClick={onToggleTheme} className="sm:hidden min-h-11 px-4 text-sm font-semibold">Switch to {dark ? 'light' : 'dark'} theme</button>
               <div className="mt-4 flex flex-col gap-2">
-                <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold justify-center w-full !bg-emerald-600 !text-white flex items-center gap-2 py-2.5">
+                <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold justify-center w-full !bg-emerald-700 !text-white flex items-center gap-2 py-2.5">
                   <MessageCircle className="w-4 h-4" /> WhatsApp Order
                 </a>
                 <a href={telLink()} className="btn-primary justify-center w-full flex items-center gap-2 py-2.5">
                   <Phone className="w-4 h-4" /> Call Now
                 </a>
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
     </header>
   );
@@ -183,7 +181,7 @@ export default function Layout() {
       <footer className="bg-card border-t border-border mt-auto py-12">
         <div className="container-x grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <BrandLogo className="h-auto w-52 sm:w-64 max-w-full mb-4" sizes="(min-width: 640px) 256px, 208px" />
+            <BrandLogo loading="lazy" className="h-auto w-52 sm:w-64 max-w-full mb-4" sizes="(min-width: 640px) 256px, 208px" />
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
             <FssaiNotice className="mb-4" />
             <div className="flex flex-wrap gap-4 items-center">
@@ -202,7 +200,7 @@ export default function Layout() {
 
           </div>
           <div>
-            <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Quick Links</h4>
+            <h2 className="font-medium text-sm mb-4 uppercase tracking-wider text-gold-ink">Quick Links</h2>
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
@@ -220,7 +218,7 @@ export default function Layout() {
             </ul>
           </div>
           <div>
-            <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Contact Info</h4>
+            <h2 className="font-medium text-sm mb-4 uppercase tracking-wider text-gold-ink">Contact Info</h2>
             <div className="space-y-3 text-sm text-muted-foreground">
               <p className="flex items-center gap-2.5">
                 <Clock className="w-5 h-5 text-primary shrink-0" />

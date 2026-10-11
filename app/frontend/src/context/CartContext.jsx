@@ -9,7 +9,7 @@ function readCart() {
 }
 
 export function CartProvider({ children, initialProducts }) {
-  const [items, setItems] = useState(readCart);
+  const [items, setItems] = useState([]);
   const itemsRef = useRef(items);
   const [catalog, setCatalog] = useState(() => Object.fromEntries((initialProducts || []).map(product => [product.slug, product])));
   // Purchases stay disabled until current server availability and prices arrive.
@@ -41,7 +41,12 @@ export function CartProvider({ children, initialProducts }) {
     }
   }
 
-  useEffect(() => { refreshCatalog().catch(() => {}); }, []);
+  useEffect(() => {
+    const saved = readCart();
+    itemsRef.current = saved;
+    setItems(saved);
+    refreshCatalog().catch(() => {});
+  }, []);
 
   function addItem(product, pack, quantity) {
     if (submitting) throw new Error('Please wait for your order request to finish.');

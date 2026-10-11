@@ -8,6 +8,11 @@ from pathlib import Path
 from hashlib import sha256
 from PIL import Image, ImageOps
 import json
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--only", nargs="+", help="Public paths to regenerate; preserve other manifest entries")
+args = parser.parse_args()
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / 'public'
@@ -15,7 +20,12 @@ OUTPUT = PUBLIC / 'media'
 OUTPUT.mkdir(exist_ok=True)
 sources = sorted([*PUBLIC.glob('products/*'), *PUBLIC.glob('gallery/*')])
 sources += [PUBLIC / name for name in ['our_shop_main.jpeg', 'pahwa_family.jpg', 'brand/pahwajee-day.png', 'brand/pahwajee-dark.png']]
-manifest = {}
+target = ROOT / "src/generated/images.json"
+manifest = json.loads(target.read_text()) if args.only and target.exists() else {}
+if args.only:
+    sources = [PUBLIC / name.lstrip("/") for name in args.only]
+    if any(not source.resolve().is_relative_to(PUBLIC.resolve()) for source in sources):
+        raise ValueError("Image sources must be inside public")
 original_bytes = largest_bytes = card_bytes = 0
 for source in sources:
     if source.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.webp'}:
@@ -24,10 +34,10 @@ for source in sources:
     image = ImageOps.exif_transpose(Image.open(source))
     image = image.convert('RGBA' if 'A' in image.getbands() else 'RGB')
     logo = source.parent.name == 'brand'
-    quality = 90 if logo else 82
-    widths = sorted({min(image.width, w) for w in ([160, 320, 640] if logo else [320, 640, 960, 1440])})
+    quality = 76 if logo else 74
+    widths = sorted({min(image.width, w) for w in ([160, 320, 480, 640] if logo else [320, 480, 640, 768, 960, 1440])})
     # Include encoder settings in the key so cached URLs never change contents.
-    digest = sha256(raw + f'webp-v1-q{quality}-method6-pillow12.3.0'.encode()).hexdigest()[:16]
+    digest = sha256(raw + f'webp-v2-q{quality}-avif50-method6-pillow12.3.0'.encode()).hexdigest()[:16]
     base = '/media/' + digest
     sizes = {}
     for width in widths:
@@ -36,7 +46,12 @@ for source in sources:
             resized = image.resize((width, max(1, round(image.height * width / image.width))), Image.Resampling.LANCZOS)
             resized.save(destination, 'WEBP', quality=quality, method=6)
         sizes[width] = destination.stat().st_size
-    manifest['/' + source.relative_to(PUBLIC).as_posix()] = {'base': base, 'width': image.width, 'height': image.height, 'widths': widths}
+        if not logo:
+            avif = OUTPUT / f'{digest}-{width}.avif'
+            if not avif.exists():
+                resized = image.resize((width, max(1, round(image.height * width / image.width))), Image.Resampling.LANCZOS)
+                resized.save(avif, 'AVIF', quality=50, speed=6)
+    manifest['/' + source.relative_to(PUBLIC).as_posix()] = {'base': base, 'width': image.width, 'height': image.height, 'widths': widths, **({'avif': True} if not logo else {})}
     original_bytes += len(raw)
     largest_bytes += sizes[max(widths)]
     card_bytes += sizes[min(widths, key=lambda w: abs(w - 640))]

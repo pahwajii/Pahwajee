@@ -13,3 +13,9 @@ export function imageProps(src, sizes = '(min-width: 1280px) 600px, (min-width: 
     height: image.height,
   };
 }
+
+export function avifProps(src, sizes = '(min-width: 1280px) 600px, (min-width: 768px) 50vw, calc(100vw - 32px)') {
+  const image = images[src];
+  if (!image?.avif) return null;
+  return { srcSet: image.widths.map(width => `${image.base}-${width}.avif ${width}w`).join(', '), sizes };
+}

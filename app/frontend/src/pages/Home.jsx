@@ -73,10 +73,10 @@ export default function Home() {
       {/* 1. Hero Section */}
       <section className="container-x grid min-h-[600px] items-center gap-10 pb-16 pt-12 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="flex flex-col justify-center">
-          <p className="eyebrow flex items-center gap-1.5"><Sparkles className="w-4.5 h-4.5 text-secondary" /> Trusted For Generations · Abu Lane Meerut</p>
+          <p className="eyebrow flex items-center gap-1.5"><Sparkles className="w-4.5 h-4.5 text-gold-ink" /> Trusted For Generations · Abu Lane Meerut</p>
           <h1 className="mt-4 text-5xl leading-tight md:text-6xl font-serif">
             PAHWAJEE
-            <span className="block text-2xl md:text-3xl font-sans tracking-wide text-secondary uppercase font-semibold mt-2">
+            <span className="block text-2xl md:text-3xl font-sans tracking-wide text-gold-ink uppercase font-semibold mt-2">
               Rewri • Gajak • Nankhatai • Gift Hampers
             </span>
           </h1>
@@ -87,7 +87,7 @@ export default function Home() {
             <Link to="/products" className="btn-primary flex items-center gap-2">
               Explore Our Signatures <ArrowRight size={17} />
             </Link>
-            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-600 !text-white hover:!bg-emerald-700 flex items-center gap-2 shadow-lg shadow-emerald-600/20">
+            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-700 !text-white hover:!bg-emerald-800 flex items-center gap-2 shadow-lg shadow-emerald-600/20">
               <MessageCircle size={17} /> Order on WhatsApp
             </a>
             <a href={telLink()} className="btn-outline flex items-center gap-2">
@@ -100,7 +100,7 @@ export default function Home() {
           <OptimizedImage
             loading="eager"
             fetchPriority="high"
-            sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
+            sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)"
             src={realHeroImage}
             alt="PAHWAJEE Store Front in Abu Lane Meerut"
             className="h-[480px] w-full rounded-3xl object-cover shadow-2xl border border-white/60"
@@ -125,7 +125,7 @@ export default function Home() {
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureRewri.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureRewri.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureRewri)}</span>
+              <span className="text-2xl font-serif font-bold text-gold-ink">{currentPrice(signatureRewri)}</span>
               <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Fresh Winter Batch</span>
             </div>
             <div className="space-y-4">
@@ -150,7 +150,7 @@ export default function Home() {
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureGajak.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureGajak.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureGajak)}</span>
+              <span className="text-2xl font-serif font-bold text-gold-ink">{currentPrice(signatureGajak)}</span>
               <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Organic Jaggery</span>
             </div>
             <div className="space-y-4">
@@ -169,7 +169,7 @@ export default function Home() {
             <h2 className="text-4xl font-serif mt-2 mb-4">{signatureNankhatai.name}</h2>
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureNankhatai.desc}</p>
             <div className="flex items-center gap-6 mb-6">
-              <span className="text-2xl font-serif font-bold text-secondary">{currentPrice(signatureNankhatai)}</span>
+              <span className="text-2xl font-serif font-bold text-gold-ink">{currentPrice(signatureNankhatai)}</span>
               <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-semibold">100% Pure Desi Ghee</span>
             </div>
             <div className="space-y-4">
@@ -198,7 +198,7 @@ export default function Home() {
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">{item.desc}</p>
               </div>
               <div className="space-y-3 border-t border-border/30 pt-3">
-                <span className="text-sm font-bold text-secondary">{currentPrice(item)}</span>
+                <span className="text-sm font-bold text-gold-ink">{currentPrice(item)}</span>
                 <AddToCart product={item} />
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground leading-relaxed mb-4">{hamper.desc}</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-border/30 pt-4">
-                  <span className="text-sm font-bold text-secondary">{hamper.price}</span>
+                  <span className="text-sm font-bold text-gold-ink">{hamper.price}</span>
                   <Link to="/gifting" className="text-xs font-semibold text-primary hover:underline">
                     Enquire Hampers &rarr;
                   </Link>
@@ -241,7 +241,7 @@ export default function Home() {
       <section className="container-x py-12">
         <div className="bg-gradient-to-r from-amber-900 via-primary to-amber-900 rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
           <div className="max-w-xl">
-            <span className="inline-block rounded-full bg-secondary/20 border border-secondary/30 text-secondary text-[10px] font-bold uppercase tracking-[0.2em] px-3.5 py-1 mb-3">
+            <span className="inline-block rounded-full bg-secondary/20 border border-secondary/30 text-amber-200 text-[10px] font-bold uppercase tracking-[0.2em] px-3.5 py-1 mb-3">
               Upcoming Festival Season
             </span>
             <h3 className="font-serif text-3xl md:text-4xl font-bold mb-3">Diwali Sweets & Corporate Gifting</h3>
@@ -264,17 +264,17 @@ export default function Home() {
         <div className="grid gap-8 md:grid-cols-3">
           <div className="card-warm p-6 text-center">
             <Award className="w-8 h-8 text-primary mx-auto mb-3" />
-            <h4 className="font-serif text-xl font-bold mb-2">Generational Secret Recipes</h4>
+            <h3 className="font-serif text-xl font-bold mb-2">Generational Secret Recipes</h3>
             <p className="text-xs text-muted-foreground leading-relaxed">Hand-rolled rewri and layered gazak prepared using traditional heritage techniques.</p>
           </div>
           <div className="card-warm p-6 text-center">
             <ShieldCheck className="w-8 h-8 text-primary mx-auto mb-3" />
-            <h4 className="font-serif text-xl font-bold mb-2">Pure Desi Ghee & Jaggery</h4>
+            <h3 className="font-serif text-xl font-bold mb-2">Pure Desi Ghee & Jaggery</h3>
             <p className="text-xs text-muted-foreground leading-relaxed">Made with 100% pure desi ghee and organic jaggery for genuine flavor.</p>
           </div>
           <div className="card-warm p-6 text-center">
             <Gift className="w-8 h-8 text-primary mx-auto mb-3" />
-            <h4 className="font-serif text-xl font-bold mb-2">Premium Packaging</h4>
+            <h3 className="font-serif text-xl font-bold mb-2">Premium Packaging</h3>
             <p className="text-xs text-muted-foreground leading-relaxed">Elegant wooden trays and luxury gift boxes designed for family and corporate gifting.</p>
           </div>
         </div>
@@ -293,7 +293,7 @@ export default function Home() {
             </div>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               <GoogleReviewButton />
-              <Link to="/testimonials" className="text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4 py-3">More customer reviews</Link>
+              <Link to="/testimonials" className="text-sm font-semibold text-primary dark:text-gold-ink underline underline-offset-4 py-3">More customer reviews</Link>
             </div>
           </div>
 
@@ -313,7 +313,7 @@ export default function Home() {
               <div className="md:col-span-7">
                 <p className="eyebrow">The Heart of PAHWA JEE</p>
                 <h3 className="font-serif text-2xl sm:text-3xl font-bold mt-1.5 mb-1.5 text-foreground">The Pahwa Family</h3>
-                <p className="text-xs font-semibold text-secondary uppercase tracking-wider mb-3">Three Brothers · Decades of Craftsmanship & Trust</p>
+                <p className="text-xs font-semibold text-gold-ink uppercase tracking-wider mb-3">Three Brothers · Decades of Craftsmanship & Trust</p>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                   The three Pahwa brothers, sons of <strong>Late Shri Kasturi Lal Pahwa</strong>, carry forward their father's legacy and the traditions of <strong>Ram Chandra Deewan Chandra Rewri Wale</strong>. From overseeing fresh batches to welcoming customers at Abu Lane, they bring personal care to the flavours Meerut families have loved for generations.
                 </p>
@@ -355,7 +355,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-600 !text-white flex items-center gap-2">
+            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-700 !text-white flex items-center gap-2">
               <MessageCircle size={16} /> WhatsApp Order
             </a>
             <a href={telLink()} className="btn-primary flex items-center gap-2"><Phone size={16} /> Call Store</a>
