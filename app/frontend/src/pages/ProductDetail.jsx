@@ -213,7 +213,7 @@ export default function ProductDetail() {
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">{product.name}</h1>
             <p className="text-secondary text-2xl md:text-3xl font-serif font-bold mb-6">{displayPrice(product)}</p>
-            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo'].includes(product.slug) && <p className="mb-4 text-xs text-muted-foreground">Product photo is illustrative.</p>}
+            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo', 'strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(product.slug) && <p className="mb-4 text-xs text-muted-foreground">Product photo is illustrative.</p>}
 
             <p className="text-muted-foreground leading-relaxed text-base mb-8 border-b border-border/30 pb-6">
               {product.description || "Freshly prepared daily with the finest ingredients at our store in Meerut. Crafted with generational recipes for authentic taste."}

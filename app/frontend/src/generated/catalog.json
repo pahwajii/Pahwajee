@@ -850,11 +850,11 @@
     "name": "Strawberry Bite",
     "price": "Rs 700/kg",
     "category": "signature",
-    "image": "/menu/mixed-fruit-special-bites-combo.webp",
+    "image": "/menu/strawberry-bite.webp",
     "images": [
-      "/menu/mixed-fruit-special-bites-combo.webp"
+      "/menu/strawberry-bite.webp"
     ],
-    "description": "Strawberry fruit bites. Pictured alongside other flavours in our mixed fruit box.",
+    "description": "Strawberry fruit bites.",
     "availability": "Available",
     "season": "all",
     "tags": [],
@@ -874,11 +874,11 @@
     "name": "Kachha Aam Bite",
     "price": "Rs 700/kg",
     "category": "signature",
-    "image": "/menu/mixed-fruit-special-bites-combo.webp",
+    "image": "/menu/kachha-aam-bite.webp",
     "images": [
-      "/menu/mixed-fruit-special-bites-combo.webp"
+      "/menu/kachha-aam-bite.webp"
     ],
-    "description": "Raw mango fruit bites. Pictured alongside other flavours in our mixed fruit box.",
+    "description": "Raw mango fruit bites.",
     "availability": "Available",
     "season": "all",
     "tags": [],
@@ -898,11 +898,11 @@
     "name": "Khajoor Barfi",
     "price": "Rs 800/kg",
     "category": "signature",
-    "image": "/menu/pahwa-winter-mithai-box.webp",
+    "image": "/menu/khajoor-barfi.webp",
     "images": [
-      "/menu/pahwa-winter-mithai-box.webp"
+      "/menu/khajoor-barfi.webp"
     ],
-    "description": "Date barfi. Pictured with other sweets in our winter mithai box.",
+    "description": "Date barfi.",
     "availability": "Available",
     "season": "all",
     "tags": [],

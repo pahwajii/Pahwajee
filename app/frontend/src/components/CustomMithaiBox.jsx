@@ -71,6 +71,7 @@ export default function CustomMithaiBox() {
               <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`}><OptimizedImage src={product.image} alt={product.name} width={300} height={240} sizes="(min-width: 1280px) 230px, (min-width: 1024px) 300px, 45vw" className="aspect-[5/4] w-full object-cover" /></Link>
               <div className="flex flex-1 flex-col p-3">
                 <Link to={`/products/${product.slug}`} className="font-semibold text-sm leading-snug hover:underline">{product.name}</Link>
+                {['strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(product.slug) && <p className="mt-1 text-[11px] text-muted-foreground">Illustrative photo</p>}
                 {hasAssortmentPhoto(product.slug) && <p className="mt-1 text-[11px] text-muted-foreground">Shown in an assorted box</p>}
                 <p className="mt-2 text-xs text-muted-foreground">{available ? `${formatMoney(product.unit_price_paise)}/kg` : 'Currently unavailable'}</p>
                 <p className="mt-1 text-sm font-semibold">{available ? `${formatMoney(packPrice(product.unit_price_paise, PORTION_GRAMS))} / 250 g` : '\u2014'}</p>

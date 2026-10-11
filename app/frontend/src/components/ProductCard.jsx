@@ -24,7 +24,7 @@ export default function ProductCard({ product }) {
               className={`h-full w-full ${category === "festival-collection" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-105`}
               loading="lazy"
             />
-            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo'].includes(slug) && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-[11px]">Illustrative</span>}
+            {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo', 'strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(slug) && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-[11px]">Illustrative</span>}
             {(isBestSeller || featured) && (
               <span className="absolute left-2 top-2 sm:left-3 sm:top-3 rounded-full bg-secondary px-2 sm:px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:tracking-[0.18em] text-secondary-foreground shadow">
                 {isBestSeller ? 'Best Seller' : 'Featured'}
