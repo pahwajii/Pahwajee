@@ -71,7 +71,7 @@ export default function Diwali() {
       {/* Hero Banner */}
       <section className="container-x py-12">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-950 via-primary to-amber-950 text-white p-8 md:p-16 shadow-2xl flex flex-col items-center text-center">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
 
           <div className="h-14 w-14 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mb-6 border border-secondary/30">
             <Sparkles className="w-7 h-7" />
@@ -87,7 +87,7 @@ export default function Diwali() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
-              href={waLink("Hi PAHWAJEE, I am interested in your Diwali gift hampers. Please share catalog & price details.")}
+              href={waLink("Diwali gift hampers")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-gold !bg-emerald-600 !text-white hover:!bg-emerald-700 flex items-center gap-2"
@@ -132,7 +132,7 @@ export default function Diwali() {
                 <div className="flex items-center justify-between border-t border-border/40 pt-4 mt-2">
                   <span className="text-sm font-bold text-secondary">{pkg.price}</span>
                   <a
-                    href={waLink(`Hi PAHWAJEE, I'd like to order: ${pkg.name}.`)}
+                    href={waLink(pkg.name)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-semibold text-primary flex items-center gap-1 hover:underline"
