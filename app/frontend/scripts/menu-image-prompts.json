@@ -71,8 +71,8 @@
   },
   {
     "asset": "/menu/lassi.webp",
-    "prompt": "a glass of creamy white sweet Indian lassi",
-    "method": "Built-in image_gen"
+    "prompt": "Use case: precise-object-edit. Asset type: square website menu photograph. Edit target: the supplied lassi photograph. Replace only the transparent drinking glass with a traditional unglazed reddish-brown terracotta kulhad, with a gently tapered body and visible clay texture. Keep the creamy white lassi and its existing garnish, the drink's centered position, warm neutral tabletop and background, soft natural lighting, supporting props and clean photorealistic food-photography style. The lassi must visibly be served inside the clay kulhad, with no glass remaining. No text, branding or watermark.",
+    "method": "Built-in image_gen; resized and compressed to 640px WebP"
   },
   {
     "asset": "/menu/shikanji.webp",
