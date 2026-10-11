@@ -482,7 +482,7 @@
       "/products/Dryfruit-tray6.png",
       "/products/Dryfruit-tray7.png"
     ],
-    "price": "Rs 1100 \u2013 Rs 2500",
+    "price": "Rs 1100 – Rs 2500",
     "availability": "Available",
     "tags": [],
     "season": "all",
@@ -823,7 +823,7 @@
     "slug": "mixed-fruit-special-bites-combo",
     "name": "Mixed Fruit Special Bites Combo",
     "price": "Rs 700/kg",
-    "category": "signature",
+    "category": "festival-collection",
     "image": "/menu/mixed-fruit-special-bites-combo.webp",
     "images": [
       "/menu/mixed-fruit-special-bites-combo.webp"

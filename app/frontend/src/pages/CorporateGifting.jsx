@@ -83,7 +83,8 @@ export default function CorporateGifting() {
         </section>
 
         <section className="my-10" aria-labelledby="mithai-gift-boxes">
-          <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-5">Mithai Gift Boxes</h2>
+          <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-2">Mithai Gift Boxes</h2>
+          <p className="text-base text-muted-foreground mb-5">All mithai gift boxes, including Mixed Fruit Special Bites, are available in 1 kg boxes only.</p>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{giftBoxes.map(product => <ProductCard key={product.slug} product={product} />)}</div>
         </section>
 

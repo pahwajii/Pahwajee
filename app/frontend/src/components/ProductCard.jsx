@@ -37,8 +37,7 @@ export default function ProductCard({ product }) {
             {name}
           </Link>
           <p className="text-xs font-semibold text-secondary mb-1 sm:mb-3">{displayPrice(product)}</p>
-          {slug.endsWith('mithai-box') && <p className="text-xs text-muted-foreground mb-2">{slug === 'pahwa-signature-mithai-box' ? 'Khajoor Laddoo, Mango Bite, Mawa Til Laddoo & Gond Laddoo' : 'Alsi Laddoo, Gond Laddoo, Mawa Barfi & Khajoor Barfi'}</p>}
-          {isMithaiBox(slug) && <p className="text-xs text-muted-foreground">1 kg box only</p>}
+          {isMithaiBox(slug) && <p className="text-xs text-muted-foreground mb-2">{slug === 'pahwa-signature-mithai-box' ? 'Khajoor Laddoo, Mango Bite, Mawa Til Laddoo & Gond Laddoo' : slug === 'pahwa-winter-mithai-box' ? 'Alsi Laddoo, Gond Laddoo, Mawa Barfi & Khajoor Barfi' : 'Mango, Kachha Aam & Strawberry Bites'}</p>}
           {hasAssortmentPhoto(slug) && <p className="text-xs text-muted-foreground">Shown in an assorted box</p>}
         </div>
       </div>

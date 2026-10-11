@@ -15,7 +15,8 @@
     {
       "slug": "mixed-fruit-special-bites-combo",
       "fields": {
-        "description": "A 1 kg assortment of Mango, Kachha Aam and Strawberry bites for Rs 700. Available only as a 1 kg pack. For a different selection, build a custom box below."
+        "description": "A 1 kg assortment of Mango, Kachha Aam and Strawberry bites for Rs 700. Available only as a 1 kg pack. For a different selection, build a custom box below.",
+        "category": "festival-collection"
       }
     },
     {

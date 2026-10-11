@@ -36,14 +36,14 @@ export default function AddToCart({ product }) {
 
   return <div className="add-to-cart w-full max-w-sm space-y-3">
     <div className="cart-options flex flex-wrap items-end gap-3">
-      {item?.sale_unit === 'kg' && <div className="cart-pack flex-1 min-w-24">
+      {isMithaiBox(product.slug) ? <div className="cart-pack flex-1 min-w-24"><p className="mb-1 text-xs font-medium text-muted-foreground">Box size</p><p className="commerce-input flex items-center">1 kg only</p></div> : item?.sale_unit === 'kg' && <div className="cart-pack flex-1 min-w-24">
         <label htmlFor={`${id}-pack`} className="mb-1 block text-xs font-medium text-muted-foreground">Pack size</label>
         <select id={`${id}-pack`} aria-label={`Pack size for ${product.name}`} disabled={submitting} value={selectedPack} onChange={(e) => { setPack(Number(e.target.value)); setFeedback(''); setAdded(false); }} className="commerce-input">
           {packs.map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}
         </select>
       </div>}
       <div className="cart-quantity w-20">
-        <label htmlFor={`${id}-qty`} className="mb-1 block text-xs font-medium text-muted-foreground">{item?.sale_unit === 'plate' ? 'Plates' : 'Quantity'}</label>
+        <label htmlFor={`${id}-qty`} className="mb-1 block text-xs font-medium text-muted-foreground">{isMithaiBox(product.slug) ? 'Boxes' : item?.sale_unit === 'plate' ? 'Plates' : 'Quantity'}</label>
         <input id={`${id}-qty`} type="number" min="1" max="99" inputMode="numeric" aria-label={`Quantity for ${product.name}`} disabled={submitting} value={quantity} onChange={(e) => { setQuantity(e.target.value === '' ? '' : Number(e.target.value)); setFeedback(''); setAdded(false); }} onBlur={() => { if (!Number.isInteger(quantity) || quantity < 1) setQuantity(1); }} className="commerce-input" />
       </div>
     </div>
