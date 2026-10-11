@@ -304,14 +304,9 @@ SEED_PRODUCTS = [
     },
 ]
 
-SEED_TESTIMONIALS = [
-    {"name": "Rahul Sharma", "location": "Sadar Bazaar, Meerut", "rating": 5, "review": "PAHWA JEE's nankhatai is a Meerut legend. My family has been buying from here for over 20 years. Nothing else comes close.", "avatar": "https://i.pravatar.cc/150?img=12", "order": 1},
-    {"name": "Priya Agarwal", "location": "Shastri Nagar, Meerut", "rating": 5, "review": "Ordered a customized birthday cake - delivered on time, tasted heavenly, and looked absolutely stunning. Highly recommended!", "avatar": "https://i.pravatar.cc/150?img=45", "order": 2},
-    {"name": "Aman Verma", "location": "Abu Lane, Meerut", "rating": 5, "review": "Their cold coffee is the best in Meerut. I drop by every evening after work. Fresh, thick and full of flavour.", "avatar": "https://i.pravatar.cc/150?img=33", "order": 3},
-    {"name": "Neha Gupta", "location": "Meerut Cantt", "rating": 5, "review": "Got Diwali hampers for my entire office. Everyone loved the packaging and the quality of dry fruits. Will order again next year!", "avatar": "https://i.pravatar.cc/150?img=48", "order": 4},
-    {"name": "Vikram Malhotra", "location": "Modipuram, Meerut", "rating": 5, "review": "Rewri and gazak are exactly like my grandmother used to make. Authentic taste, generous quantity, fair prices.", "avatar": "https://i.pravatar.cc/150?img=15", "order": 5},
-    {"name": "Sneha Kapoor", "location": "Bhagwatpur, Meerut", "rating": 5, "review": "Best shakes in town. The Anjeer shake is my absolute favourite. The staff is so warm and welcoming too.", "avatar": "https://i.pravatar.cc/150?img=47", "order": 6},
-]
+# Public testimonials are manually selected, source-checked Google reviews.
+# Historical database entries remain private; they are never a public fallback.
+GOOGLE_REVIEWS = json.loads((ROOT_DIR.parent / "google-reviews.json").read_text(encoding="utf-8"))["reviews"]
 
 SEED_GALLERY = [
     {"image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1600&auto=format&fit=crop", "title": "Store Front", "category": "Store", "order": 1},
@@ -360,10 +355,6 @@ async def seed_data():
     if await db.products.count_documents({}) == 0:
         docs = [Product(**p).model_dump() for p in SEED_PRODUCTS]
         await db.products.insert_many(docs)
-    # Testimonials
-    if await db.testimonials.count_documents({}) == 0:
-        docs = [Testimonial(**t).model_dump() for t in SEED_TESTIMONIALS]
-        await db.testimonials.insert_many(docs)
     # Gallery
     if await db.gallery.count_documents({}) == 0:
         docs = [GalleryItem(**g).model_dump() for g in SEED_GALLERY]
@@ -538,7 +529,7 @@ async def retry_order_email(reference: str, _: dict = Depends(require_admin)):
 
 @api_router.get("/testimonials")
 async def get_testimonials():
-    return await db.testimonials.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+    return GOOGLE_REVIEWS
 
 @api_router.get("/gallery")
 async def get_gallery():

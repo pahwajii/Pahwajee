@@ -1,7 +1,8 @@
+import { reviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, MessageCircle, Phone, Sparkles, Star, Award, ShieldCheck, Clock, Gift, Heart } from 'lucide-react';
+import { ArrowRight, MapPin, MessageCircle, Phone, Sparkles, Award, ShieldCheck, Clock, Gift, Heart } from 'lucide-react';
 import SEO from '../components/SEO';
 import AddToCart from '../components/AddToCart';
 import { useCart } from '../context/CartContext';
@@ -279,25 +280,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10 & 11. Customer Reviews & Owner Placeholder Preview */}
+      {/* 10 & 11. Google Reviews & Pahwa Family */}
       <section className="bg-card/45 border-y border-border/50 py-16">
         <div className="container-x space-y-12">
           <div>
             <div className="text-center max-w-xl mx-auto mb-8">
-              <p className="eyebrow">Local Love</p>
-              <h2 className="text-3xl font-serif mt-2">What Meerut Families Say</h2>
+              <h2 className="text-2xl sm:text-3xl font-serif">Our Customers on Google</h2>
+              <p className="mt-3 text-sm text-muted-foreground">Selected reviews from our Google listing.</p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-              <div className="card-warm p-6 bg-white/70 dark:bg-card/50">
-                <div className="flex text-secondary gap-1 mb-3"><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/></div>
-                <p className="text-xs text-muted-foreground italic mb-4">"PAHWAJEE's nankhatai is a Meerut legend. My family has been buying from here for over 20 years. Nothing else comes close."</p>
-                <p className="text-xs font-bold">— Rahul Sharma, Sadar Bazaar Meerut</p>
-              </div>
-              <div className="card-warm p-6 bg-white/70 dark:bg-card/50">
-                <div className="flex text-secondary gap-1 mb-3"><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/><Star size={16} className="fill-current"/></div>
-                <p className="text-xs text-muted-foreground italic mb-4">"Rewri and gazak are exactly like my grandmother used to make. Authentic taste, generous quantity, fair prices."</p>
-                <p className="text-xs font-bold">— Vikram Malhotra, Modipuram Meerut</p>
-              </div>
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
+              {reviews.slice(0, 3).map(review => <GoogleReviewCard key={review.id} review={review} />)}
+            </div>
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <GoogleReviewButton />
+              <Link to="/testimonials" className="text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4 py-3">More customer reviews</Link>
             </div>
           </div>
 

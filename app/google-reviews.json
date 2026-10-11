@@ -1,0 +1,74 @@
+{
+  "checked_at": "2026-10-11",
+  "source": "Google",
+  "reviews_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+  "write_review_url": "https://g.page/r/CaM6_d03sf_4EAE/review",
+  "reviews": [
+    {
+      "id": "google-mukesh-sharma",
+      "name": "Mukesh Sharma",
+      "rating": 5,
+      "review": "Good food and taste of rewri gazak is so good with ghee nankhatayi also great",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tKeFlWSlZWbVpmTmpVNU9XTTFZMlIzWm01dmRWRRAB",
+      "excerpt": false,
+      "order": 1
+    },
+    {
+      "id": "google-ashish-grover",
+      "name": "Ashish grover",
+      "rating": 5,
+      "review": "Good quality products.......GAJAK is too Tasty...",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tOUGFHUkpOM2M1TjFGeE9EZExhRWN5YW1OVmIwRRAB",
+      "excerpt": false,
+      "order": 2
+    },
+    {
+      "id": "google-javed-khan",
+      "name": "Javed Khan",
+      "rating": 5,
+      "review": "Lazeez tandoori sandwich. Sandwich is very tasty and soft and one sandwich is enough for one person",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT214NFluUnliRlJLYjNOMmRtSkZPRjlhY21VeU5FRRAB",
+      "excerpt": true,
+      "order": 3
+    },
+    {
+      "id": "google-krish-sharma",
+      "name": "Krish Sharma",
+      "rating": 5,
+      "review": "Great and tasty sweets and great sandwich too",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2pCMU5FZDZNelIyY0hWQk5GcGlhVlV0V0ZaV1VWRRAB",
+      "excerpt": false,
+      "order": 4
+    },
+    {
+      "id": "google-sumit-jain",
+      "name": "057 Sumit jain",
+      "rating": 5,
+      "review": "The best gazak rewri and naan khatayi are truly exceptional.",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tOS1EweDNWVTVzU0dWblpVTkxOVTk1YWpGYVVYYxAB",
+      "excerpt": false,
+      "order": 5
+    },
+    {
+      "id": "google-aditya-kumar",
+      "name": "Aditya Kumar",
+      "rating": 5,
+      "review": "Great and service , Great Food overall a wonderful place .",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT214M1RqSXRiVXhyVDNBeVpGWTRXbUpyUVdkak0xRRAB",
+      "excerpt": false,
+      "order": 6
+    }
+  ]
+}

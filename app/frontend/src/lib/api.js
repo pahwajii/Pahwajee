@@ -1,3 +1,4 @@
+import googleReviews from '../../../google-reviews.json';
 import { isStoreProduct, isGalleryOnlySlug } from './storefront';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
@@ -56,6 +57,7 @@ export default {
 
 export const BUSINESS = {
   name: "PAHWA JEE",
+  googleReviewUrl: googleReviews.write_review_url,
   tagline: "Meerut's Trusted Destination for Nankhatai, Rewri, Gazak, Shakes & Premium Gift Hampers",
   phones: ["6396339806", "9837566628"],
   whatsapp: "6396339806",
