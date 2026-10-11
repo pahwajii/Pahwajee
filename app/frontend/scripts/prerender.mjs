@@ -26,7 +26,6 @@ const data = {products, faqs, testimonials, gallery};
 const server = await createServer({mode: 'production', server: {middlewareMode: true}, appType: 'custom'});
 try {
   const {render} = await server.ssrLoadModule('/src/entry-server.jsx');
-  const {avifProps} = await server.ssrLoadModule('/src/lib/images.js');
   const {PUBLIC_PATHS, SITE_URL, renderHead, metadata, serializeJson, escapeHtml} = await server.ssrLoadModule('/src/lib/seo.js');
   let template = await readFile(resolve(root, 'dist/index.html'), 'utf8');
   // The shared stylesheet is only about 10 KB compressed. Embed it in the
@@ -42,9 +41,7 @@ try {
   async function output(file, html, meta, initialData = {}) {
     const destination = resolve(root, 'dist', file);
     await mkdir(dirname(destination), {recursive: true});
-    const hero = file === 'index.html' ? avifProps('/our_shop_main.jpeg', '(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)') : null;
-    const pageTemplate = hero ? template.replace('<head>', `<head>\n<link rel="preload" as="image" type="image/avif" imagesrcset="${escapeHtml(hero.srcSet)}" imagesizes="${escapeHtml(hero.sizes)}" fetchpriority="high">`) : template;
-    const page = pageTemplate.replace('<!--seo-head-->', renderHead(meta)).replace('<div id="root"></div>', `<div id="root">${html}</div>\n<script id="page-data" type="application/json">${serializeJson(initialData)}</script>`);
+    const page = template.replace('<!--seo-head-->', renderHead(meta)).replace('<div id="root"></div>', `<div id="root">${html}</div>\n<script id="page-data" type="application/json">${serializeJson(initialData)}</script>`);
     await writeFile(destination, page);
   }
   for (const path of paths) {
