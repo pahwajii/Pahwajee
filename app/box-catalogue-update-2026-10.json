@@ -58,6 +58,12 @@
         "bestSeller": true,
         "order": -5
       }
+    },
+    {
+      "slug": "mawa-malai-gajar-barfi",
+      "fields": {
+        "availability": "Currently unavailable"
+      }
     }
   ],
   "new_products": [
