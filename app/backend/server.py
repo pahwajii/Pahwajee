@@ -344,6 +344,11 @@ _review = json.loads((ROOT_DIR.parent / "catalogue-review-2026-10.json").read_te
 _review_updates = {item["slug"]: item["fields"] for item in _review["updates"]}
 SEED_PRODUCTS = [{**product, **_review_updates.get(product["slug"], {})} for product in SEED_PRODUCTS if product["slug"] not in GALLERY_ONLY_SLUGS]
 SEED_PRODUCTS.extend(_review["new_products"])
+_box_review = json.loads((ROOT_DIR.parent / "box-catalogue-update-2026-10.json").read_text(encoding="utf-8"))
+_box_updates = {item["slug"]: item["fields"] for item in _box_review["updates"]}
+SEED_PRODUCTS = [{**product, **_box_updates.get(product["slug"], {})} for product in SEED_PRODUCTS]
+SEED_PRODUCTS.extend(_box_review["new_products"])
+
 
 
 async def seed_data():

@@ -1,3 +1,4 @@
+import { isMithaiBox, hasAssortmentPhoto } from '../lib/mithaiBox';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from './OptimizedImage';
 import { Link } from 'react-router-dom';
@@ -35,12 +36,14 @@ export default function ProductCard({ product }) {
           </Link>
           <p className="text-xs font-semibold text-secondary mb-1 sm:mb-3">{displayPrice(product)}</p>
           {slug.endsWith('mithai-box') && <p className="text-xs text-muted-foreground mb-2">{slug === 'pahwa-signature-mithai-box' ? 'Khajoor Laddoo, Mango Bite, Mawa Til Laddoo & Gond Laddoo' : 'Alsi Laddoo, Gond Laddoo, Mawa Barfi & Khajoor Barfi'}</p>}
-          {slug === 'pahwa-signature-mithai-box' && <p className="text-xs text-muted-foreground">Customisable selection</p>}
+          {isMithaiBox(slug) && <p className="text-xs text-muted-foreground">1 kg box only</p>}
+          {hasAssortmentPhoto(slug) && <p className="text-xs text-muted-foreground">Shown in an assorted box</p>}
         </div>
       </div>
 
       <div className="p-2.5 pt-0 sm:p-4 sm:pt-0 space-y-3">
         <AddToCart product={product} />
+        <Link to={`/products/${slug}`} className="inline-flex min-h-11 items-center text-xs sm:text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4" aria-label={`View ${name} product details`}>{isMithaiBox(slug) ? 'View box & customise' : 'View product details'}</Link>
         <div className="border-t border-border/20 pt-3 flex flex-wrap items-center justify-between gap-2">
         <span className={`w-full sm:w-auto text-xs sm:text-[11px] font-medium ${availability === 'Available' ? 'text-emerald-700' : 'text-amber-700'}`}>
           {availability || 'Fresh Daily'}

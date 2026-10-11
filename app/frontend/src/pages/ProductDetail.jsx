@@ -1,3 +1,5 @@
+import CustomMithaiBox from '../components/CustomMithaiBox';
+import { isMithaiBox, hasAssortmentPhoto } from '../lib/mithaiBox';
 import FssaiNotice from '../components/FssaiNotice';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
@@ -67,7 +69,7 @@ export default function ProductDetail() {
   // Get specific local parameters based on name (to avoid inventing random facts)
   const getProductSpecs = (name) => {
     const text = name.toLowerCase();
-    if (text.includes('mawa') || text.includes('louch') || text.includes('panjeeri') || text.includes('mithai box') || text.includes('gond')) return {ingredients: 'Ask the store for ingredients and allergen information.', storage: 'Follow the storage instructions supplied with your order.', shelfLife: 'Confirm with the store', suitability: 'Contact us to confirm availability and your preferred quantity.'};
+    if (text.includes('bite') || text.includes('khajoor barfi') || text.includes('mawa') || text.includes('louch') || text.includes('panjeeri') || text.includes('mithai box') || text.includes('gond')) return {ingredients: 'Ask the store for ingredients and allergen information.', storage: 'Follow the storage instructions supplied with your order.', shelfLife: 'Confirm with the store', suitability: 'Contact us to confirm availability and your preferred quantity.'};
     if (text.includes('nankhatai')) {
       return {
         ingredients: text.includes('vanaspati')
@@ -245,6 +247,8 @@ export default function ProductDetail() {
 
             <FssaiNotice className="mb-4" />
 
+            {isMithaiBox(product.slug) && <p className="text-sm font-medium mb-4">Available as a 1 kg box only. Customise your selection below.</p>}
+            {hasAssortmentPhoto(product.slug) && <p className="text-xs text-muted-foreground mb-4">Photo shows this sweet as part of an assorted box.</p>}
             {/* CTAs */}
             <div className="mb-6"><AddToCart product={product} /></div>
             <div className="flex flex-wrap gap-4 pt-2">
@@ -265,6 +269,8 @@ export default function ProductDetail() {
             </div>
           </div>
         </section>
+
+        {isMithaiBox(product.slug) && <CustomMithaiBox />}
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (

@@ -39,6 +39,20 @@ def payload():
 
 
 class PricingTests(unittest.TestCase):
+    def test_ready_made_boxes_are_purchasable_only_as_one_kg(self):
+        for slug, rate, category in [("pahwa-signature-mithai-box", 700, "festival-collection"), ("pahwa-winter-mithai-box", 800, "festival-collection"), ("mixed-fruit-special-bites-combo", 700, "signature")]:
+            product = {**PRODUCTS[0], "slug": slug, "category": category, "price": f"Rs {rate}/kg"}
+            self.assertTrue(purchase_fields(product)["cart_eligible"])
+            self.assertEqual(purchase_fields(product)["pack_sizes_grams"], [1000])
+            body = payload()
+            body["items"] = [{"slug": slug, "pack_grams": 1000, "quantity": 2, "expected_unit_price_paise": rate * 100}]
+            self.assertEqual(price_order(OrderRequest(**body).items, [product])[1], rate * 200)
+            body["items"][0]["pack_grams"] = 500
+            with self.assertRaises(HTTPException) as caught:
+                price_order(OrderRequest(**body).items, [product])
+            self.assertEqual(caught.exception.detail["code"], "invalid_pack")
+        self.assertFalse(purchase_fields(PRODUCTS[3])["cart_eligible"])
+
     def test_gallery_only_salad_cannot_be_ordered_from_a_saved_cart(self):
         product = {**PRODUCTS[2], "slug": "fresh-special-salad", "name": "Fresh Special Salad"}
         self.assertFalse(purchase_fields(product)["cart_eligible"])

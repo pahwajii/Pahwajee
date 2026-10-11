@@ -1,0 +1,31 @@
+{
+  "boxSlugs": [
+    "pahwa-signature-mithai-box",
+    "pahwa-winter-mithai-box",
+    "mixed-fruit-special-bites-combo"
+  ],
+  "portionGrams": 250,
+  "portionCount": 4,
+  "customSweetSlugs": [
+    "alsi-ke-laddoo",
+    "khajoor-laddoo",
+    "dry-fruit-laddoo",
+    "besan-laddoo",
+    "mawa-til-laddoo",
+    "gond-laddoo",
+    "mango-bite",
+    "strawberry-bite",
+    "kachha-aam-bite",
+    "mawa-barfi",
+    "mawa-malai-gajar-barfi",
+    "khajoor-barfi",
+    "til-bugga",
+    "special-pishori-pinni",
+    "gheeye-ki-louch"
+  ],
+  "assortmentPhotos": [
+    "strawberry-bite",
+    "kachha-aam-bite",
+    "khajoor-barfi"
+  ]
+}

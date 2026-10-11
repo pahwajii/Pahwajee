@@ -1,0 +1,75 @@
+{
+  "updates": [
+    {
+      "slug": "pahwa-signature-mithai-box",
+      "fields": {
+        "description": "A 1 kg box with 250 g each of Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. The ready-made assortment costs Rs 700. For a different selection, build a custom box below; its price is calculated from the individual sweet rates."
+      }
+    },
+    {
+      "slug": "pahwa-winter-mithai-box",
+      "fields": {
+        "description": "A 1 kg box with 250 g each of Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. The ready-made assortment costs Rs 800. For a different selection, build a custom box below; its price is calculated from the individual sweet rates."
+      }
+    },
+    {
+      "slug": "mixed-fruit-special-bites-combo",
+      "fields": {
+        "description": "A 1 kg assortment of Mango, Kachha Aam and Strawberry bites for Rs 700. Available only as a 1 kg pack. For a different selection, build a custom box below."
+      }
+    }
+  ],
+  "new_products": [
+    {
+      "id": "strawberry-bite",
+      "slug": "strawberry-bite",
+      "name": "Strawberry Bite",
+      "price": "Rs 700/kg",
+      "category": "signature",
+      "image": "/menu/mixed-fruit-special-bites-combo.webp",
+      "images": [
+        "/menu/mixed-fruit-special-bites-combo.webp"
+      ],
+      "description": "Strawberry fruit bites. Pictured alongside other flavours in our mixed fruit box.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "kachha-aam-bite",
+      "slug": "kachha-aam-bite",
+      "name": "Kachha Aam Bite",
+      "price": "Rs 700/kg",
+      "category": "signature",
+      "image": "/menu/mixed-fruit-special-bites-combo.webp",
+      "images": [
+        "/menu/mixed-fruit-special-bites-combo.webp"
+      ],
+      "description": "Raw mango fruit bites. Pictured alongside other flavours in our mixed fruit box.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    },
+    {
+      "id": "khajoor-barfi",
+      "slug": "khajoor-barfi",
+      "name": "Khajoor Barfi",
+      "price": "Rs 800/kg",
+      "category": "signature",
+      "image": "/menu/pahwa-winter-mithai-box.webp",
+      "images": [
+        "/menu/pahwa-winter-mithai-box.webp"
+      ],
+      "description": "Date barfi. Pictured with other sweets in our winter mithai box.",
+      "availability": "Available",
+      "season": "all",
+      "tags": [],
+      "newArrival": true,
+      "order": 0
+    }
+  ]
+}

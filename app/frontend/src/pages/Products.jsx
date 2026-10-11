@@ -1,3 +1,4 @@
+import { isMithaiBox } from '../lib/mithaiBox';
 import fallbackProducts from '../generated/catalog.json';
 import { usePageData } from '../context/PageData';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,7 +15,7 @@ const filters = [
   { label: 'All Products', value: 'all', match: () => true },
   { label: 'Rewri & Gajak', value: 'rewri-gajak', match: (product) => includesAny(product.name, ['rewri', 'gazak', 'gajak', 'chikki', 'til', 'patti']) },
   { label: 'Nankhatai', value: 'nankhatai', match: (product) => includesAny(product.name, ['nankhatai', 'nankhatayi']) },
-  { label: 'Gift Hampers & Trays', value: 'hampers', match: (product) => includesAny(product.name, ['tray', 'hamper', 'gifting']) || product.category === 'festival-collection' },
+  { label: 'Gift Hampers & Trays', value: 'hampers', match: (product) => includesAny(product.name, ['tray', 'hamper', 'gifting']) || product.category === 'festival-collection' || isMithaiBox(product.slug) },
   { label: 'Laddoo & Sweets', value: 'sweets', match: (product) => includesAny(product.name, ['laddoo', 'laddo', 'pinni', 'bite', 'halwa', 'kheer', 'sev', 'sweet', 'mithai', 'barfi', 'louch', 'panjeeri']) }
 ];
 

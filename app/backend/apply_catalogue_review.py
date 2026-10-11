@@ -11,10 +11,11 @@ from bson import json_util
 from server import Product, client, db
 from orders import purchasable_product
 
-REVIEW = json.loads((Path(__file__).resolve().parents[1] / 'catalogue-review-2026-10.json').read_text(encoding='utf-8'))
+DEFAULT_REVIEW = Path(__file__).resolve().parents[1] / 'catalogue-review-2026-10.json'
 
 async def main(args):
     try:
+        REVIEW = json.loads(Path(args.review_file).read_text(encoding='utf-8'))
         slugs = [p['slug'] for p in REVIEW['updates'] + REVIEW['new_products']]
         existing = await db.products.find({'slug': {'$in': slugs}}).to_list(length=500)
         by_slug = {p['slug']: p for p in existing}
@@ -40,7 +41,7 @@ async def main(args):
         client.close()
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('--apply',action='store_true'); parser.add_argument('--backup')
+    parser=argparse.ArgumentParser(); parser.add_argument('--apply',action='store_true'); parser.add_argument('--backup'); parser.add_argument('--review-file', default=str(DEFAULT_REVIEW))
     args=parser.parse_args()
     if args.apply and not args.backup: parser.error('--apply requires --backup')
     asyncio.run(main(args))

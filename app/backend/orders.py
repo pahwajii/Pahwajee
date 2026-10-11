@@ -23,6 +23,7 @@ from pymongo.errors import DuplicateKeyError
 
 logger = logging.getLogger(__name__)
 GALLERY_ONLY_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] / "gallery-only-products.json").read_text(encoding="utf-8")))
+BOX_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] / "mithai-boxes.json").read_text(encoding="utf-8"))["boxSlugs"])
 PACKS = (500, 1000)
 PRODUCT_PACKS = json.loads((Path(__file__).resolve().parents[1] / "product-packs.json").read_text(encoding="utf-8"))
 DELIVERY_INFO = (
@@ -36,7 +37,7 @@ def purchase_fields(product):
     """Strictly derive numeric pricing from the existing editable price field."""
     price = (product.get("price") or "").strip()
     match = re.fullmatch(r"(?:Rs\.?|INR|₹)\s*(\d+(?:\.\d{1,2})?)\s*(?:/\s*(kg|plate|piece))?", price, re.I)
-    excluded = product.get("availability") == "Special order only" or product.get("slug") in GALLERY_ONLY_SLUGS or product.get("category") == "festival-collection" or bool(
+    excluded = product.get("availability") == "Special order only" or product.get("slug") in GALLERY_ONLY_SLUGS or (product.get("category") == "festival-collection" and product.get("slug") not in BOX_SLUGS) or bool(
         re.search(r"\b(?:trays?|hampers?|gifting)\b", f"{product.get('name', '')} {product.get('slug', '').replace('-', ' ')}", re.I)
     )
     amount = int(Decimal(match[1]) * 100) if match else None

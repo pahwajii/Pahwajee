@@ -1,3 +1,4 @@
+import { isMithaiBox } from '../lib/mithaiBox';
 import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, ShoppingBag } from 'lucide-react';
@@ -15,8 +16,8 @@ export default function AddToCart({ product }) {
   const id = useId();
 
   if (product.availability === 'Special order only' || item?.availability === 'Special order only') return <a href={waLink(`${product.name} - special order enquiry`)} className="btn-outline justify-center !px-3 !py-2.5 text-sm">Enquire for special order</a>;
-  if (product.category === 'festival-collection' || (item && !item.cart_eligible)) {
-    return <a href={waLink(product.name + (product.slug === "pahwa-signature-mithai-box" ? " - customise my box" : ""))} className="btn-outline justify-center !px-4 !py-2.5 text-sm">{product.slug === "pahwa-signature-mithai-box" ? "Customise this box" : "Enquire about this item"}</a>;
+  if ((product.category === 'festival-collection' && !isMithaiBox(product.slug)) || (item && !item.cart_eligible)) {
+    return <a href={waLink(product.name)} className="btn-outline justify-center !px-4 !py-2.5 text-sm">Enquire about this item</a>;
   }
   if (catalogStatus === 'error') return <button type="button" onClick={() => refreshCatalog().catch(() => {})} className="text-sm underline min-h-11">Reload catalogue to order</button>;
   if (catalogStatus === 'ready' && !canPurchase(item)) return <p className="text-sm text-muted-foreground py-2">Currently unavailable to order.</p>;

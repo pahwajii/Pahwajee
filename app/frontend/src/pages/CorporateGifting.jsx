@@ -1,3 +1,5 @@
+import CustomMithaiBox from '../components/CustomMithaiBox';
+import { boxSlugs } from '../lib/mithaiBox';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
 import fallbackProducts from '../generated/catalog.json';
@@ -8,7 +10,7 @@ import { Send, CheckCircle2, AlertCircle, MessageCircle, Phone, Award, Truck, Pa
 
 export default function CorporateGifting() {
   const { catalog } = useCart();
-  const giftBoxes = ['pahwa-signature-mithai-box', 'pahwa-winter-mithai-box'].map(slug => catalog[slug] || fallbackProducts.find(item => item.slug === slug)).filter(Boolean);
+  const giftBoxes = boxSlugs.map(slug => catalog[slug] || fallbackProducts.find(item => item.slug === slug)).filter(Boolean);
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -82,8 +84,10 @@ export default function CorporateGifting() {
 
         <section className="my-10" aria-labelledby="mithai-gift-boxes">
           <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-5">Mithai Gift Boxes</h2>
-          <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-3xl">{giftBoxes.map(product => <ProductCard key={product.slug} product={product} />)}</div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{giftBoxes.map(product => <ProductCard key={product.slug} product={product} />)}</div>
         </section>
+
+        <CustomMithaiBox />
 
         {/* Pillars / Value Prop */}
         <section className="grid gap-8 md:grid-cols-3 my-12">

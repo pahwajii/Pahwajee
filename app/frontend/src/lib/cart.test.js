@@ -65,3 +65,15 @@ test('reviewed fixed packs retain correct totals and reject old pack sizes', () 
 test('special-order panjeeri cannot enter the cart', () => {
   assert.throws(() => addCartItem([], {...product, slug: 'jachha-bachha-panjeeri', availability: 'Special order only'}, 500, 1));
 });
+
+
+test('all three ready-made boxes accept only 1 kg, including after cart restoration', () => {
+  for (const [slug, price] of [['pahwa-signature-mithai-box', 70000], ['pahwa-winter-mithai-box', 80000], ['mixed-fruit-special-bites-combo', 70000]]) {
+    const box = {...product, slug, unit_price_paise: price};
+    const items = addCartItem([], box, 1000, 2);
+    assert.equal(packPrice(price, items[0].pack_grams) * items[0].quantity, price * 2);
+    assert.equal(validCartPack(restoreCart(JSON.stringify(items))[0], box), true);
+    assert.throws(() => addCartItem([], box, 500, 1));
+    assert.equal(validCartPack({...items[0], pack_grams: 500}, box), false);
+  }
+});
