@@ -194,24 +194,7 @@ export default function Layout() {
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
-            <section aria-labelledby="footer-outlets-heading" className="mt-7 max-w-md border-t border-border pt-6">
-              <h3 id="footer-outlets-heading" className="font-serif text-xl text-foreground">Our Outlets</h3>
-              <div className="mt-4 space-y-5">
-                {BUSINESS.outlets.map(outlet => (
-                  <article key={outlet.name}>
-                    <h4 className="text-sm font-semibold text-foreground">{outlet.name}</h4>
-                    <address className="mt-1.5 text-sm not-italic leading-relaxed text-muted-foreground">{outlet.address}</address>
-                    <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1">
-                      {outlet.phones.map(phone => (
-                        <a key={phone} href={telLink(phone)} aria-label={`Call ${outlet.name} on ${phone}`} className="inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-primary dark:text-secondary underline underline-offset-4 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current">
-                          <Phone size={14} aria-hidden="true" />{phone}
-                        </a>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+
           </div>
           <div>
             <h4 className="font-medium text-sm mb-4 uppercase tracking-wider text-secondary">Quick Links</h4>
@@ -242,6 +225,24 @@ export default function Layout() {
                 <a href={waLink()} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">WhatsApp Chat</a>
               </p>
             </div>
+            <section aria-labelledby="footer-outlets-heading" className="mt-7 max-w-md border-t border-border pt-6">
+              <h3 id="footer-outlets-heading" className="font-serif text-xl text-foreground">Our Outlets</h3>
+              <div className="mt-4 space-y-5">
+                {BUSINESS.outlets.map(outlet => (
+                  <article key={outlet.name}>
+                    <h4 className="text-sm font-semibold text-foreground">{outlet.name}</h4>
+                    <address className="mt-1.5 text-sm not-italic leading-relaxed text-muted-foreground">{outlet.address}</address>
+                    <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1">
+                      {outlet.phones.map(phone => (
+                        <a key={phone} href={telLink(phone)} aria-label={`Call ${outlet.name} on ${phone}`} className="inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-primary dark:text-secondary underline underline-offset-4 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current">
+                          <Phone size={14} aria-hidden="true" />{phone}
+                        </a>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
           </div>
         </div>
       </footer>
