@@ -57,7 +57,7 @@ export default function Products() {
         .some((value) => value.toString().toLowerCase().includes(term));
 
       return filterMatch && searchMatch;
-    });
+    }).sort((a, b) => (a.order || 0) - (b.order || 0));
   }, [activeFilterConfig, products, query]);
 
   function selectFilter(value) {

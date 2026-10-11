@@ -16,7 +16,7 @@
     "bestSeller": true,
     "festivalSpecial": false,
     "newArrival": false,
-    "order": 0,
+    "order": -30,
     "cart_eligible": true,
     "pack_sizes_grams": [
       500,
@@ -24,6 +24,58 @@
     ],
     "sale_unit": "kg",
     "unit_price_paise": 54000
+  },
+  {
+    "id": "e4920bda-38c7-46d5-bb3a-fa412a8ce079",
+    "name": "Gol Gazak",
+    "slug": "gol-gazak",
+    "description": "Traditional round sesame and jaggery gazak disc.",
+    "category": "signature",
+    "image": "/products/golgazzak.png",
+    "images": [],
+    "price": "Rs 600/kg",
+    "availability": "Available",
+    "tags": [],
+    "season": "all",
+    "featured": false,
+    "bestseller": true,
+    "bestSeller": true,
+    "festivalSpecial": false,
+    "newArrival": false,
+    "order": -20,
+    "cart_eligible": true,
+    "pack_sizes_grams": [
+      500,
+      1000
+    ],
+    "sale_unit": "kg",
+    "unit_price_paise": 60000
+  },
+  {
+    "id": "a104bae7-4e6e-4824-b970-aa696e765b3d",
+    "name": "Dilkhush Gazak",
+    "slug": "dilkhush-gazak",
+    "description": "Melt-in-mouth soft & flaky jaggery sesame gazak specialty.",
+    "category": "signature",
+    "image": "/products/dilkhush-gazzak.png",
+    "images": [],
+    "price": "Rs 700/kg",
+    "availability": "Available",
+    "tags": [],
+    "season": "all",
+    "featured": true,
+    "bestseller": true,
+    "bestSeller": true,
+    "festivalSpecial": false,
+    "newArrival": false,
+    "order": -10,
+    "cart_eligible": true,
+    "pack_sizes_grams": [
+      500,
+      1000
+    ],
+    "sale_unit": "kg",
+    "unit_price_paise": 70000
   },
   {
     "slug": "vanaspati-ghee-nankhatai",
@@ -415,32 +467,6 @@
     "unit_price_paise": 30000
   },
   {
-    "id": "e4920bda-38c7-46d5-bb3a-fa412a8ce079",
-    "name": "Gol Gazak",
-    "slug": "gol-gazak",
-    "description": "Traditional round sesame and jaggery gazak disc.",
-    "category": "signature",
-    "image": "/products/golgazzak.png",
-    "images": [],
-    "price": "Rs 600/kg",
-    "availability": "Available",
-    "tags": [],
-    "season": "all",
-    "featured": false,
-    "bestseller": false,
-    "bestSeller": false,
-    "festivalSpecial": false,
-    "newArrival": false,
-    "order": 0,
-    "cart_eligible": true,
-    "pack_sizes_grams": [
-      500,
-      1000
-    ],
-    "sale_unit": "kg",
-    "unit_price_paise": 60000
-  },
-  {
     "id": "3d1f0e13-6c58-49fa-b17c-93c6e76bfc76",
     "name": "Dry Fruit Laddoo",
     "slug": "dry-fruit-laddoo",
@@ -496,32 +522,6 @@
     "pack_sizes_grams": [],
     "sale_unit": null,
     "unit_price_paise": null
-  },
-  {
-    "id": "a104bae7-4e6e-4824-b970-aa696e765b3d",
-    "name": "Dilkhush Gazak",
-    "slug": "dilkhush-gazak",
-    "description": "Melt-in-mouth soft & flaky jaggery sesame gazak specialty.",
-    "category": "signature",
-    "image": "/products/dilkhush-gazzak.png",
-    "images": [],
-    "price": "Rs 700/kg",
-    "availability": "Available",
-    "tags": [],
-    "season": "all",
-    "featured": true,
-    "bestseller": true,
-    "bestSeller": true,
-    "festivalSpecial": false,
-    "newArrival": false,
-    "order": 0,
-    "cart_eligible": true,
-    "pack_sizes_grams": [
-      500,
-      1000
-    ],
-    "sale_unit": "kg",
-    "unit_price_paise": 70000
   },
   {
     "id": "0b94e6ec-623c-4e12-b06e-364187bca8e6",

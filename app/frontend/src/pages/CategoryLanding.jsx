@@ -77,7 +77,7 @@ export default function CategoryLanding({ type }) {
       .catch(() => setProducts(fallbackProducts));
   }, [type]);
 
-  const filtered = products.filter(config.filterMatch);
+  const filtered = products.filter(config.filterMatch).sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">

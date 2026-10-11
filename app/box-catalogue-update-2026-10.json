@@ -24,6 +24,30 @@
       "fields": {
         "availability": "Currently unavailable"
       }
+    },
+    {
+      "slug": "khasta-rewri",
+      "fields": {
+        "bestseller": true,
+        "bestSeller": true,
+        "order": -30
+      }
+    },
+    {
+      "slug": "gol-gazak",
+      "fields": {
+        "bestseller": true,
+        "bestSeller": true,
+        "order": -20
+      }
+    },
+    {
+      "slug": "dilkhush-gazak",
+      "fields": {
+        "bestseller": true,
+        "bestSeller": true,
+        "order": -10
+      }
     }
   ],
   "new_products": [
