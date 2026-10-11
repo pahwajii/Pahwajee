@@ -178,7 +178,7 @@ export default function Layout() {
       <footer className="bg-card border-t border-border mt-auto py-12">
         <div className="container-x grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <BrandLogo className="h-11 w-auto mb-3" />
+            <BrandLogo className="h-auto w-52 sm:w-64 max-w-full mb-4" sizes="(min-width: 640px) 256px, 208px" />
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
             <FssaiNotice className="mb-4" />
             <div className="flex flex-wrap gap-4 items-center">
