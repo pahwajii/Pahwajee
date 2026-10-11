@@ -116,8 +116,8 @@
   },
   {
     "asset": "/menu/namkeens.webp",
-    "prompt": "Square representative food photo for an Indian cafe menu. three small bowls of Indian namkeen mixtures, sev, boondi and peanuts; no packages or branding. Plain warm cream table and background, soft daylight, realistic natural textures, modest complete serving. No text, no logos, no watermark.",
-    "method": "Built-in image_gen"
+    "prompt": "Use case: compositing / product-mockup. Create one square illustrative website menu image for Haldiram Namkeens. Inputs: the user's Google Images screenshot is the product-packaging reference; the other image of loose namkeen bowls is only a reference for the existing website's warm beige surface, background and soft light. Replace the loose bowls concept with a neat group of SEALED HALDIRAM'S NAMKEEN PACKETS, inspired by the screenshot. Arrange eight recognisable colourful retail packets in two gently staggered rows, fully inside the square frame with breathing room: All In One (blue), Khatta Meetha (orange-red), Kaju Mixture (purple), Aloo Bhujia (green), Navrattan (brown), Ratlami Sev (purple), Chatpata Dal (yellow), Punjabi Tadka (red-green). Preserve the Haldiram's brand identity and readable main product names from the packaging references. Warm beige tabletop and plain beige backdrop, soft natural light, realistic package materials, polished consistent menu photography. The packets should occupy most of the central frame, not tiny thumbnails. No webpage UI, search-result captions, marketplace names, price labels, external text, fabricated promotions or watermark. Do not include bowls of loose food. The result will be labelled Illustrative on the website.",
+    "method": "Built-in image_gen; 640px WebP; packaging assortment inspired by owner reference"
   },
   {
     "asset": "/menu/dry-fruits.webp",
