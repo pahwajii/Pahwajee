@@ -138,5 +138,15 @@
     "asset": "/menu/gheeye-ki-louch.webp",
     "prompt": "Edit supplied green Gheeye Ki Louch photo; preserve green colour, texture and almond garnish; cream plate and tabletop",
     "method": "Built-in image_gen"
+  },
+  {
+    "asset": "/menu/kulhad-kheer-illustrative.webp",
+    "prompt": "Use case: product-mockup. Create a square photorealistic representative website menu image inspired by Image 1 (real shop kheer reference). Image 2 is only the lighting/background style reference. Show ONE short wide reddish terracotta kulhad filled with thick creamy makhana kheer, topped with almond slivers, a few pistachio pieces and golden raisins as in the real photo. Preserve the authentic short clay vessel and creamy pudding texture, not a tall drinking cup and not a ceramic bowl. Center the complete kulhad with comfortable margins on a warm beige tabletop and uncluttered beige background, soft diffused daylight, matching Image 2's polished food photography. Three-quarter view from slightly above so the toppings show. No extra bowls, no text, no watermark. This is an illustrative menu photo, not a documentary shop photograph.",
+    "method": "Built-in image_gen; 640px WebP, representative photo inspired by the real shop photo"
+  },
+  {
+    "asset": "/menu/salad-illustrative.webp",
+    "prompt": "Use case: product-mockup. Create a square photorealistic representative website menu photograph inspired by Image 1, the real shop salad. Image 2 supplies only the warm beige tabletop/background and soft natural lighting style. Show ONE simple white serving bowl containing the same Indian mixed salad visible in Image 1: brown chickpeas, small sprouted beans, sweetcorn, chopped cucumber, tomato, carrot and red onion, with a lime half on top. Do not add lettuce, avocado or unrelated ingredients. Arrange neatly but naturally, generous authentic portion. Remove takeaway seasoning packets. Center the whole bowl with comfortable margins, three-quarter view from above, clean beige background and beige tabletop, soft daylight, polished yet realistic food photography consistent with the reference menu style. No extra bowls, text, logos or watermark. This is illustrative menu photography.",
+    "method": "Built-in image_gen; 640px WebP, representative photo inspired by the real shop photo"
   }
 ]

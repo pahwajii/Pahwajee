@@ -184,8 +184,8 @@
     "price": 50,
     "category": "Kheer",
     "slug": "makhana-kheer",
-    "image": "/menu/kulhad-kheer.webp",
-    "representative": false,
+    "image": "/menu/kulhad-kheer-illustrative.webp",
+    "representative": true,
     "iceCream": false,
     "priceLabel": null
   },
@@ -194,8 +194,8 @@
     "price": 50,
     "category": "Kheer",
     "slug": "vrat-kheer",
-    "image": "/menu/kulhad-kheer.webp",
-    "representative": false,
+    "image": "/menu/kulhad-kheer-illustrative.webp",
+    "representative": true,
     "iceCream": false,
     "priceLabel": null
   },
@@ -224,8 +224,8 @@
     "price": 50,
     "category": "Snacks",
     "slug": "salads",
-    "image": "/gallery/WhatsApp Image 2026-07-05 at 15.42.27 (3).jpeg",
-    "representative": false,
+    "image": "/menu/salad-illustrative.webp",
+    "representative": true,
     "iceCream": false,
     "priceLabel": null
   },
