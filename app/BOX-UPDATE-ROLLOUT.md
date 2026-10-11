@@ -2,7 +2,7 @@
 
 Do not publish until the owner requests the batch release. No production database changes were made during development.
 
-- Priority best sellers: Khasta Rewri, Gol Gazak, Dilkhush Gazak (in that order).
+- Priority best sellers: Khasta Rewri, Gol Gazak, Dilkhush Gazak, Pure Desi Ghee Nankhatai (in that order). All best sellers are grouped before regular products.
 - Three fixed 1 kg boxes: Signature Rs 750, Winter Rs 750, Mixed Fruit Rs 700.
 - Custom boxes: four 250 g sections, repeats allowed; sum each section at its individual kg rate. No packaging charge. Custom boxes are WhatsApp enquiries, not cart lines.
 - New individual products: Strawberry Bite Rs 700/kg, Kachha Aam Bite Rs 700/kg, Khajoor Barfi Rs 800/kg. Existing Khajoor Laddoo remains Rs 900/kg.

@@ -1,3 +1,4 @@
+import { compareProducts } from '../lib/productOrder';
 import fallbackProducts from '../generated/catalog.json';
 import { usePageData } from '../context/PageData';
 import { useEffect, useState } from 'react';
@@ -77,7 +78,7 @@ export default function CategoryLanding({ type }) {
       .catch(() => setProducts(fallbackProducts));
   }, [type]);
 
-  const filtered = products.filter(config.filterMatch).sort((a, b) => (a.order || 0) - (b.order || 0));
+  const filtered = products.filter(config.filterMatch).sort(compareProducts);
 
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">

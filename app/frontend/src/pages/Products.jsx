@@ -1,3 +1,4 @@
+import { compareProducts } from '../lib/productOrder';
 import { isMithaiBox } from '../lib/mithaiBox';
 import fallbackProducts from '../generated/catalog.json';
 import { usePageData } from '../context/PageData';
@@ -57,7 +58,7 @@ export default function Products() {
         .some((value) => value.toString().toLowerCase().includes(term));
 
       return filterMatch && searchMatch;
-    }).sort((a, b) => (a.order || 0) - (b.order || 0));
+    }).sort(compareProducts);
   }, [activeFilterConfig, products, query]);
 
   function selectFilter(value) {

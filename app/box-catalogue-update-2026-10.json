@@ -50,6 +50,14 @@
         "bestSeller": true,
         "order": -10
       }
+    },
+    {
+      "slug": "pure-desi-ghee-nankhatai",
+      "fields": {
+        "bestseller": true,
+        "bestSeller": true,
+        "order": -5
+      }
     }
   ],
   "new_products": [
