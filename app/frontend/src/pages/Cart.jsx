@@ -1,3 +1,4 @@
+import FssaiNotice from '../components/FssaiNotice';
 import OptimizedImage from '../components/OptimizedImage';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -58,6 +59,7 @@ function OrderReceipt({ order, onContinue }) {
     <p className="mt-5 text-sm">Reference <strong className="font-mono">{order.reference}</strong></p>
     <div className="card-warm mt-6 p-5 sm:p-8">
       <h2 className="mb-4 text-2xl">Your request</h2>
+      <FssaiNotice className="mb-4" />
       <ul className="divide-y divide-border">
         {order.items.map((item) => <li key={lineKey(item)} className="flex justify-between gap-4 py-3 text-sm">
           <span>{item.name}<span className="mt-1 block text-muted-foreground">{packLabel(item.pack_grams, item.sale_unit)} × {item.quantity}</span></span>
@@ -186,6 +188,7 @@ export default function Cart() {
         </div>
         <aside className="card-warm p-5 sm:p-7 lg:sticky lg:top-28">
           <h2 className="text-3xl">Order summary</h2>
+          <FssaiNotice className="mt-3" />
           <div className="mt-6 flex justify-between gap-4 text-base"><span>Items subtotal</span><strong data-testid="cart-subtotal">{formatMoney(subtotal)}</strong></div>
           <DeliveryInfo />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">We’ll confirm availability and fulfilment with you. No online payment is collected.</p>

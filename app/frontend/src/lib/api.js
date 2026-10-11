@@ -57,6 +57,7 @@ export default {
 
 export const BUSINESS = {
   name: "PAHWA JEE",
+  fssaiNumber: "22718357001092",
   googleReviewUrl: googleReviews.write_review_url,
   tagline: "Meerut's Trusted Destination for Nankhatai, Rewri, Gazak, Shakes & Premium Gift Hampers",
   phones: ["6396339806", "9837566628"],

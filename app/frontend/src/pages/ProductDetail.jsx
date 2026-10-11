@@ -1,3 +1,4 @@
+import FssaiNotice from '../components/FssaiNotice';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
 import { useState, useEffect } from 'react';
@@ -241,6 +242,8 @@ export default function ProductDetail() {
                 <p className="text-xs font-semibold uppercase tracking-wider">100% Eggless Pure Vegetarian Bakery</p>
               </div>
             )}
+
+            <FssaiNotice className="mb-4" />
 
             {/* CTAs */}
             <div className="mb-6"><AddToCart product={product} /></div>

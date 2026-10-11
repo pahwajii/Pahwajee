@@ -1,3 +1,4 @@
+import FssaiNotice from './FssaiNotice';
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import { Menu, X, Phone, MessageCircle, Sun, Moon, MapPin, Clock, Instagram, Facebook, ShoppingBag } from "lucide-react";
@@ -179,6 +180,7 @@ export default function Layout() {
           <div className="md:col-span-2">
             <BrandLogo className="h-11 w-auto mb-3" />
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
+            <FssaiNotice className="mb-4" />
             <div className="flex flex-wrap gap-4 items-center">
               <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition p-2 rounded-full hover:bg-primary/5 flex items-center gap-1.5" title="Instagram (Abu Lane Branch)">
                 <Instagram className="w-5 h-5" />
