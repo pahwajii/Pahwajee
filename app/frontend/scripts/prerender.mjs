@@ -27,7 +27,15 @@ const server = await createServer({mode: 'production', server: {middlewareMode: 
 try {
   const {render} = await server.ssrLoadModule('/src/entry-server.jsx');
   const {PUBLIC_PATHS, SITE_URL, renderHead, metadata, serializeJson, escapeHtml} = await server.ssrLoadModule('/src/lib/seo.js');
-  const template = await readFile(resolve(root, 'dist/index.html'), 'utf8');
+  let template = await readFile(resolve(root, 'dist/index.html'), 'utf8');
+  // The shared stylesheet is only about 10 KB compressed. Embed it in the
+  // prerendered document so slow mobile connections can paint without another
+  // blocking request. Lazy admin/route styles remain separate assets.
+  const stylesheets = [...template.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/g)];
+  for (const [tag, href] of stylesheets) {
+    const css = await readFile(resolve(root, 'dist', href.slice(1)), 'utf8');
+    if (Buffer.byteLength(css) <= 65536) template = template.replace(tag, `<style data-site-css>${css.replace(/<\/style/gi, '<\\/style')}</style>`);
+  }
   if (!template.includes('<!--seo-head-->')) throw new Error('Missing SEO template marker');
   const paths = [...PUBLIC_PATHS, ...products.map(product => `/products/${product.slug}`)];
   async function output(file, html, meta, initialData = {}) {
