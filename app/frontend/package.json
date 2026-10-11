@@ -6,6 +6,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vitejs/plugin-react": "latest",
     "autoprefixer": "latest",
     "framer-motion": "^12.42.2",
