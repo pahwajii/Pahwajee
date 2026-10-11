@@ -1,3 +1,4 @@
+import FavouriteButton from '../components/FavouriteButton';
 import CustomMithaiBox from '../components/CustomMithaiBox';
 import { isMithaiBox, hasAssortmentPhoto } from '../lib/mithaiBox';
 import FssaiNotice from '../components/FssaiNotice';
@@ -245,6 +246,7 @@ export default function ProductDetail() {
               </div>
             )}
 
+            <FavouriteButton item={product} label className="mb-4" />
             <FssaiNotice className="mb-4" />
 
             {isMithaiBox(product.slug) && <p className="text-sm font-medium mb-4">Available as a 1 kg box only. Customise your selection below.</p>}

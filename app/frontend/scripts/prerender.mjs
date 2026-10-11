@@ -42,6 +42,7 @@ try {
   }
   const notFound = render('/page-not-found', {});
   await output('404.html', notFound.html, notFound.meta);
+  await output('favourites.html', '', metadata({path: '/favourites', title: 'Your Favourites | PAHWA JEE', noindex: true}), {products});
   await output('cart.html', '', metadata({path: '/cart', title: 'Your Cart | PAHWA JEE', noindex: true}));
   await output('admin.html', '', metadata({path: '/admin', title: 'Shop Admin | PAHWA JEE', noindex: true}));
   // Newly added products still load before the next prerender deployment.

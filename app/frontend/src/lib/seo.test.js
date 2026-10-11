@@ -10,7 +10,7 @@ test('canonical URLs consolidate filters, aliases and trailing slashes', () => {
 });
 
 test('private/error pages are noindex and public navigation resets robots', () => {
-  for (const path of ['/cart', '/admin', '/admin/orders']) {
+  for (const path of ['/cart', '/favourites', '/admin', '/admin/orders']) {
     assert.match(metadata({path}).robots, /noindex/);
     assert.equal(metadata({path}).schema, null);
   }
@@ -44,7 +44,7 @@ test('built sitemap pages contain one canonical, page-specific HTML and valid sc
   assert.ok(paths.includes('/gallery') && paths.includes('/our-specialities'));
   assert.ok(paths.includes('/products/pure-desi-ghee-nankhatai'));
   assert.ok(paths.includes('/products/vanaspati-ghee-nankhatai'));
-  assert.ok(!paths.some(path => ['/cart', '/admin', '/reviews'].includes(path)));
+  assert.ok(!paths.some(path => ['/cart', '/favourites', '/admin', '/reviews'].includes(path)));
   const titles = new Set();
   for (const path of paths) {
     const html = await readFile(`dist/${path === '/' ? 'index' : path.slice(1)}.html`, 'utf8');

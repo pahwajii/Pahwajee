@@ -1,8 +1,10 @@
+import { FavouritesProvider } from './context/FavouritesContext';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
+const Favourites = React.lazy(() => import('./pages/Favourites'));
 const InStoreMenu = React.lazy(() => import('./pages/InStoreMenu'));
 const Products = React.lazy(() => import('./pages/Products'));
 const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
@@ -26,7 +28,7 @@ const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Di
 
 export default function App({ data = {}, pages = clientPages }) {
   const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu } = pages;
-  return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}>
+  return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}><FavouritesProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/admin/*" element={<React.Suspense fallback={<p className="container-x py-12" role="status">Loading admin…</p>}><AdminApp /></React.Suspense>} />
@@ -34,6 +36,7 @@ export default function App({ data = {}, pages = clientPages }) {
           <Route path="/" element={<Home />} />
           <Route path="/in-store-menu" element={<InStoreMenu />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/favourites" element={<Favourites />} />
           <Route path="/cart" element={<React.Suspense fallback={<p className="container-x py-12" role="status">Loading cart…</p>}><Cart /></React.Suspense>} />
           <Route path="/products/:slug" element={<ProductDetail />} />
           <Route path="/about" element={<About />} />
@@ -56,5 +59,5 @@ export default function App({ data = {}, pages = clientPages }) {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-  </CartProvider></PageDataContext.Provider>;
+  </FavouritesProvider></CartProvider></PageDataContext.Provider>;
 }

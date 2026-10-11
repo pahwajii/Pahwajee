@@ -1,7 +1,8 @@
+import { useFavourites } from '../context/FavouritesContext';
 import FssaiNotice from './FssaiNotice';
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
-import { Menu, X, Phone, MessageCircle, Sun, Moon, Clock, Instagram, Facebook, ShoppingBag } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, Sun, Moon, Clock, Instagram, Facebook, ShoppingBag, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BUSINESS, waLink, telLink } from "@/lib/api";
 import { useCart } from "../context/CartContext";
@@ -35,6 +36,7 @@ function useDarkMode() {
 
 function Navbar({ dark, onToggleTheme }) {
   const { count } = useCart();
+  const { items: favourites } = useFavourites();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -54,7 +56,7 @@ function Navbar({ dark, onToggleTheme }) {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? "py-2" : "py-4"}`}
     >
       <div className="container-x">
-        <div className={`glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between gap-4 xl:gap-4 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
+        <div className={`glass rounded-2xl px-3 sm:px-6 py-3 flex items-center justify-between gap-2 xl:gap-4 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
           <Link to="/" data-testid="nav-logo" className="flex shrink-0 items-center gap-2 group">
             <BrandLogo
               className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-105"
@@ -76,7 +78,8 @@ function Navbar({ dark, onToggleTheme }) {
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+            <NavLink to="/favourites" aria-label={`Favourites, ${favourites.length} saved items`} data-testid="nav-favourites" className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full text-primary hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary"><Heart className="h-5 w-5" aria-hidden="true" />{favourites.length > 0 && <span aria-hidden="true" className="absolute -right-0.5 top-0 min-w-5 rounded-full bg-primary px-1 text-center text-[10px] font-bold leading-5 text-primary-foreground">{favourites.length}</span>}</NavLink>
             <NavLink to="/cart" aria-label={`Cart, ${count} item${count === 1 ? '' : 's'}`} data-testid="nav-cart" className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full text-primary hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary">
               <ShoppingBag className="h-5 w-5" />
               {count > 0 && <span aria-hidden="true" className="absolute -right-0.5 top-0 min-w-5 rounded-full bg-primary px-1 text-center text-[10px] font-bold leading-5 text-primary-foreground">{count > 99 ? '99+' : count}</span>}
@@ -85,13 +88,13 @@ function Navbar({ dark, onToggleTheme }) {
               data-testid="theme-toggle"
               onClick={onToggleTheme}
               aria-label="Toggle theme"
-              className="p-2 rounded-full hover:bg-primary/10 transition"
+              className="hidden sm:inline-flex p-2 rounded-full hover:bg-primary/10 transition"
             >
               {dark ? <Sun className="w-5 h-5 text-secondary" /> : <Moon className="w-5 h-5 text-primary" />}
             </button>
             <button
               data-testid="nav-menu-toggle"
-              className="xl:hidden p-2 rounded-full hover:bg-primary/10"
+              className="xl:hidden grid h-11 w-11 place-items-center rounded-full hover:bg-primary/10"
               onClick={() => setOpen(!open)}
               aria-label="Menu"
               aria-expanded={open}
@@ -121,6 +124,8 @@ function Navbar({ dark, onToggleTheme }) {
                   {n.label}
                 </NavLink>
               ))}
+              <NavLink to="/favourites" className="block px-4 py-3 rounded-xl text-base font-semibold">Favourites ({favourites.length})</NavLink>
+              <button type="button" onClick={onToggleTheme} className="sm:hidden min-h-11 px-4 text-sm font-semibold">Switch to {dark ? 'light' : 'dark'} theme</button>
               <div className="mt-4 flex flex-col gap-2">
                 <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold justify-center w-full !bg-emerald-600 !text-white flex items-center gap-2 py-2.5">
                   <MessageCircle className="w-4 h-4" /> WhatsApp Order
@@ -139,7 +144,7 @@ function Navbar({ dark, onToggleTheme }) {
 
 function FloatingButtons() {
   const { pathname } = useLocation();
-  const shoppingPage = pathname.startsWith('/products') || ['/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
+  const shoppingPage = pathname.startsWith('/products') || ['/favourites', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
     <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons">
       <a
@@ -201,6 +206,7 @@ export default function Layout() {
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
+              <li><Link to="/favourites" className="text-muted-foreground hover:text-primary transition-colors">Your Favourites</Link></li>
               <li><Link to="/in-store-menu" className="text-muted-foreground hover:text-primary transition-colors">In-store Menu</Link></li>
               <li><Link to="/rewri-gajak-meerut" className="text-muted-foreground hover:text-primary transition-colors">Rewri & Gajak</Link></li>
               <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Nankhatai</Link></li>

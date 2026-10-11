@@ -1,3 +1,4 @@
+import FavouriteButton from './FavouriteButton';
 import { isMithaiBox, hasAssortmentPhoto } from '../lib/mithaiBox';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from './OptimizedImage';
@@ -12,7 +13,8 @@ export default function ProductCard({ product }) {
 
   return (
     <article className="product-card card-warm group h-full min-w-0 flex flex-col justify-between" data-testid={`product-card-${slug}`}>
-      <div>
+      <div className="relative">
+        <FavouriteButton item={product} className="absolute top-2 right-2 z-10" />
         <Link to={`/products/${slug}`} className="block">
           <div className="relative aspect-square sm:aspect-[4/5] overflow-hidden bg-muted">
             <OptimizedImage

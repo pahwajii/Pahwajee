@@ -56,7 +56,7 @@ export function productSchema(product) {
 export function metadata({path = '/', title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, image = '/our_shop_main.jpeg', canonical, schema, noindex = false} = {}) {
   const pathname = canonicalPath(path);
   const url = absoluteUrl(canonical || pathname);
-  const privatePage = noindex || pathname === '/cart' || pathname === '/admin' || pathname.startsWith('/admin/');
+  const privatePage = noindex || pathname === '/cart' || pathname === '/favourites' || pathname === '/admin' || pathname.startsWith('/admin/');
   const graph = [];
   if (!privatePage) {
     graph.push(businessSchema(), {'@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: 'PAHWA JEE', inLanguage: 'en-IN', publisher: {'@id': `${SITE_URL}/#business`}});
