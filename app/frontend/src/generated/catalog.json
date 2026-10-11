@@ -774,13 +774,13 @@
     "id": "pahwa-signature-mithai-box",
     "slug": "pahwa-signature-mithai-box",
     "name": "Pahwa Signature Mithai Box",
-    "price": "Rs 700/kg",
+    "price": "Rs 750/kg",
     "category": "festival-collection",
     "image": "/menu/pahwa-signature-mithai-box.webp",
     "images": [
       "/menu/pahwa-signature-mithai-box.webp"
     ],
-    "description": "A 1 kg box with 250 g each of Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. The ready-made assortment costs Rs 700. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
+    "description": "A 1 kg box with 250 g each of Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. The ready-made assortment costs Rs 750. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
     "availability": "Available",
     "season": "all",
     "tags": [
@@ -788,7 +788,7 @@
     ],
     "newArrival": true,
     "order": 0,
-    "unit_price_paise": 70000,
+    "unit_price_paise": 75000,
     "sale_unit": "kg",
     "cart_eligible": true,
     "pack_sizes_grams": [
@@ -799,19 +799,19 @@
     "id": "pahwa-winter-mithai-box",
     "slug": "pahwa-winter-mithai-box",
     "name": "Pahwa Winter Mithai Box",
-    "price": "Rs 800/kg",
+    "price": "Rs 750/kg",
     "category": "festival-collection",
     "image": "/menu/pahwa-winter-mithai-box.webp",
     "images": [
       "/menu/pahwa-winter-mithai-box.webp"
     ],
-    "description": "A 1 kg box with 250 g each of Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. The ready-made assortment costs Rs 800. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
+    "description": "A 1 kg box with 250 g each of Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. The ready-made assortment costs Rs 750. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
     "availability": "Available",
     "season": "all",
     "tags": [],
     "newArrival": true,
     "order": 0,
-    "unit_price_paise": 80000,
+    "unit_price_paise": 75000,
     "sale_unit": "kg",
     "cart_eligible": true,
     "pack_sizes_grams": [

@@ -40,7 +40,7 @@ def payload():
 
 class PricingTests(unittest.TestCase):
     def test_ready_made_boxes_are_purchasable_only_as_one_kg(self):
-        for slug, rate, category in [("pahwa-signature-mithai-box", 700, "festival-collection"), ("pahwa-winter-mithai-box", 800, "festival-collection"), ("mixed-fruit-special-bites-combo", 700, "festival-collection")]:
+        for slug, rate, category in [("pahwa-signature-mithai-box", 750, "festival-collection"), ("pahwa-winter-mithai-box", 750, "festival-collection"), ("mixed-fruit-special-bites-combo", 700, "festival-collection")]:
             product = {**PRODUCTS[0], "slug": slug, "category": category, "price": f"Rs {rate}/kg"}
             self.assertTrue(purchase_fields(product)["cart_eligible"])
             self.assertEqual(purchase_fields(product)["pack_sizes_grams"], [1000])

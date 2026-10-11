@@ -3,13 +3,15 @@
     {
       "slug": "pahwa-signature-mithai-box",
       "fields": {
-        "description": "A 1 kg box with 250 g each of Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. The ready-made assortment costs Rs 700. For a different selection, build a custom box below; its price is calculated from the individual sweet rates."
+        "description": "A 1 kg box with 250 g each of Khajoor Laddoo, Mango Bite, Mawa Til Laddoo and Gond Laddoo. The ready-made assortment costs Rs 750. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
+        "price": "Rs 750/kg"
       }
     },
     {
       "slug": "pahwa-winter-mithai-box",
       "fields": {
-        "description": "A 1 kg box with 250 g each of Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. The ready-made assortment costs Rs 800. For a different selection, build a custom box below; its price is calculated from the individual sweet rates."
+        "description": "A 1 kg box with 250 g each of Alsi Laddoo, Gond Laddoo, Mawa Barfi and Khajoor Barfi. The ready-made assortment costs Rs 750. For a different selection, build a custom box below; its price is calculated from the individual sweet rates.",
+        "price": "Rs 750/kg"
       }
     },
     {
