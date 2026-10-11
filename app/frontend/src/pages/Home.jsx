@@ -1,3 +1,4 @@
+import { giftHamperDesigns } from '../lib/giftHampers';
 import { reviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
@@ -44,9 +45,9 @@ const winterFavourites = [
 ];
 
 const giftHampers = [
-  { name: "Dry Fruit Gift Tray 1", desc: "Wooden trays with assorted cashew, almond & raisins.", price: "Rs 1100", image: "/products/Dryfruit-tray1.png" },
-  { name: "Dry Fruit Gift Tray 3", desc: "Luxury dry fruit box with pistachios, walnuts & cashews.", price: "Rs 1500", image: "/products/Dryfruit-tray3.png" },
-  { name: "Dry Fruit Gift Tray 7", desc: "Executive custom branded corporate dry fruit box.", price: "Rs 2500", image: "/products/Dryfruit-tray7.png" }
+  { ...giftHamperDesigns[0], desc: "Decorative gift box with dry fruit jars.", price: "Rs 1100" },
+  { ...giftHamperDesigns[2], desc: "Gold-patterned boxes with floral gift detailing.", price: "Rs 1500" },
+  { ...giftHamperDesigns[6], desc: "Assorted dry fruits in decorative gifting trays.", price: "Rs 2500" }
 ];
 
 const homeCategories = [
@@ -228,7 +229,7 @@ export default function Home() {
                 <div className="flex items-center justify-between border-t border-border/30 pt-4">
                   <span className="text-sm font-bold text-gold-ink">{hamper.price}</span>
                   <Link to="/gifting" className="text-xs font-semibold text-primary hover:underline">
-                    Enquire Hampers &rarr;
+                    View Hampers &rarr;
                   </Link>
                 </div>
               </div>

@@ -1,3 +1,7 @@
+import { giftHamperDesigns } from '../lib/giftHampers';
+import OptimizedImage from '../components/OptimizedImage';
+import { Link } from 'react-router-dom';
+import { displayPrice } from '../lib/cart';
 import CustomMithaiBox from '../components/CustomMithaiBox';
 import { boxSlugs } from '../lib/mithaiBox';
 import ProductCard from '../components/ProductCard';
@@ -9,7 +13,10 @@ import api, { waLink, telLink } from '../lib/api';
 import { Send, CheckCircle2, AlertCircle, MessageCircle, Phone, Award, Truck, Palette } from 'lucide-react';
 
 export default function CorporateGifting() {
-  const { catalog } = useCart();
+  const { catalog, catalogStatus } = useCart();
+  const hamperCollection = catalog['dry-fruit-gift-trays'] || (catalogStatus !== 'ready' ? fallbackProducts.find(item => item.slug === 'dry-fruit-gift-trays') : null);
+  const hamperImages = new Set(hamperCollection?.images?.length ? hamperCollection.images : [hamperCollection?.image]);
+  const hampers = giftHamperDesigns.filter(item => hamperImages.has(item.image));
   const giftBoxes = boxSlugs.map(slug => catalog[slug] || fallbackProducts.find(item => item.slug === slug)).filter(Boolean);
   const [formData, setFormData] = useState({
     name: '',
@@ -52,19 +59,19 @@ export default function CorporateGifting() {
   return (
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO 
-        title="Corporate & Bulk Gifting Hampers in Meerut | PAHWAJEE"
+        title="Gift Hampers & Mithai Gift Boxes in Meerut | PAHWAJEE"
         description="Premium corporate gifts, customized client hampers, employee boxes, and bulk sweets in Meerut by PAHWAJEE. Custom branding, logo tags, and local delivery."
       />
 
       <div className="container-x">
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto py-12">
-          <p className="eyebrow">B2B & Bulk Gifting Solutions</p>
+          
           <h1 className="mt-4 text-3xl sm:text-5xl font-serif leading-tight">
-            Elevate Your Corporate Gifting <span className="italic text-primary">with PAHWAJEE</span>
+            Gift Hampers &amp; Mithai Boxes
           </h1>
           <p className="mt-5 text-base text-muted-foreground leading-relaxed">
-            Strengthen your business relations with premium sweets boxes, customizable hampers, and gourmet bakery platters. Handcrafted in Meerut with custom branding options.
+            Browse dry fruit hampers and mithai boxes for family celebrations, weddings and corporate gifting.
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">
@@ -81,6 +88,23 @@ export default function CorporateGifting() {
             </a>
           </div>
         </section>
+
+        {hampers.length > 0 && <section className="my-8 sm:my-10" aria-labelledby="dry-fruit-hampers">
+          <h2 id="dry-fruit-hampers" className="text-2xl sm:text-3xl mb-2">Dry Fruit Gift Hampers</h2>
+          <p className="text-sm text-muted-foreground mb-5">{displayPrice(hamperCollection)}. Enquire for the price and contents of your preferred design.</p>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+            {hampers.map(hamper => <article key={hamper.image} className="card-warm overflow-hidden flex flex-col" data-testid="gift-hamper-card">
+              <Link to="/products/dry-fruit-gift-trays" aria-label={`View ${hamper.name}`}>
+                <OptimizedImage src={hamper.image} alt={hamper.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-contain bg-muted" loading="lazy" />
+              </Link>
+              <div className="p-2 sm:p-4 flex flex-col flex-1">
+                <h3 className="text-base sm:text-xl leading-tight mb-2">{hamper.name}</h3>
+                <p className="text-xs text-muted-foreground mb-2">{hamperCollection.availability}</p>
+                <a href={waLink(`${hamper.name}. Photo: https://pahwajee.in${hamper.image}`)} target="_blank" rel="noopener noreferrer" className="mt-auto min-h-11 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground px-3 py-2 text-xs sm:text-sm font-semibold" aria-label={`Enquire about ${hamper.name}`}>Enquire on WhatsApp</a>
+              </div>
+            </article>)}
+          </div>
+        </section>}
 
         <section className="my-10" aria-labelledby="mithai-gift-boxes">
           <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-2">Mithai Gift Boxes</h2>
