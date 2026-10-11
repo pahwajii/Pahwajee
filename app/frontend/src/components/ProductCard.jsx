@@ -12,11 +12,11 @@ export default function ProductCard({ product }) {
   const isBestSeller = bestseller || bestSeller;
 
   return (
-    <article className="product-card card-warm group h-full min-w-0 flex flex-col justify-between" data-testid={`product-card-${slug}`}>
+    <article className="product-card card-warm group h-full min-w-0 flex flex-col sm:justify-between" data-testid={`product-card-${slug}`}>
       <div className="relative">
         <FavouriteButton item={product} className="absolute top-2 right-2 z-10" />
         <Link to={`/products/${slug}`} className="block">
-          <div className="relative aspect-square sm:aspect-[4/5] overflow-hidden bg-muted">
+          <div className="relative aspect-[6/5] sm:aspect-[4/5] overflow-hidden bg-muted">
             <OptimizedImage
               sizes="(min-width: 1280px) 300px, (min-width: 1024px) 33vw, 50vw"
               src={image || '/placeholder.jpg'}
@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
             )}
           </div>
         </Link>
-        <div className="p-2.5 sm:p-4">
+        <div className="p-2 sm:p-4">
           <Link to={`/products/${slug}`} className="font-serif text-base sm:text-lg font-semibold hover:text-primary transition-colors block leading-tight mb-1">
             {name}
           </Link>
@@ -42,10 +42,10 @@ export default function ProductCard({ product }) {
         </div>
       </div>
 
-      <div className="p-2.5 pt-0 sm:p-4 sm:pt-0 space-y-3">
+      <div className="product-card-actions p-2 pt-0 sm:p-4 sm:pt-0 space-y-2 sm:space-y-3">
         <AddToCart product={product} />
-        <Link to={`/products/${slug}`} className="inline-flex min-h-11 items-center text-xs sm:text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4" aria-label={`View ${name} product details`}>{isMithaiBox(slug) ? 'View box & customise' : 'View product details'}</Link>
-        <div className="border-t border-border/20 pt-3 flex flex-wrap items-center justify-between gap-2">
+        <Link to={`/products/${slug}`} className="inline-flex min-h-11 items-center text-xs sm:text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4" aria-label={`View ${name} product details`}><span className="sm:hidden">{isMithaiBox(slug) ? 'Details & customise' : 'Details'}</span><span className="hidden sm:inline">{isMithaiBox(slug) ? 'View box & customise' : 'View product details'}</span></Link>
+        <div className="border-t border-border/20 pt-3 hidden sm:flex flex-wrap items-center justify-between gap-2">
         <span className={`w-full sm:w-auto text-xs sm:text-[11px] font-medium ${availability === 'Available' ? 'text-emerald-700' : 'text-amber-700'}`}>
           {availability || 'Fresh Daily'}
         </span>

@@ -47,11 +47,11 @@ export default function AddToCart({ product }) {
         <input id={`${id}-qty`} type="number" min="1" max="99" inputMode="numeric" aria-label={`Quantity for ${product.name}`} disabled={submitting} value={quantity} onChange={(e) => { setQuantity(e.target.value === '' ? '' : Number(e.target.value)); setFeedback(''); setAdded(false); }} onBlur={() => { if (!Number.isInteger(quantity) || quantity < 1) setQuantity(1); }} className="commerce-input" />
       </div>
     </div>
-    <button type="button" onClick={add} disabled={!canPurchase(item) || submitting || !Number.isInteger(quantity) || quantity < 1 || quantity > 99} className="cart-add-button btn-primary w-full justify-center !px-3 text-sm disabled:opacity-50 disabled:transform-none">
+    <button type="button" aria-label={`Add ${product.name} to cart${amount !== null ? ` for ${formatMoney(amount)}` : ''}`} onClick={add} disabled={!canPurchase(item) || submitting || !Number.isInteger(quantity) || quantity < 1 || quantity > 99} className="cart-add-button btn-primary w-full justify-center !px-3 text-sm disabled:opacity-50 disabled:transform-none">
       {added ? <Check size={17} /> : <ShoppingBag size={17} />}
-      {catalogStatus === 'loading' ? 'Loading…' : 'Add to Cart'}{amount !== null && quantity > 0 && <span className="cart-button-total"><span className="cart-button-separator">· </span>{formatMoney(amount)}</span>}
+      <span className="cart-label-full">{catalogStatus === 'loading' ? 'Loading...' : 'Add to Cart'}</span><span className="cart-label-compact" aria-hidden="true">{catalogStatus === 'loading' ? 'Loading...' : added ? 'Added' : 'Add'}</span>{amount !== null && quantity > 0 && <span className="cart-button-total"><span className="cart-button-separator">· </span>{formatMoney(amount)}</span>}
     </button>
-    <div aria-live="polite" className="text-xs leading-relaxed">
+    <div aria-live="polite" className="cart-feedback text-xs leading-relaxed" data-empty={!feedback}>
       {feedback && <p className={added ? 'text-emerald-700 dark:text-emerald-400' : 'text-destructive'}>{feedback} {added && <Link className="underline font-semibold" to="/cart">View cart</Link>}</p>}
     </div>
   </div>;

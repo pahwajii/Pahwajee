@@ -103,7 +103,10 @@
 ::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.5); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.8); }
 
-/* Narrow product cards keep form text readable and controls touch-sized. */
+.cart-label-compact { display: none; }
+.cart-feedback[data-empty="true"] { margin: 0; height: 0; }
+
+/* Compact phone cards retain 44px touch targets and readable inputs. */
 @media (max-width: 639px) {
   .product-card .cart-options {
     display: grid;
@@ -113,14 +116,24 @@
   .product-card .cart-pack,
   .product-card .cart-quantity { min-width: 0; width: auto; }
   .product-card .commerce-input { padding-inline: 2px; font-size: 16px; }
+  .product-card .add-to-cart > :not([hidden]) ~ :not([hidden]) { margin-top: 8px; }
+  .product-card .add-to-cart > .cart-feedback[data-empty="true"] { margin-top: 0; }
+  .product-card-actions > :not([hidden]) ~ :not([hidden]) { margin-top: 0; }
   .product-card .cart-add-button {
     min-height: 44px;
     flex-wrap: wrap;
     gap: 4px;
-    padding-inline: 4px !important;
+    padding: 8px 4px !important;
+    border-radius: 10px;
+    box-shadow: none;
     font-size: 12px;
+    line-height: 1.25;
   }
-  .product-card .cart-button-total { flex-basis: 100%; }
-  .product-card .cart-button-separator { display: none; }
+  .product-card .cart-label-full { display: none; }
+  .product-card .cart-label-compact { display: inline; }
+  .product-card .cart-button-total { flex-basis: auto; white-space: nowrap; }
+  .product-card .cart-button-separator { display: inline; }
+  .product-card .commerce-input { border-radius: 8px; }
+  .product-card .btn-outline { min-height: 44px; border-radius: 10px; }
   .product-card .btn-outline { width: 100%; padding-inline: 4px !important; font-size: 12px; }
 }
