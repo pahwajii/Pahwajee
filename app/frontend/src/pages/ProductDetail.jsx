@@ -205,7 +205,7 @@ export default function ProductDetail() {
                 </span>
               ) : (
                 <span className="rounded-full bg-amber-100 px-3 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/20 dark:text-amber-400">
-                  Pre-order Only
+                  {product.availability || 'Currently unavailable'}
                 </span>
               )}
             </div>

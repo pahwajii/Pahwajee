@@ -17,6 +17,12 @@
       "fields": {
         "description": "A 1 kg assortment of Mango, Kachha Aam and Strawberry bites for Rs 700. Available only as a 1 kg pack. For a different selection, build a custom box below."
       }
+    },
+    {
+      "slug": "desi-ghee-gajar-ka-halwa",
+      "fields": {
+        "availability": "Currently unavailable"
+      }
     }
   ],
   "new_products": [
