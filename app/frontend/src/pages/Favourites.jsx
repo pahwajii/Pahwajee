@@ -20,7 +20,7 @@ export default function Favourites() {
   const products = catalogStatus === 'ready' ? catalog : {...snapshot,...catalog};
   const rows = items.map(ref => ({ref,item:(ref.kind === 'menu' ? menuItems : products)[ref.slug]}));
   const price = row => row.ref.kind === 'menu' ? row.item.priceLabel || formatMoney(row.item.price * 100) : displayPrice(row.item);
-  const status = row => row.ref.kind === 'menu' ? 'In store only' : row.item.availability || 'Check with store';
+  const status = row => row.ref.kind === 'menu' ? row.item.availability || 'In store only' : row.item.availability || 'Check with store';
   const packs = row => row.ref.kind === 'menu' ? row.item.priceLabel ? 'Ask in store' : row.item.iceCream ? 'Ice cream +Rs 20' : 'Per serving' : row.item.sale_unit === 'kg' ? productPackSizes(row.item).map(packLabel).join(' / ') : row.item.sale_unit || 'Enquire with store';
   return <div className="container-x py-8 sm:py-12">
     <SEO title="Your Favourites | PAHWA JEE" noindex />

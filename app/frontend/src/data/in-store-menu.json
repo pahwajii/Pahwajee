@@ -1,5 +1,57 @@
 [
   {
+    "name": "Pineapple Cake",
+    "price": null,
+    "category": "Cakes",
+    "slug": "pineapple-cake",
+    "image": "/menu/pineapple-cake.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "Ask for price",
+    "availability": "Available on order",
+    "description": "Choose your size and design.",
+    "enquiry": true
+  },
+  {
+    "name": "Chocolate Cake",
+    "price": null,
+    "category": "Cakes",
+    "slug": "chocolate-cake",
+    "image": "/menu/chocolate-cake.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "Ask for price",
+    "availability": "Available on order",
+    "description": "Choose your size and design.",
+    "enquiry": true
+  },
+  {
+    "name": "Butterscotch Cake",
+    "price": null,
+    "category": "Cakes",
+    "slug": "butterscotch-cake",
+    "image": "/menu/butterscotch-cake.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "Ask for price",
+    "availability": "Available on order",
+    "description": "Choose your size and design.",
+    "enquiry": true
+  },
+  {
+    "name": "Custom Design Cake",
+    "price": null,
+    "category": "Cakes",
+    "slug": "custom-design-cake",
+    "image": "/menu/custom-design-cake.webp",
+    "representative": true,
+    "iceCream": false,
+    "priceLabel": "Ask for price",
+    "availability": "Available on order",
+    "description": "Any flavour, any design. Share your idea with us.",
+    "enquiry": true
+  },
+  {
     "name": "Sandwich",
     "price": 35,
     "category": "Sandwiches",
