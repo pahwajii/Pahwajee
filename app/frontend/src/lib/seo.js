@@ -1,7 +1,8 @@
 import productPacks from '../../../product-packs.json' with { type: 'json' };
+import { blogPosts, blogPath } from './blog.js';
 // Public canonical origin, shared by metadata, structured data and the sitemap.
 export const SITE_URL = 'https://pahwajee.in';
-export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs'];
+export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs', '/blog', ...blogPosts.map(blogPath)];
 export const DEFAULT_TITLE = 'PAHWA JEE Meerut | Nankhatai, Rewri, Gajak & Gift Hampers';
 export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19 Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';
 const labels = {'in-store-menu': 'In-store Menu', products: 'Shop', 'our-specialities': 'Our Specialities', 'nankhatai-meerut': 'Nankhatai', 'rewri-gajak-meerut': 'Rewri & Gajak', 'sweets-meerut': 'Sweets', 'bakery-meerut': 'Bakery', gifting: 'Gift Hampers', diwali: 'Diwali Gifts', about: 'Our Story', contact: 'Contact', gallery: 'Gallery', testimonials: 'Customer Reviews', faqs: 'FAQs'};
@@ -53,7 +54,7 @@ export function productSchema(product) {
   return schema;
 }
 
-export function metadata({path = '/', title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, image = '/our_shop_main.jpeg', canonical, schema, noindex = false} = {}) {
+export function metadata({path = '/', title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, image = '/our_shop_main.jpeg', type = 'website', canonical, schema, noindex = false} = {}) {
   const pathname = canonicalPath(path);
   const url = absoluteUrl(canonical || pathname);
   const privatePage = noindex || pathname === '/cart' || pathname === '/favourites' || pathname === '/admin' || pathname.startsWith('/admin/');
@@ -64,7 +65,8 @@ export function metadata({path = '/', title = DEFAULT_TITLE, description = DEFAU
     if (pathname !== '/') {
       const crumbs = [{name: 'Home', item: absoluteUrl('/')}];
       if (pathname.startsWith('/products/')) crumbs.push({name: 'Shop', item: absoluteUrl('/products')});
-      crumbs.push({name: schema?.name || labels[pathname.slice(1)] || title.split('|')[0].trim(), item: url});
+      if (pathname.startsWith('/blog/')) crumbs.push({name: 'Blog', item: absoluteUrl('/blog')});
+      crumbs.push({name: schema?.headline || schema?.name || (pathname === '/blog' ? 'Blog' : labels[pathname.slice(1)]) || title.split('|')[0].trim(), item: url});
       graph.push({'@type': 'BreadcrumbList', itemListElement: crumbs.map((crumb, i) => ({'@type': 'ListItem', position: i + 1, ...crumb}))});
     }
     if (schema && !['Bakery', 'AggregateRating', 'ContactPage'].includes(schema['@type'])) {
@@ -72,13 +74,13 @@ export function metadata({path = '/', title = DEFAULT_TITLE, description = DEFAU
       graph.push(entry);
     }
   }
-  return {title, description, url, image: absoluteUrl(image), robots: privatePage ? 'noindex, follow' : 'index, follow, max-image-preview:large', schema: graph.length ? {'@context': 'https://schema.org', '@graph': graph} : null};
+  return {title, description, url, image: absoluteUrl(image), type, robots: privatePage ? 'noindex, follow' : 'index, follow, max-image-preview:large', schema: graph.length ? {'@context': 'https://schema.org', '@graph': graph} : null};
 }
 
 export const serializeJson = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 export const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]));
 
 export function renderHead(meta) {
-  const tags = [['name', 'description', meta.description], ['name', 'robots', meta.robots], ['property', 'og:type', 'website'], ['property', 'og:site_name', 'PAHWA JEE'], ['property', 'og:locale', 'en_IN'], ['property', 'og:title', meta.title], ['property', 'og:description', meta.description], ['property', 'og:url', meta.url], ['property', 'og:image', meta.image], ['property', 'og:image:alt', meta.title], ['name', 'twitter:card', 'summary_large_image'], ['name', 'twitter:title', meta.title], ['name', 'twitter:description', meta.description], ['name', 'twitter:image', meta.image]];
+  const tags = [['name', 'description', meta.description], ['name', 'robots', meta.robots], ['property', 'og:type', meta.type || 'website'], ['property', 'og:site_name', 'PAHWA JEE'], ['property', 'og:locale', 'en_IN'], ['property', 'og:title', meta.title], ['property', 'og:description', meta.description], ['property', 'og:url', meta.url], ['property', 'og:image', meta.image], ['property', 'og:image:alt', meta.title], ['name', 'twitter:card', 'summary_large_image'], ['name', 'twitter:title', meta.title], ['name', 'twitter:description', meta.description], ['name', 'twitter:image', meta.image]];
   return `<title>${escapeHtml(meta.title)}</title>\n` + (meta.url ? `<link rel="canonical" href="${escapeHtml(meta.url)}">\n` : '') + tags.filter(([, , value]) => value != null).map(([attr, key, value]) => `<meta ${attr}="${key}" content="${escapeHtml(value)}">`).join('\n') + (meta.schema ? `\n<script id="jsonld-schema" type="application/ld+json">${serializeJson(meta.schema)}</script>` : '');
 }

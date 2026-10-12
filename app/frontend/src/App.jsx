@@ -15,6 +15,8 @@ const Contact = React.lazy(() => import('./pages/Contact'));
 const Diwali = React.lazy(() => import('./pages/Diwali'));
 const CorporateGifting = React.lazy(() => import('./pages/CorporateGifting'));
 const Gallery = React.lazy(() => import('./pages/Gallery'));
+const Blog = React.lazy(() => import('./pages/Blog'));
+const BlogArticle = React.lazy(() => import('./pages/BlogArticle'));
 const CategoryLanding = React.lazy(() => import('./pages/CategoryLanding'));
 import NotFound from './pages/NotFound';
 import { CartProvider } from './context/CartContext';
@@ -24,10 +26,10 @@ const AdminApp = React.lazy(() => import('./admin/AdminApp'));
 
 import { PageDataContext } from './context/PageData';
 
-const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu };
+const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle };
 
 export default function App({ data = {}, pages = clientPages }) {
-  const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu } = pages;
+  const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle } = pages;
   return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}><FavouritesProvider>
       <ScrollToTop />
       <Routes>
@@ -47,6 +49,8 @@ export default function App({ data = {}, pages = clientPages }) {
           <Route path="/diwali" element={<Diwali />} />
           <Route path="/gifting" element={<CorporateGifting />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
 
           {/* Category Landing Pages */}
           <Route path="/our-specialities" element={<CategoryLanding type="specialities" />} />

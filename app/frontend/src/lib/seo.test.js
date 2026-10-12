@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {SITE_URL, metadata, productSchema, renderHead, serializeJson} from './seo.js';
+import {blogPosts, blogPath} from './blog.js';
 
 test('canonical URLs consolidate filters, aliases and trailing slashes', () => {
   assert.equal(metadata({path: '/products/?filter=nankhatai'}).url, `${SITE_URL}/products`);
@@ -70,4 +71,28 @@ test('fixed-pack offer uses the purchasable pack price with an accurate kg refer
   assert.equal(schema.offers.price, '130.00');
   assert.equal(schema.offers.name, '400 g pack');
   assert.equal(schema.offers.priceSpecification.price, '325.00');
+});
+
+test('blog articles ship crawlable content, matching article metadata and working local links', async () => {
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  const home = await readFile('dist/index.html', 'utf8');
+  const listing = await readFile('dist/blog.html', 'utf8');
+  assert.match(sitemap, /<loc>https:\/\/pahwajee\.in\/blog<\/loc>/);
+  for (const post of blogPosts) {
+    const path = blogPath(post);
+    const html = await readFile(`dist${path}.html`, 'utf8');
+    assert.ok(sitemap.includes(`${SITE_URL}${path}</loc>`));
+    assert.ok(home.includes(`href="${path}"`) && listing.includes(`href="${path}"`));
+    assert.match(html, /property="og:type" content="article"/);
+    assert.ok(html.includes(post.introduction));
+    const graph = JSON.parse(html.match(/<script id="jsonld-schema" type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
+    const article = graph.find(item => item['@type'] === 'BlogPosting');
+    assert.equal(article.headline, post.title);
+    assert.equal(article.datePublished, post.datePublished);
+    assert.equal(article.url, `${SITE_URL}${path}`);
+    assert.deepEqual(graph.find(item => item['@type'] === 'BreadcrumbList').itemListElement.map(item => item.item), [`${SITE_URL}/`, `${SITE_URL}/blog`, `${SITE_URL}${path}`]);
+    for (const image of article.image) await readFile(`public${decodeURI(new URL(image).pathname)}`);
+    for (const link of [...post.sections.flatMap(section => section.links || []), post.cta]) await readFile(`dist${link.to}.html`);
+  }
+  assert.match(renderHead(metadata({path: '/blog'})), /property="og:type" content="website"/);
 });

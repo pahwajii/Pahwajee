@@ -212,6 +212,7 @@ export default function Layout() {
               <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About PAHWAJEE</Link></li>
               <li><Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors">Store Gallery</Link></li>
+              <li><Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
               <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Customer Reviews</Link></li>
               <li><a href={BUSINESS.googleReviewUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Review us on Google</a></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>

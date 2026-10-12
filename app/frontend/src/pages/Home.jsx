@@ -1,4 +1,6 @@
 import { giftHamperDesigns } from '../lib/giftHampers';
+import BlogCards from '../components/BlogCards';
+import { blogPosts } from '../lib/blog';
 import { reviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
@@ -325,6 +327,14 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="container-x py-16" aria-labelledby="home-blog-heading">
+        <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
+          <h2 id="home-blog-heading" className="font-serif text-3xl sm:text-4xl">From Pahwajee</h2>
+          <Link to="/blog" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">View all articles <ArrowRight size={16} aria-hidden="true" /></Link>
+        </div>
+        <BlogCards posts={blogPosts} />
       </section>
 
       {/* 12 & 13. Visit Store & Contact / WhatsApp */}
