@@ -9,12 +9,11 @@
 **/venv/**
 frontend/scratch/**
 public/**
-backend/tests/**
 memory/**
 test_reports/**
 *.md
 backend/*.md
-backend/*test*
+backend/test*.py
 backend/update_*.py
 backend/migrate_*.py
 backend/seed_*.py
