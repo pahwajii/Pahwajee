@@ -38,7 +38,7 @@ export default function Contact() {
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO 
         title="Contact Us & Store Directions | PAHWAJEE Meerut"
-        description="Visit PAHWAJEE sweet & bakery shop at 19 Abu Lane, Meerut. Get directions, contact phone numbers, business hours, and submit product or bulk orders enquiries."
+        description="Visit PAHWAJEE sweet & bakery shop at 19B, Abu Lane, Meerut. Get directions, contact phone numbers, business hours, and submit product or bulk orders enquiries."
       />
 
       <div className="container-x">
@@ -89,6 +89,7 @@ export default function Contact() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 <strong>WhatsApp:</strong> {BUSINESS.whatsapp}
               </p>
+              <a href={"mailto:" + BUSINESS.email} className="mb-3 inline-flex min-h-11 items-center text-sm font-semibold underline">{BUSINESS.email}</a>
               <div className="flex gap-3">
                 <a href={telLink()} className="text-sm font-semibold text-primary hover:underline">
                   Call Now

@@ -1,6 +1,6 @@
 import { FavouritesProvider } from './context/FavouritesContext';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
@@ -16,6 +16,7 @@ const Diwali = React.lazy(() => import('./pages/Diwali'));
 const CorporateGifting = React.lazy(() => import('./pages/CorporateGifting'));
 const Gallery = React.lazy(() => import('./pages/Gallery'));
 const Blog = React.lazy(() => import('./pages/Blog'));
+const PolicyPage = React.lazy(() => import('./pages/PolicyPage'));
 const BlogArticle = React.lazy(() => import('./pages/BlogArticle'));
 const CategoryLanding = React.lazy(() => import('./pages/CategoryLanding'));
 import NotFound from './pages/NotFound';
@@ -26,10 +27,10 @@ const AdminApp = React.lazy(() => import('./admin/AdminApp'));
 
 import { PageDataContext } from './context/PageData';
 
-const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle };
+const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage };
 
 export default function App({ data = {}, pages = clientPages }) {
-  const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle } = pages;
+  const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage } = pages;
   return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}><FavouritesProvider>
       <ScrollToTop />
       <Routes>
@@ -38,6 +39,8 @@ export default function App({ data = {}, pages = clientPages }) {
           <Route path="/" element={<Home />} />
           <Route path="/in-store-menu" element={<InStoreMenu />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/shop" element={<Navigate to="/products" replace />} />
+          {["terms-and-conditions", "privacy-policy", "shipping-policy", "returns-and-cancellations"].map(page => <Route key={page} path={"/" + page} element={<PolicyPage page={page} />} />)}
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/cart" element={<React.Suspense fallback={<p className="container-x py-12" role="status">Loading cart…</p>}><Cart /></React.Suspense>} />
           <Route path="/products/:slug" element={<ProductDetail />} />

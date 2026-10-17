@@ -1,3 +1,4 @@
+import storePolicy from '../../../store-policy.json';
 import googleReviews from '../../../google-reviews.json';
 import { isStoreProduct, isGalleryOnlySlug } from './storefront';
 
@@ -57,6 +58,8 @@ export default {
 
 export const BUSINESS = {
   name: "PAHWA JEE",
+  legalName: storePolicy.businessName,
+  email: storePolicy.email,
   fssaiNumber: "22718357001092",
   outlets: [
     { name: "Pahwajee - Abu Lane Shop", address: "19B, Abu Lane, Meerut", phones: ["9837566628", "9897202037"] },
@@ -66,7 +69,7 @@ export const BUSINESS = {
   tagline: "Meerut's Trusted Destination for Nankhatai, Rewri, Gazak, Shakes & Premium Gift Hampers",
   phones: ["6396339806", "9837566628"],
   whatsapp: "6396339806",
-  address: "19 Abu Lane, Meerut, Uttar Pradesh, India",
+  address: "19B, Abu Lane, Meerut, Uttar Pradesh, India",
   mapEmbed: "https://www.google.com/maps?q=19+Abu+Lane+Meerut&output=embed",
   mapLink: "https://goo.gl/maps/LitsbZD5w865XZux5?g_st=aw",
   hours: "10:00 AM – 11:00 PM (Open All Days)",

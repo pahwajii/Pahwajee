@@ -1,0 +1,76 @@
+import { isNankhatai, isRewriGajak, isSweet } from './catalogueContent.js';
+
+export const collections = {
+  specialities: {
+    title: 'Meerut Rewri, Gajak & Nankhatai Specialities | PAHWAJEE',
+    description: 'Compare Pahwajee’s Khasta Rewri, Gol Gazak, Dilkhush Gazak and two Nankhatai varieties. See prices, packs and availability in Meerut.',
+    h1: 'Pahwajee’s Meerut Specialities',
+    intro: 'Start with Khasta Rewri for crisp sesame bites, Gol Gazak for round gajak pieces, or Dilkhush Gazak for a flaky texture. For tea-time biscuits, compare our Desi Ghee and Vanaspati Ghee Nankhatai.',
+    filterMatch: p => isRewriGajak(p) || isNankhatai(p),
+    links: [{to:'/rewri-gajak-meerut',label:'Compare Rewri & Gajak'}, {to:'/nankhatai-meerut',label:'Choose your Nankhatai'}, {to:'/gifting',label:'Explore gift boxes'}],
+    guide: {to:'/blog/rewri-gajak-chikki-difference',label:'Rewri, Gajak and Chikki: how they differ'},
+    faqs: [
+      {question:'How do I choose between these specialities?',answer:'Compare the product texture, pack size and price. Rewri and Gajak are winter favourites; Nankhatai comes in two separately priced ghee varieties. Open a product for its details and ordering options.'},
+      {question:'Can I order these for a family gathering?',answer:'Share the items, quantities and date with the shop. Confirm current stock before planning a large or seasonal order.'},
+    ],
+  },
+  'rewri-gajak': {
+    title: 'Rewri & Gajak in Meerut — Khasta, Gol & Dilkhush | PAHWAJEE',
+    description: 'Shop Meerut Rewri and Gajak at Pahwajee, 19B Abu Lane. Compare Khasta Rewri, Gol Gazak, Dilkhush and more with prices, pack sizes and availability.',
+    h1: 'Rewri & Gajak in Meerut',
+    intro: 'Explore Pahwajee’s Rewri and Gajak collection at Abu Lane, Meerut. Gajak is also commonly written as Gazak or Gajjak. Compare crisp Khasta Rewri, round Gol Gazak and flaky Dilkhush Gazak, along with rolls, patti and Peanut Chikki.',
+    filterMatch: isRewriGajak,
+    links: [{to:'/products/khasta-rewri',label:'Khasta Rewri'}, {to:'/products/gol-gazak',label:'Gol Gazak'}, {to:'/products/dilkhush-gazak',label:'Dilkhush Gazak'}],
+    guide: {to:'/blog/rewri-gajak-chikki-difference',label:'Rewri, Gajak and Chikki: compare shapes and textures'},
+    photo: '/gallery/WhatsApp Image 2026-07-05 at 15.42.20.jpeg',
+    caption: 'A wrapped gazak roll from our shop gallery.',
+    faqs: [
+      {question:'Which Rewri or Gajak should I choose?',answer:'Khasta Rewri comes in small crisp pieces; Chips Rewri is thinner. Gol Gazak is round, while Dilkhush Gazak has a flaky texture. The collection also includes Sugar Gazak, Til Patti, Chocolate Gazak and rolls.'},
+      {question:'Are all Gajak varieties made with the same ingredients?',answer:'No. Sugar Gazak, Mawa Roll and Kaju Gazak Roll are different varieties. Do not assume that every product uses jaggery or has the same nut or dairy ingredients; ask for the ingredient list of your chosen item.'},
+      {question:'Is Meerut Rewri and Gajak available all year?',answer:'These are seasonal winter favourites. Check the status on each product and confirm your quantity with the shop. A temporarily unavailable item stays listed so you can enquire about its return.'},
+    ],
+  },
+  nankhatai: {
+    title: 'Nankhatai in Meerut — Desi Ghee & Vanaspati | PAHWAJEE',
+    description: 'Compare Desi Ghee and Vanaspati Ghee Nankhatai at Pahwajee, Abu Lane, Meerut. See current prices, 500 g and 1 kg packs, and ordering information.',
+    h1: 'Nankhatai in Meerut',
+    intro: 'Pahwajee offers two Nankhatai varieties in Meerut: Pure Desi Ghee and Vanaspati Ghee. Also written as Nankhatayi, these traditional tea-time biscuits are listed separately so you can compare their ghee base, current rate and pack options.',
+    filterMatch: isNankhatai,
+    links: [{to:'/products/pure-desi-ghee-nankhatai',label:'Pure Desi Ghee Nankhatai'}, {to:'/products/vanaspati-ghee-nankhatai',label:'Vanaspati Ghee Nankhatai'}, {to:'/bakery-meerut',label:'Cakes & bakery selection'}],
+    guide: {to:'/blog/how-to-store-nankhatai',label:'Keeping Nankhatai crisp: storage and packing guide'},
+    faqs: [
+      {question:'What is the difference between the two varieties?',answer:'The Pure Desi Ghee variety is made with pure desi ghee. The Vanaspati Ghee variety uses vanaspati. Prices are shown with each product, and both offer 500 g and 1 kg packs.'},
+      {question:'How should I store Nankhatai?',answer:'Keep it in an airtight container away from moisture. Follow the best-before and storage guidance on your pack, and ask the store if you are buying ahead of a trip or celebration.'},
+      {question:'Where can I buy Pahwajee Nankhatai in Meerut?',answer:'Browse the packs below or visit 19B, Abu Lane, Meerut. Call or message the team to confirm the variety and quantity you need before collection.'},
+    ],
+  },
+  sweets: {
+    title: 'Sweets, Laddoo & Barfi in Meerut | PAHWAJEE',
+    description: 'Browse Pahwajee’s laddoos, barfi, fruit bites and seasonal sweets in Meerut. See current prices, special-order items and custom 1 kg mithai boxes.',
+    h1: 'Sweets & Mithai in Meerut',
+    intro: 'Choose from laddoos, barfi, fruit bites and seasonal sweets at Pahwajee. Compare Khajoor Laddoo with Khajoor Barfi, explore Mango, Kachha Aam and Strawberry bites, or build a 1 kg box with four 250 g sections.',
+    filterMatch: isSweet,
+    links: [{to:'/gifting',label:'Build a custom mithai box'}, {to:'/products/jachha-bachha-panjeeri',label:'Panjeeri: special orders'}, {to:'/products/desi-ghee-gajar-ka-halwa',label:'Check Gajar Halwa availability'}],
+    guide: {to:'/blog/diwali-gift-hampers-meerut-guide',label:'Choosing a mithai box or dry fruit hamper'},
+    photo: '/gallery/WhatsApp Image 2026-07-05 at 15.42.04 (1).jpeg',
+    caption: 'Nut-and-seed laddoos photographed at our shop.',
+    faqs: [
+      {question:'Can I choose the sweets in a gift box?',answer:'Yes. Select four 250 g sections for a 1 kg custom box. Repeats are allowed. The price is the sum of each portion’s individual rate, with no extra packaging charge; send the selection as an enquiry to confirm availability.'},
+      {question:'Which sweets need an availability check?',answer:'Check every product’s current status. Jachha Bachha Panjeeri is made only on special order. Seasonal items such as Gajar Halwa and Mawa Malai Gajar Barfi may be temporarily unavailable.'},
+      {question:'Are date and dry-fruit sweets sugar-free?',answer:'Do not assume a sweet is sugar-free because it contains dates or dry fruits. Ask the store about added sweeteners, ingredients and allergens for the exact variety you want.'},
+    ],
+  },
+  bakery: {
+    title: 'Nankhatai, Biscuits & Cakes on Order in Meerut | PAHWAJEE',
+    description: 'Explore Pahwajee’s Nankhatai, bakery biscuits and vegetarian cakes on order in Meerut. Discuss flavour, size, design, price and collection date.',
+    h1: 'Bakery & Cakes on Order in Meerut',
+    intro: 'Shop our two Nankhatai varieties, browse bakery biscuits, or enquire about a cake for your occasion. Pineapple, Chocolate, Butterscotch and custom-design cakes are available on order through our vegetarian in-store menu.',
+    filterMatch: isNankhatai,
+    links: [{to:'/nankhatai-meerut',label:'Compare Nankhatai varieties'}, {to:'/in-store-menu',label:'Full in-store menu'}, {to:'/contact',label:'Discuss your cake order'}],
+    guide: {to:'/blog/how-to-store-nankhatai',label:'How to store Nankhatai at home'},
+    faqs: [
+      {question:'What details should I send for a cake order?',answer:'Share the flavour, size or number of guests, design reference, message and required date. The team will confirm the price and preparation time before accepting the order.'},
+      {question:'Are cakes ready for immediate collection?',answer:'The cakes listed here are available on order. Confirm the preparation time and collection outlet with the team; a photo does not mean that exact cake is in stock.'},
+    ],
+  },
+};

@@ -1,3 +1,4 @@
+import OrderHelp from '../components/OrderHelp';
 import { giftHamperDesigns } from '../lib/giftHampers';
 import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
@@ -60,7 +61,7 @@ export default function CorporateGifting() {
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO 
         title="Gift Hampers & Mithai Gift Boxes in Meerut | PAHWAJEE"
-        description="Premium corporate gifts, customized client hampers, employee boxes, and bulk sweets in Meerut by PAHWAJEE. Custom branding, logo tags, and local delivery."
+        description="Compare dry fruit hampers and 1 kg mithai boxes at Pahwajee, Meerut. Choose a ready-made assortment or four 250 g sections for a custom box."
       />
 
       <div className="container-x">
@@ -68,10 +69,10 @@ export default function CorporateGifting() {
         <section className="text-center max-w-3xl mx-auto py-12">
           
           <h1 className="mt-4 text-3xl sm:text-5xl font-serif leading-tight">
-            Gift Hampers &amp; Mithai Boxes
+            Gift Hampers &amp; Mithai Boxes in Meerut
           </h1>
           <p className="mt-5 text-base text-muted-foreground leading-relaxed">
-            Browse dry fruit hampers and mithai boxes for family celebrations, weddings and corporate gifting.
+            Choose a dry fruit hamper or a 1 kg mithai box from Pahwajee, Meerut. Ready-made boxes have their own listed prices; custom boxes contain four 250 g sections, priced at the selected sweets’ individual rates.
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">
@@ -113,6 +114,11 @@ export default function CorporateGifting() {
         </section>
 
         <CustomMithaiBox />
+        <div className="flex flex-wrap gap-x-5 text-sm font-semibold text-primary dark:text-secondary">
+          <Link to="/sweets-meerut" className="inline-flex min-h-11 items-center underline">Compare laddoos, barfi &amp; fruit bites</Link>
+          <Link to="/blog/diwali-gift-hampers-meerut-guide" className="inline-flex min-h-11 items-center underline">Read the Meerut gift hamper buying guide</Link>
+        </div>
+        <OrderHelp photo="/gallery/pahwa-signature-mithai-box-real.webp" caption="A real Pahwajee mithai box from our gallery." />
 
         {/* Pillars / Value Prop */}
         <section className="grid gap-8 md:grid-cols-3 my-12">
@@ -122,7 +128,7 @@ export default function CorporateGifting() {
             </div>
             <h3 className="font-serif text-xl font-bold mb-2">Custom Branding</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              We add customized logo tags, printed sleeves, corporate gift cards, and custom packaging themes to align with your brand identity.
+              For a corporate or wedding order, share your packaging idea, message and quantity. Confirm which custom details are available and their cost before ordering.
             </p>
           </div>
 
@@ -140,9 +146,9 @@ export default function CorporateGifting() {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
               <Truck className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-xl font-bold mb-2">On-Time Local Delivery</h3>
+            <h3 className="font-serif text-xl font-bold mb-2">Collection & Delivery</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              With dedicated delivery logistics, we ensure all bulk packages arrive at your office or clients' premises across Meerut on time.
+              Share your Meerut delivery location and required date. The team will confirm whether delivery is available, the charges and timing, or arrange store collection.
             </p>
           </div>
         </section>
@@ -151,7 +157,7 @@ export default function CorporateGifting() {
         <section className="max-w-2xl mx-auto my-12 bg-white/60 dark:bg-card/40 p-8 rounded-3xl border border-border/50 backdrop-blur-md">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-serif font-bold text-foreground">Request a Bulk Gifting Quote</h2>
-            <p className="text-sm text-muted-foreground mt-2">Submit your requirements and our coordinator will get back to you within 2 hours.</p>
+            <p className="text-sm text-muted-foreground mt-2">Share your quantity, budget and required date. The team will confirm the contents, availability and final quote.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

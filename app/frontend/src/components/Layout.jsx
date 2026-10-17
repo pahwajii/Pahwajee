@@ -210,6 +210,9 @@ export default function Layout() {
               <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Nankhatai</Link></li>
               <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Gift Hampers</Link></li>
               <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
+              <li><Link to="/sweets-meerut" className="text-muted-foreground hover:text-primary transition-colors">Sweets & Laddoos</Link></li>
+              <li><Link to="/bakery-meerut" className="text-muted-foreground hover:text-primary transition-colors">Bakery & Cakes</Link></li>
+              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors">Ordering FAQs</Link></li>
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About PAHWAJEE</Link></li>
               <li><Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors">Store Gallery</Link></li>
               <li><Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
@@ -249,6 +252,15 @@ export default function Layout() {
               </div>
             </section>
           </div>
+        </div>
+        <div className="container-x mt-8 border-t border-border pt-5">
+          <nav aria-label="Store policies" className="flex flex-wrap gap-x-5 gap-y-1 text-xs sm:text-sm text-muted-foreground">
+            <Link to="/terms-and-conditions" className="inline-flex min-h-11 items-center underline underline-offset-4">Terms &amp; Conditions</Link>
+            <Link to="/privacy-policy" className="inline-flex min-h-11 items-center underline underline-offset-4">Privacy Policy</Link>
+            <Link to="/shipping-policy" className="inline-flex min-h-11 items-center underline underline-offset-4">Delivery &amp; Collection</Link>
+            <Link to="/returns-and-cancellations" className="inline-flex min-h-11 items-center underline underline-offset-4">Replacements &amp; Cancellations</Link>
+            <a href={'mailto:' + BUSINESS.email} className="inline-flex min-h-11 items-center underline underline-offset-4">{BUSINESS.email}</a>
+          </nav>
         </div>
       </footer>
     </div>

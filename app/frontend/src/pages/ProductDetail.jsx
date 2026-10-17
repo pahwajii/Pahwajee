@@ -1,3 +1,5 @@
+import { collectionFor, productDescription, productSpecs, availabilityNote } from '../lib/catalogueContent';
+import { productPackSizes, packLabel } from '../lib/cart';
 import FavouriteButton from '../components/FavouriteButton';
 import CustomMithaiBox from '../components/CustomMithaiBox';
 import { isMithaiBox, hasAssortmentPhoto } from '../lib/mithaiBox';
@@ -67,47 +69,10 @@ export default function ProductDetail() {
     );
   }
 
-  // Get specific local parameters based on name (to avoid inventing random facts)
-  const getProductSpecs = (name) => {
-    const text = name.toLowerCase();
-    if (text.includes('bite') || text.includes('khajoor barfi') || text.includes('mawa') || text.includes('louch') || text.includes('panjeeri') || text.includes('mithai box') || text.includes('gond')) return {ingredients: 'Ask the store for ingredients and allergen information.', storage: 'Follow the storage instructions supplied with your order.', shelfLife: 'Confirm with the store', suitability: 'Contact us to confirm availability and your preferred quantity.'};
-    if (text.includes('nankhatai')) {
-      return {
-        ingredients: text.includes('vanaspati')
-          ? "Made with Vanaspati Ghee. Please contact us for the full ingredient list."
-          : "Pure Desi Ghee, Wheat Flour (Maida/Atta), Sugar, Cardamom.",
-        storage: "Store in a cool, dry place inside an airtight container. Protect from moisture.",
-        shelfLife: "30 Days",
-        suitability: "Perfect for tea-time snacking, corporate gifts, and festive occasions."
-      };
-    }
-    if (text.includes('chikki')) return {ingredients: 'Contains peanuts. Ask the store for the full ingredient and allergen list.', storage: 'Follow the storage instructions on the pack.', shelfLife: 'Refer to package label', suitability: 'Available in the pack size shown below.'};
-    if (text.includes('rewri') || text.includes('gajak') || text.includes('chikki') || text.includes('til')) {
-      return {
-        ingredients: "Roasted Sesame Seeds (Til), Organic Jaggery (Gur), Pure Ghee, Cardamom.",
-        storage: "Keep in a dry, airtight jar. Do not expose to moisture to retain crispness.",
-        shelfLife: "60-90 Days",
-        suitability: "Traditional winter delight, highly popular for Lohri, Makar Sankranti, and Diwali gifting."
-      };
-    }
-    if (text.includes('cake')) {
-      return {
-        ingredients: "Wheat Flour, Fresh Cream, Sugar, Premium Fruit/Chocolate Concentrates (100% Eggless).",
-        storage: "Keep refrigerated between 2°C and 5°C. Consume within 48 hours of purchase.",
-        shelfLife: "24-48 Hours",
-        suitability: "Birthdays, anniversaries, office parties, and milestone celebrations in Meerut."
-      };
-    }
-    // Generic fallback based on database defaults
-    return {
-      ingredients: "Handpicked premium ingredients (Pure Desi Ghee / Fresh dairy where applicable).",
-      storage: "Store in a cool, dry place. Keep airtight.",
-      shelfLife: "Refer to package label",
-      suitability: "Delightful local treat for daily consumption and family gifting."
-    };
-  };
-
-  const specs = getProductSpecs(product.name);
+  const specs = productSpecs(product);
+  const collection = collectionFor(product);
+  const description = productDescription(product);
+  const unavailable = /unavailable|sold out|out of stock/i.test(product.availability || "");
   const images = product && product.images && product.images.length > 0
     ? product.images
     : (product && product.image ? [product.image] : []);
@@ -119,17 +84,19 @@ export default function ProductDetail() {
     <div className="noise-bg min-h-screen pb-16 pt-8">
       <SEO
         title={`${product.name} in Meerut | PAHWAJEE`}
-        description={`${product.description || `Buy fresh ${product.name} at PAHWAJEE Abu Lane, Meerut.`} Order on WhatsApp or call us directly.`}
+        description={`${product.name} at Pahwajee, Meerut. ${displayPrice(product)}. ${product.availability || 'Confirm availability'}. See pack details and enquire about your order.`}
         schema={schema}
         image={product.image}
       />
 
       <div className="container-x">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-8 uppercase tracking-wider" aria-label="Breadcrumb">
+        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground mb-8 uppercase tracking-wider" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight size={12} />
           <Link to="/products" className="hover:text-primary transition-colors">Products</Link>
+          <ChevronRight size={12} />
+          <Link to={collection.to} className="hover:text-primary">{collection.label}</Link>
           <ChevronRight size={12} />
           <span className="text-foreground font-semibold max-w-[200px] truncate">{product.name}</span>
         </nav>
@@ -202,7 +169,7 @@ export default function ProductDetail() {
               <span className="eyebrow">{product.category.replace('-', ' ')}</span>
               {product.availability === 'Available' ? (
                 <span className="rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-400">
-                  Available Today
+                  Available
                 </span>
               ) : (
                 <span className="rounded-full bg-amber-100 px-3 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/20 dark:text-amber-400">
@@ -216,7 +183,7 @@ export default function ProductDetail() {
             {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo', 'strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(product.slug) && <p className="mb-4 text-xs text-muted-foreground">Product photo is illustrative.</p>}
 
             <p className="text-muted-foreground leading-relaxed text-base mb-8 border-b border-border/30 pb-6">
-              {product.description || "Freshly prepared daily with the finest ingredients at our store in Meerut. Crafted with generational recipes for authentic taste."}
+              {description}
             </p>
 
             {/* Product Specifications Cards */}
@@ -232,8 +199,8 @@ export default function ProductDetail() {
               <div className="flex gap-3">
                 <Calendar className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Shelf Life</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed mt-1">{specs.shelfLife} (Storage: {specs.storage})</p>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Storage &amp; best-before</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed mt-1">{specs.storage}</p>
                 </div>
               </div>
             </div>
@@ -246,6 +213,8 @@ export default function ProductDetail() {
               </div>
             )}
 
+            <p className="mb-4 rounded-xl border border-border p-3 text-sm leading-relaxed text-muted-foreground">{availabilityNote(product)}</p>
+            <p className="mb-4 text-sm text-muted-foreground">{product.sale_unit === "kg" && product.cart_eligible ? "Listed pack sizes: " + productPackSizes(product).map(packLabel).join(" / ") + "." : "Confirm your preferred quantity with the store."}</p>
             <FavouriteButton item={product} label className="mb-4" />
             <FssaiNotice className="mb-4" />
 
@@ -255,12 +224,12 @@ export default function ProductDetail() {
             <div className="mb-6"><AddToCart product={product} /></div>
             <div className="flex flex-wrap gap-4 pt-2">
               <a
-                href={waLink(`Hi PAHWAJEE, I am interested in ordering: ${product.name} (${displayPrice(product)}). Please share availability.`)}
+                href={waLink(`${product.name} (${displayPrice(product)}). ${unavailable ? "Please let me know when it is available again" : "Please confirm my preferred quantity and date"}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gold !bg-emerald-600 !text-white flex items-center justify-center gap-2 hover:!bg-emerald-700"
               >
-                <MessageCircle size={18} /> Order on WhatsApp
+                <MessageCircle size={18} /> {unavailable ? "Ask about availability" : "Enquire on WhatsApp"}
               </a>
               <a
                 href={telLink()}
@@ -272,6 +241,13 @@ export default function ProductDetail() {
           </div>
         </section>
 
+        <section className="my-8 rounded-2xl border border-border bg-card p-4 sm:p-6" aria-labelledby="product-ordering-help">
+          <h2 id="product-ordering-help" className="text-2xl font-serif">Choosing &amp; ordering {product.name}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Choose a listed pack and quantity for cart orders. For a gift, special order or unavailable item, send an enquiry with your required date. Confirm the collection outlet or delivery arrangements with the team before making a trip.</p>
+          <div className="mt-3 flex flex-wrap gap-x-5 text-sm font-semibold text-primary dark:text-secondary">
+            {[{to:collection.to,label:collection.label},{to:collection.guide,label:collection.guideLabel},{to:"/gallery",label:"Real shop & product photos"},{to:"/faqs",label:"Ordering FAQs"},{to:"/contact",label:"Visit our Meerut outlets"}].map(link => <Link key={link.to} to={link.to} className="inline-flex min-h-11 items-center underline underline-offset-4">{link.label}</Link>)}
+          </div>
+        </section>
         {isMithaiBox(product.slug) && <CustomMithaiBox />}
 
         {/* Related Products */}

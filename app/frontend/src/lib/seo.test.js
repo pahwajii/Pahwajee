@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {SITE_URL, metadata, productSchema, renderHead, serializeJson} from './seo.js';
 import {blogPosts, blogPath} from './blog.js';
+import { collectionFor, availabilityNote, productSpecs } from './catalogueContent.js';
+import { policyPages } from './policies.js';
 
 test('canonical URLs consolidate filters, aliases and trailing slashes', () => {
   assert.equal(metadata({path: '/products/?filter=nankhatai'}).url, `${SITE_URL}/products`);
@@ -26,7 +28,7 @@ test('offers preserve decimal prices and selling units without inventing gift pr
   assert.equal(schema.offers.priceSpecification.referenceQuantity.unitCode, 'KGM');
   assert.equal(productSchema({...product, unit_price_paise: 38000}).offers.price, '380.00');
   assert.equal(productSchema({...product, unit_price_paise: 12550, sale_unit: 'plate'}).offers.price, '125.50');
-  for (const replacement of [{cart_eligible: false, price: 'Rs 1100 - Rs 2500'}, {unit_price_paise: null}, {unit_price_paise: 0}]) assert.equal(productSchema({...product, ...replacement}).offers, undefined);
+  for (const replacement of [{cart_eligible: false, price: 'Rs 1100 - Rs 2500'}, {unit_price_paise: null}, {unit_price_paise: 0}]) assert.equal(productSchema({...product, ...replacement}), null);
   assert.equal(productSchema({...product, availability: 'Unavailable'}).offers.availability, 'https://schema.org/OutOfStock');
   assert.ok(schema.image.every(url => url.startsWith(SITE_URL)));
 });
@@ -95,4 +97,46 @@ test('blog articles ship crawlable content, matching article metadata and workin
     for (const link of [...post.sections.flatMap(section => section.links || []), post.cta]) await readFile(`dist${link.to}.html`);
   }
   assert.match(renderHead(metadata({path: '/blog'})), /property="og:type" content="website"/);
+});
+
+test('every public sitemap page is reachable through prerendered internal links', async () => {
+  const xml = await readFile('dist/sitemap.xml', 'utf8');
+  const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]).pathname);
+  const graph = new Map();
+  for (const page of paths) {
+    const html = await readFile('dist/' + (page === '/' ? 'index' : page.slice(1)) + '.html', 'utf8');
+    const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(match => new URL(match[1].replaceAll('&amp;', '&'), SITE_URL + page)).filter(url => url.origin === SITE_URL).map(url => url.pathname);
+    graph.set(page, links.filter(url => paths.includes(url)));
+  }
+  const seen = new Set(['/']);
+  const queue = ['/'];
+  for (let i=0; i<queue.length; i++) for (const link of graph.get(queue[i]) || []) if (!seen.has(link)) {seen.add(link); queue.push(link);}
+  assert.deepEqual(paths.filter(page => !seen.has(page)), [], 'Sitemap contains orphan pages');
+  for (const slug of Object.keys(policyPages)) assert.ok(paths.includes('/' + slug));
+  for (const page of ['/sweets-meerut','/bakery-meerut','/faqs','/products/desi-ghee-gajar-ka-halwa','/products/jachha-bachha-panjeeri']) assert.ok([...graph.entries()].filter(([from, links]) => from !== page && links.includes(page)).length >= 2, page + ' needs contextual links');
+});
+
+test('product guidance and schema distinguish special orders, unavailable items and ingredients', () => {
+  assert.match(availabilityNote({availability:'Special order only'}), /special order/);
+  assert.match(availabilityNote({availability:'Currently unavailable'}), /Temporarily unavailable/);
+  assert.match(productSpecs({slug:'vanaspati-ghee-nankhatai'}).ingredients, /Vanaspati/);
+  assert.ok(!productSpecs({slug:'sugar-gazak'}).ingredients.includes('jaggery'));
+  assert.equal(collectionFor({slug:'gol-gazak'}).to, '/rewri-gajak-meerut');
+  assert.equal(collectionFor({slug:'khajoor-barfi'}).to, '/sweets-meerut');
+  assert.equal(productSchema({slug:'jachha-bachha-panjeeri',cart_eligible:false,unit_price_paise:100000}), null);
+  assert.equal(metadata({path:'/shop'}).url, SITE_URL + '/products');
+});
+
+test('bakery and policy pages contain real menu options and shared business terms', async () => {
+  const bakery=await readFile('dist/bakery-meerut.html','utf8');
+  assert.match(bakery, /Pineapple Cake/);
+  assert.match(bakery, /Available on order/);
+  const delivery=await readFile('dist/shipping-policy.html','utf8');
+  assert.match(delivery, /40–80/);
+  assert.ok(!delivery.includes('FREE delivery'));
+  for(const slug of Object.keys(policyPages)) {
+    const html=await readFile('dist/'+slug+'.html','utf8');
+    assert.ok(html.includes('mailto:pahwajee@gmail.com'));
+    assert.match(html, /name="robots" content="index,/);
+  }
 });

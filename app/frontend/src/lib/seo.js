@@ -1,10 +1,12 @@
+import { policy, policyPages } from './policies.js';
+import { productDescription } from './catalogueContent.js';
 import productPacks from '../../../product-packs.json' with { type: 'json' };
 import { blogPosts, blogPath } from './blog.js';
 // Public canonical origin, shared by metadata, structured data and the sitemap.
 export const SITE_URL = 'https://pahwajee.in';
-export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs', '/blog', ...blogPosts.map(blogPath)];
+export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs', '/blog', ...Object.keys(policyPages).map(slug => '/' + slug), ...blogPosts.map(blogPath)];
 export const DEFAULT_TITLE = 'PAHWA JEE Meerut | Nankhatai, Rewri, Gajak & Gift Hampers';
-export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19 Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';
+export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19B, Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';
 const labels = {'in-store-menu': 'In-store Menu', products: 'Shop', 'our-specialities': 'Our Specialities', 'nankhatai-meerut': 'Nankhatai', 'rewri-gajak-meerut': 'Rewri & Gajak', 'sweets-meerut': 'Sweets', 'bakery-meerut': 'Bakery', gifting: 'Gift Hampers', diwali: 'Diwali Gifts', about: 'Our Story', contact: 'Contact', gallery: 'Gallery', testimonials: 'Customer Reviews', faqs: 'FAQs'};
 
 export function absoluteUrl(value = '/') {
@@ -14,15 +16,15 @@ export function absoluteUrl(value = '/') {
 
 export function canonicalPath(path = '/') {
   const pathname = new URL(path, `${SITE_URL}/`).pathname.replace(/\/+$/, '') || '/';
-  return pathname === '/reviews' ? '/testimonials' : pathname;
+  return pathname === '/reviews' ? '/testimonials' : pathname === '/shop' ? '/products' : pathname;
 }
 
 export function businessSchema() {
   return {
-    '@type': 'Bakery', '@id': `${SITE_URL}/#business`, name: 'PAHWA JEE',
-    alternateName: 'Ram Chandra Deewan Chandra Rewri Wale', url: `${SITE_URL}/`,
+    '@type': 'Bakery', '@id': `${SITE_URL}/#business`, name: 'PAHWA JEE', legalName: policy.businessName, email: policy.email,
+    alternateName: ['Pahwajee', 'Pahwa Jee Rewri Wale', 'Ram Chandra Deewan Chandra Rewri Wale'], url: `${SITE_URL}/`,
     image: absoluteUrl('/our_shop_main.jpeg'), logo: absoluteUrl('/brand/pahwajee-day.png'), telephone: '+916396339806',
-    address: {'@type': 'PostalAddress', streetAddress: '19 Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
+    address: {'@type': 'PostalAddress', streetAddress: '19B, Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
     openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '10:00', closes: '23:00'},
     hasMenu: `${SITE_URL}/in-store-menu`,
     hasMap: 'https://www.google.com/maps/search/?api=1&query=PAHWA+JEE+19+Abu+Lane+Meerut',
@@ -31,10 +33,13 @@ export function businessSchema() {
 }
 
 export function productSchema(product) {
+  // Enquiry-only products have no fixed purchasable offer or product-specific
+  // reviews. Keep their WebPage metadata without incomplete rich-result markup.
+  if (!product.cart_eligible || !Number.isSafeInteger(product.unit_price_paise) || product.unit_price_paise <= 0) return null;
   const url = absoluteUrl(`/products/${product.slug}`);
   const schema = {
     '@type': 'Product', '@id': `${url}#product`, url, name: product.name,
-    description: product.description || `${product.name} from PAHWA JEE, 19 Abu Lane, Meerut. Contact the store to confirm availability.`,
+    description: productDescription(product),
     image: [...new Set([product.image, ...(product.images || [])].filter(Boolean))].map(absoluteUrl),
     brand: {'@type': 'Brand', name: 'PAHWA JEE'}, sku: product.slug,
   };

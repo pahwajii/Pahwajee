@@ -1,3 +1,4 @@
+import { policy } from '../lib/policies';
 import FssaiNotice from '../components/FssaiNotice';
 import OptimizedImage from '../components/OptimizedImage';
 import { useEffect, useRef, useState } from 'react';
@@ -14,8 +15,8 @@ const emptyForm = { name: '', phone: '', email: '', method: 'pickup', address: '
 
 function DeliveryInfo() {
   return <div className="mt-5 rounded-xl border border-secondary/30 bg-secondary/10 p-4 text-sm leading-relaxed">
-    <p className="font-medium">FREE delivery within Meerut on orders over ₹1,000.</p>
-    <p className="mt-1 text-muted-foreground">Additional delivery charges apply to the rest of India. Charges will be shared when your order is confirmed.</p>
+    <p className="text-muted-foreground">{policy.deliverySummary}</p>
+    <Link to="/shipping-policy" className="inline-flex min-h-11 items-center underline">Delivery &amp; collection details</Link>
   </div>;
 }
 
@@ -67,7 +68,7 @@ function OrderReceipt({ order, onContinue }) {
         </li>)}
       </ul>
       <div className="mt-4 flex justify-between gap-4 border-t border-border pt-4 font-semibold"><span>Items subtotal</span><span>{formatMoney(order.subtotal_paise)}</span></div>
-      <p className="mt-4 text-sm text-muted-foreground">{order.fulfilment.method === 'pickup' ? 'Store pickup · 19 Abu Lane, Meerut' : `Delivery requested · ${order.fulfilment.address}, ${order.fulfilment.city} ${order.fulfilment.pincode}`}</p>
+      <p className="mt-4 text-sm text-muted-foreground">{order.fulfilment.method === 'pickup' ? 'Store pickup · 19B, Abu Lane, Meerut' : `Delivery requested · ${order.fulfilment.address}, ${order.fulfilment.city} ${order.fulfilment.pincode}`}</p>
       <DeliveryInfo />
     </div>
     <div className="mt-6 flex flex-wrap gap-3">
@@ -181,7 +182,7 @@ export default function Cart() {
               <div className="sm:col-span-2">{field('address', 'Delivery address', { required: true, minLength: 5, maxLength: 300, autoComplete: 'street-address' })}</div>
               {field('city', 'City', { required: true, minLength: 2, maxLength: 80, autoComplete: 'address-level2' })}
               {field('pincode', 'Pincode', { required: true, pattern: '[1-9][0-9]{5}', inputMode: 'numeric', maxLength: 6, autoComplete: 'postal-code', title: 'Enter a valid 6-digit pincode.' })}
-            </div> : <p className="mt-3 text-sm text-muted-foreground">Pickup from 19 Abu Lane, Meerut. We’ll confirm when your order is ready.</p>}
+            </div> : <p className="mt-3 text-sm text-muted-foreground">Pickup from 19B, Abu Lane, Meerut. We’ll confirm when your order is ready.</p>}
             <label htmlFor="order-notes" className="commerce-label mt-6">Order notes (optional)</label>
             <textarea id="order-notes" name="notes" value={form.notes} onChange={change} disabled={submitting} maxLength={1000} rows={3} placeholder="Preferred pickup time or any special requests" className="commerce-input resize-y" />
           </section>
@@ -192,6 +193,7 @@ export default function Cart() {
           <div className="mt-6 flex justify-between gap-4 text-base"><span>Items subtotal</span><strong data-testid="cart-subtotal">{formatMoney(subtotal)}</strong></div>
           <DeliveryInfo />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">We’ll confirm availability and fulfilment with you. No online payment is collected.</p>
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">Please read our <Link to="/terms-and-conditions" className="underline">Terms &amp; Conditions</Link> and <Link to="/returns-and-cancellations" className="underline">replacement and cancellation policy</Link>. Our <Link to="/privacy-policy" className="underline">Privacy Policy</Link> explains how we use your order details.</p>
           {error && <p ref={errorRef} tabIndex={-1} role="alert" className="mt-5 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive outline-none">{error}</p>}
           {catalogStatus === 'ready' && invalidItems.length > 0 && <p role="alert" className="mt-4 text-sm text-destructive">Remove unavailable items before submitting.</p>}
           <button type="submit" disabled={submitting || catalogStatus !== 'ready' || invalidItems.length > 0} className="btn-primary mt-6 w-full justify-center !px-3 disabled:opacity-50 disabled:transform-none">{submitting && <LoaderCircle size={18} className="animate-spin" />}{submitting ? 'Submitting…' : 'Submit Order Request'}</button>

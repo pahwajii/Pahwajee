@@ -33,6 +33,11 @@
       "source": "/reviews",
       "destination": "/testimonials",
       "permanent": true
+    },
+    {
+      "source": "/shop",
+      "destination": "/products",
+      "permanent": true
     }
   ],
   "headers": [

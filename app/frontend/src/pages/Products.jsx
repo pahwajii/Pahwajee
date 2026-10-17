@@ -1,3 +1,4 @@
+import OrderHelp from '../components/OrderHelp';
 import { compareProducts } from '../lib/productOrder';
 import { isMithaiBox } from '../lib/mithaiBox';
 import fallbackProducts from '../generated/catalog.json';
@@ -78,16 +79,16 @@ export default function Products() {
   return (
     <div className="noise-bg section-y pt-6 sm:pt-16 lg:pt-28">
       <SEO
-        title="Shop Sweets, Rewri & Nankhatai | PAHWAJEE Meerut"
-        description="Shop Nankhatai, Rewri, Gajak, laddoo, barfi and gift boxes from PAHWA JEE, Meerut."
+        title="Shop Rewri, Gajak, Nankhatai & Sweets | PAHWAJEE Meerut"
+        description="Compare Rewri, Gajak, Nankhatai, laddoos and 1 kg mithai boxes at Pahwajee, Meerut. View prices, pack sizes and availability before ordering."
       />
       <div className="container-x">
         <div className="mb-5 sm:mb-8 flex flex-col gap-3 sm:gap-8 md:flex-row md:items-end md:justify-between">
           <div>
 
-            <h1 className="sm:mt-4 text-3xl sm:text-5xl lg:text-6xl leading-tight sm:leading-none">Shop Sweets</h1>
+            <h1 className="sm:mt-4 text-3xl sm:text-5xl lg:text-6xl leading-tight sm:leading-none">Shop Pahwajee Sweets</h1>
             <p className="mt-3 sm:mt-5 max-w-2xl text-sm sm:text-base leading-6 sm:leading-7 text-muted-foreground">
-              Browse sweets, winter favourites and gift boxes.
+              Browse <Link to="/rewri-gajak-meerut" className="underline">Meerut Rewri &amp; Gajak</Link>, <Link to="/nankhatai-meerut" className="underline">Nankhatai</Link>, <Link to="/sweets-meerut" className="underline">laddoos &amp; barfi</Link> and <Link to="/gifting" className="underline">1 kg mithai gift boxes</Link>. Compare the listed prices and pack sizes; unavailable and special-order items are marked.
             </p>
           </div>
           <div><Link to="/in-store-menu" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline">Shakes & snacks: view in-store menu</Link><p className="text-sm text-muted-foreground">{countLabel}</p></div>
@@ -121,6 +122,7 @@ export default function Products() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             className="h-12 w-full rounded-full border border-border bg-white/80 dark:bg-card/70 pl-12 pr-4 text-base sm:text-sm outline-none ring-primary/20 placeholder:text-muted-foreground focus:ring-4"
+            aria-label="Search products"
             placeholder="Search products, e.g. nankhatai, laddoo..."
           />
         </div>
@@ -142,6 +144,7 @@ export default function Products() {
             ))}
           </AnimatePresence>
         </div>
+        <OrderHelp />
       </div>
     </div>
   );

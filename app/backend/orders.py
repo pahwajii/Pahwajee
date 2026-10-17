@@ -26,11 +26,7 @@ GALLERY_ONLY_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] /
 BOX_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] / "mithai-boxes.json").read_text(encoding="utf-8"))["boxSlugs"])
 PACKS = (500, 1000)
 PRODUCT_PACKS = json.loads((Path(__file__).resolve().parents[1] / "product-packs.json").read_text(encoding="utf-8"))
-DELIVERY_INFO = (
-    "FREE delivery within Meerut on orders over ₹1,000. "
-    "Additional delivery charges apply to the rest of India. "
-    "Charges will be shared when your order is confirmed."
-)
+DELIVERY_INFO = json.loads((Path(__file__).resolve().parents[1] / "store-policy.json").read_text(encoding="utf-8"))["deliverySummary"]
 
 
 def purchase_fields(product):

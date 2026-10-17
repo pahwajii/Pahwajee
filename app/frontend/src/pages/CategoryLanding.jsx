@@ -1,156 +1,66 @@
-import { compareProducts } from '../lib/productOrder';
-import fallbackProducts from '../generated/catalog.json';
-import { usePageData } from '../context/PageData';
 import { useEffect, useState } from 'react';
-import SEO from '../components/SEO';
-import api, { waLink, telLink } from '../lib/api';
-import ProductCard from '../components/ProductCard';
-import { MessageCircle, Phone, ArrowLeft, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const CONFIGS = {
-  specialities: {
-    title: "Our Specialities: Rewri, Gazak & Nankhatai | PAHWAJEE",
-    description: "Explore PAHWAJEE's Rewri, Gazak and Desi Ghee Nankhatai in one collection. Order on WhatsApp or visit our Abu Lane store in Meerut.",
-    h1: "Our Specialities",
-    intro: "Discover our signature Rewri, flaky Gazak and buttery Desi Ghee Nankhatai, together in one collection.",
-    filterMatch: (p) => /rewri|g[ae]z{1,2}ak|gajak|nankhata[iy]/i.test(`${p.slug || ''} ${p.name || ''}`),
-    faqs: [
-      { question: "Are Rewri and Gazak available throughout the year?", answer: "These are seasonal winter specials. Contact us to check the current selection and availability." },
-      { question: "Which Nankhatai varieties do you offer?", answer: "Choose Pure Desi Ghee Nankhatai at Rs 600/kg or Vanaspati Ghee Nankhatai at Rs 380/kg." }
-    ]
-  },
-  nankhatai: {
-    title: "Desi Ghee & Vanaspati Ghee Nankhatai in Meerut | PAHWAJEE",
-    description: "Choose Desi Ghee Nankhatai at Rs 600/kg or Vanaspati Ghee Nankhatai at Rs 380/kg at PAHWAJEE, Abu Lane, Meerut.",
-    h1: "Nankhatai in Meerut",
-    intro: "Choose from our two Nankhatai varieties: Pure Desi Ghee at Rs 600/kg and Vanaspati Ghee at Rs 380/kg.",
-    filterMatch: (p) => p.slug.includes('nankhatai'),
-    faqs: [
-      { question: "Are both varieties made with desi ghee?", answer: "The Desi Ghee variety is made with pure desi ghee. The Vanaspati Ghee variety is prepared with Vanaspati Ghee." },
-      { question: "What is the shelf life of Nankhatai?", answer: "Our nankhatai has a shelf life of up to 30 days when stored in a cool, dry place inside an airtight container." }
-    ]
-  },
-  'rewri-gajak': {
-    title: "Traditional Rewri & Gajak in Meerut | PAHWAJEE",
-    description: "Crunchy sesame Rewri and flaky winter Gajak made with organic jaggery. Taste the warmth of PAHWAJEE's traditional winter specials in Meerut.",
-    h1: "Crunchy Rewri & Flaky Gajak in Meerut",
-    intro: "As winter arrives in Meerut, there is nothing like the warmth of traditional Rewri and Gajak. Prepared using organic jaggery and roasted sesame seeds, our winter treats are snap-crisp, light, and delicately sweet, crafted using heritage recipes.",
-    filterMatch: (p) => p.slug.includes('rewri') || p.slug.includes('gazak') || p.slug.includes('chikki') || p.slug.includes('til'),
-    faqs: [
-      { question: "Where does your Rewri recipe come from?", answer: "Our rewri is crafted in the authentic Punjabi style, using hand-rolled sesame and jaggery techniques passed down through generations." },
-      { question: "Are Rewri and Gajak available throughout the year?", answer: "No, these are seasonal winter specials crafted fresh from October to February to preserve their crispy, flaky texture." }
-    ]
-  },
-  sweets: {
-    title: "Traditional Sweets & Mithai in Meerut | PAHWAJEE",
-    description: "Browse traditional Indian sweets and dry fruit mithai at PAHWAJEE Meerut. Pure ingredients, authentic recipes, and elegant gift boxes.",
-    h1: "Authentic Sweets & Mithai in Meerut",
-    intro: "Celebrate life's sweetest moments with PAHWAJEE's traditional sweets. From pure ghee winter sweets and dry fruit rolls to rich kaju katlis, each piece is prepared with fresh ingredients, premium nuts, and extreme hygienic care.",
-    filterMatch: (p) => p.category === 'signature' || p.category === 'winter-specials' || p.slug.includes('sweets') || p.slug.includes('katli') || p.slug.includes('barfi'),
-    faqs: [
-      { question: "Do you take custom orders for wedding sweet boxes?", answer: "Yes! We specialize in custom wedding return sweets boxes and festival trays with custom packaging." },
-      { question: "Do you offer sugar-free sweet options?", answer: "We offer premium dry fruit rolls and trays which have only the natural sweetness of dates and figs, with no added white sugar. Ask us on WhatsApp!" }
-    ]
-  },
-  bakery: {
-    title: "Fresh Bakery & Customized Cakes in Meerut | PAHWAJEE",
-    description: "Order fresh birthday cakes, customized anniversary cakes, cookies, and tea-time snacks in Meerut. Handcrafted daily at Abu Lane.",
-    h1: "Fresh Bakery & Birthday Cakes in Meerut",
-    intro: "Delight in fresh baking every day. PAHWAJEE offers customizable birthday and anniversary cakes, rich pastries, butter cookies, crispy rusks, and warm breads. Perfect for tea-time, birthdays, and anniversaries in Meerut.",
-    filterMatch: (p) => p.category === 'bakery' || p.slug.includes('cake') || p.slug.includes('pastry') || p.slug.includes('cookie'),
-    faqs: [
-      { question: "How early should I order a customized cake?", answer: "Please place your orders at least 24 hours in advance for customized designs. Simple fresh cream cakes can be prepared in 2-3 hours." },
-      { question: "Are your bakery items eggless?", answer: "Yes, 100% of our bakery products, cakes, and pastries are prepared eggless to suit the vegetarian preferences of Meerut families." }
-    ]
-  }
-};
-
-
+import { MessageCircle, Phone, ArrowLeft } from 'lucide-react';
+import SEO from '../components/SEO';
+import ProductCard from '../components/ProductCard';
+import OptimizedImage from '../components/OptimizedImage';
+import OrderHelp from '../components/OrderHelp';
+import api, { waLink, telLink } from '../lib/api';
+import { compareProducts } from '../lib/productOrder';
+import { collections } from '../lib/collections';
+import { usePageData } from '../context/PageData';
+import fallbackProducts from '../generated/catalog.json';
+import menu from '../data/in-store-menu.json';
 
 export default function CategoryLanding({ type }) {
   const [products, setProducts] = useState(usePageData().products || fallbackProducts);
-  const config = CONFIGS[type] || CONFIGS.nankhatai;
-
+  const config = collections[type] || collections.nankhatai;
   useEffect(() => {
-    api.get('/products')
-      .then((items) => setProducts(items.length ? items : fallbackProducts))
-      .catch(() => setProducts(fallbackProducts));
+    let active = true;
+    api.get('/products').then(items => { if (active) setProducts(items.length ? items : fallbackProducts); }).catch(() => {});
+    return () => { active = false; };
   }, [type]);
-
   const filtered = products.filter(config.filterMatch).sort(compareProducts);
-
-  return (
-    <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO 
-        title={config.title}
-        description={config.description}
-      />
-
-      <div className="container-x">
-        {/* Back Link */}
-        <div className="mb-6">
-          <Link to="/products" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-            <ArrowLeft size={16} /> Back to Full Menu
-          </Link>
+  const bakeryItems = menu.filter(item => item.category === 'Cakes' || item.slug === 'bakery-biscuits');
+  return <div className="noise-bg min-h-screen pb-12 pt-6 sm:pt-8">
+    <SEO title={config.title} description={config.description} />
+    <div className="container-x">
+      <Link to="/products" className="inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-primary"><ArrowLeft size={16} /> All sweets & packs</Link>
+      <section className="max-w-3xl mt-4 mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif leading-tight mb-4">{config.h1}</h1>
+        <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">{config.intro}</p>
+        <div className="mt-3 flex flex-wrap gap-x-5 text-sm font-semibold text-primary dark:text-secondary">{config.links.map(link => <Link key={link.to} to={link.to} className="inline-flex min-h-11 items-center underline underline-offset-4">{link.label}</Link>)}</div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <a href={waLink(config.h1)} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-emerald-700 !text-white flex items-center gap-2"><MessageCircle size={17} /> Enquire on WhatsApp</a>
+          <a href={telLink()} className="btn-primary flex items-center gap-2"><Phone size={17} /> Call the store</a>
         </div>
+      </section>
 
-        {/* Hero Area */}
-        <section className="max-w-3xl mb-12">
-          {type !== 'specialities' && <p className="eyebrow">Local Speciality</p>}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif leading-tight mt-3 mb-6">
-            {config.h1}
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
-            {config.intro}
-          </p>
+      <section className="my-8" aria-labelledby="collection-products">
+        <h2 id="collection-products" className="text-2xl sm:text-3xl font-serif mb-2">{type === 'bakery' ? 'Nankhatai packs' : 'Compare products & pack sizes'}</h2>
+        <p className="mb-5 text-sm text-muted-foreground">Prices and availability are shown per product. Open the details for ordering and ingredient guidance.</p>
+        {filtered.length ? <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">{filtered.map(product => <ProductCard key={product.id || product.slug} product={product} />)}</div>
+          : <p className="rounded-xl border border-border p-5 text-sm">Please contact the store for the current selection.</p>}
+      </section>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a 
-              href={waLink(`Hi PAHWAJEE, I'd like to place an order from your ${type} collection. Please share details.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold !bg-emerald-600 !text-white flex items-center gap-2"
-            >
-              <MessageCircle size={18} /> Order on WhatsApp
-            </a>
-            <a href={telLink()} className="btn-primary flex items-center gap-2">
-              <Phone size={18} /> Call to Order
-            </a>
-          </div>
-        </section>
+      {type === 'bakery' && <section className="my-10" aria-labelledby="cakes-and-biscuits">
+        <h2 id="cakes-and-biscuits" className="font-serif text-2xl sm:text-3xl mb-2">Cakes on order & bakery biscuits</h2>
+        <p className="text-sm text-muted-foreground mb-5">Cake prices depend on size and design. Confirm your flavour, date and collection arrangements with the store. Photos marked illustrative are representative.</p>
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">{bakeryItems.map(item => <article key={item.slug} className="card-warm overflow-hidden">
+          <div className="relative"><OptimizedImage src={item.image} alt={item.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-cover" />{item.representative && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-xs">Illustrative</span>}</div>
+          <div className="p-3 sm:p-4"><h3 className="font-serif text-lg">{item.name}</h3><p className="mt-2 text-sm font-semibold">{item.priceLabel}</p><p className="mt-1 text-xs text-muted-foreground">{item.availability || 'Confirm selection in store'}</p><a href={waLink(item.name + ' — please confirm size, price and collection date')} className="inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline">Enquire about {item.name}</a></div>
+        </article>)}</div>
+      </section>}
 
-        {/* Product List */}
-        <section className="my-12">
-          <h2 className="text-2xl sm:text-3xl font-serif mb-6 sm:mb-8 border-b border-border/40 pb-4 text-foreground">Available Selection</h2>
-          {filtered.length ? (
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-              {filtered.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-white/50 dark:bg-card/30 rounded-2xl border border-dashed border-border">
-              <p className="text-muted-foreground">No products available in this category at the moment. Please contact us for custom orders.</p>
-            </div>
-          )}
-        </section>
-
-        {/* FAQs */}
-        <section className="max-w-3xl my-16">
-          <h3 className="font-serif text-3xl mb-8">Frequently Asked Questions</h3>
-          <div className="space-y-4">
-            {config.faqs.map((faq, idx) => (
-              <div key={idx} className="card-warm p-6 bg-white/60 dark:bg-card/40">
-                <h4 className="font-serif text-lg font-bold flex gap-2 items-center text-foreground mb-2">
-                  <HelpCircle className="w-5 h-5 text-primary shrink-0" /> {faq.question}
-                </h4>
-                <p className="text-sm text-muted-foreground pl-7 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+      <section className="my-10 max-w-3xl" aria-labelledby="collection-faqs">
+        <h2 id="collection-faqs" className="font-serif text-2xl sm:text-3xl mb-4">Before you choose</h2>
+        <div className="space-y-3">{config.faqs.map(faq => <details key={faq.question} className="rounded-xl border border-border bg-card px-4 py-3">
+          <summary className="cursor-pointer min-h-11 flex items-center font-semibold text-sm sm:text-base">{faq.question}</summary>
+          <p className="pb-2 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+        </details>)}</div>
+        <Link to={config.guide.to} className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">{config.guide.label}</Link>
+      </section>
+      <OrderHelp photo={config.photo} caption={config.caption} />
     </div>
-  );
+  </div>;
 }

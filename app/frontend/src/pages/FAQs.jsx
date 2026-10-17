@@ -1,50 +1,14 @@
-import { usePageData } from '../context/PageData';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { orderingFAQs } from '../lib/policies';
 import SEO from '../components/SEO';
-import api from '../lib/api';
 import { Search, HelpCircle, ChevronDown } from 'lucide-react';
 
-const fallbackFAQs = [
-  {
-    question: "Do you take custom cake orders?",
-    answer: "Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call 6396339806 to discuss designs."
-  },
-  {
-    question: "Do you offer bulk / corporate orders?",
-    answer: "Yes - we specialize in corporate gifting, weddings & bulk festival hampers with custom packaging & branding options. Contact us for a personalized quote."
-  },
-  {
-    question: "What are your business hours?",
-    answer: "We are open every day from 10:00 AM to 11:00 PM, including Sundays and public holidays."
-  },
-  {
-    question: "Do you deliver in Meerut?",
-    answer: "Yes, we offer local delivery in Meerut. Delivery charges depend on your location and order value. Please call us to confirm."
-  },
-  {
-    question: "Which payment methods do you accept?",
-    answer: "We accept cash, UPI, all major cards, and digital wallets at the store. For online orders, we can share UPI details when confirming."
-  },
-  {
-    question: "Are your products made with pure desi ghee?",
-    answer: "Our Desi Ghee Nankhatai and select sweets are made with pure desi ghee. We also offer Vanaspati Ghee Nankhatai, prepared with Vanaspati Ghee. Ask us for product ingredients."
-  },
-  {
-    question: "Can I schedule a cake for a specific time?",
-    answer: "Yes, once your order is confirmed we deliver at your preferred time slot. For same-day delivery, please order before 12 PM."
-  }
-];
-
 export default function FAQs() {
-  const [faqs, setFaqs] = useState(usePageData().faqs || []);
+  const faqs = orderingFAQs;
   const [search, setSearch] = useState("");
   const [openIdx, setOpenIdx] = useState(null);
 
-  useEffect(() => {
-    api.get('/faqs')
-      .then((data) => setFaqs(data.length ? data : fallbackFAQs))
-      .catch(() => setFaqs(fallbackFAQs));
-  }, []);
 
   const filteredFAQs = faqs.filter(f => 
     f.question.toLowerCase().includes(search.toLowerCase()) || 
@@ -76,8 +40,7 @@ export default function FAQs() {
       <div className="container-x max-w-4xl">
         {/* Header */}
         <section className="text-center py-12">
-          <p className="eyebrow">Ordering & General Help</p>
-          <h1 className="mt-4 text-5xl font-serif leading-tight">
+          <h1 className="mt-4 text-3xl sm:text-5xl font-serif leading-tight">
             Frequently Asked Questions
           </h1>
           <p className="mt-5 text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
@@ -88,6 +51,7 @@ export default function FAQs() {
           <div className="relative mt-8 max-w-md mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
             <input 
+              aria-label="Search frequently asked questions"
               type="text"
               value={search}
               onChange={(e) => {
@@ -100,6 +64,12 @@ export default function FAQs() {
           </div>
         </section>
 
+        <nav aria-label="Detailed store policies" className="flex flex-wrap gap-x-5 text-sm font-semibold text-primary dark:text-secondary">
+          <Link to="/shipping-policy" className="inline-flex min-h-11 items-center underline">Delivery &amp; charges</Link>
+          <Link to="/returns-and-cancellations" className="inline-flex min-h-11 items-center underline">Replacements &amp; cancellations</Link>
+          <Link to="/gifting" className="inline-flex min-h-11 items-center underline">Custom gift boxes</Link>
+          <Link to="/bakery-meerut" className="inline-flex min-h-11 items-center underline">Cakes on order</Link>
+        </nav>
         {/* FAQs Accordion */}
         <section className="my-6 space-y-4">
           {filteredFAQs.length ? (
@@ -111,6 +81,8 @@ export default function FAQs() {
                   className="card-warm overflow-hidden bg-white/70 dark:bg-card/40 border border-border/50 transition-all duration-300"
                 >
                   <button
+                    aria-expanded={isOpen}
+                    aria-controls={"faq-answer-" + idx}
                     type="button"
                     onClick={() => setOpenIdx(isOpen ? null : idx)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-primary/5 transition-colors"
@@ -128,13 +100,11 @@ export default function FAQs() {
                     />
                   </button>
                   
-                  {isOpen && (
-                    <div className="px-6 pb-6 pt-2 border-t border-border/20 bg-primary/5 animate-slide-down">
+                  <div id={"faq-answer-" + idx} hidden={!isOpen} className="px-6 pb-6 pt-2 border-t border-border/20 bg-primary/5 animate-slide-down">
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {f.answer}
                       </p>
                     </div>
-                  )}
                 </div>
               );
             })

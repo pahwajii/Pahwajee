@@ -16,7 +16,7 @@ const realHeroImage = '/our_shop_main.jpeg';
 const signatureRewri = {
   slug: "khasta-rewri",
   name: "Khasta Rewri",
-  desc: "Crispy sesame and organic jaggery drops, hand-rolled in authentic Punjabi tradition. Made fresh for winter in Meerut.",
+  desc: "Crisp, sesame-coated rewri in small individual pieces. Compare our Khasta and thin Chips Rewri varieties.",
   price: "Rs 540/kg",
   image: "/products/Khasta-rewri.png",
   link: "/rewri-gajak-meerut"
@@ -25,7 +25,7 @@ const signatureRewri = {
 const signatureGajak = {
   slug: "dilkhush-gazak",
   name: "Dilkhush Gazak",
-  desc: "Light, flaky, melt-in-mouth sesame gazak prepared with organic jaggery, cardamom, and premium nuts.",
+  desc: "A soft, flaky gazak with a different texture from crisp Rewri. Explore it alongside round Gol Gazak and our roll varieties.",
   price: "Rs 700/kg",
   image: "/products/dilkhush-gazzak.png",
   link: "/rewri-gajak-meerut"
@@ -43,7 +43,7 @@ const signatureNankhatai = {
 const winterFavourites = [
   { slug: "til-bugga", name: "Til Bugga", desc: "Traditional winter delicacy made of roasted sesame, khoya & cardamom.", price: "Rs 600/kg", image: "/menu/til-bugga.webp" },
   { slug: "roasted-peanut-chikki", name: "Roasted Peanut Chikki", desc: "Snap-crisp roasted peanut & jaggery chikki.", price: "Rs 325/kg", image: "/products/roastedpeanut-chikki.png" },
-  { slug: "dry-fruit-laddoo", name: "Dry Fruit Laddoo", desc: "Sugar-free laddoos packed with dates, figs & nuts.", price: "Rs 900/kg", image: "/products/dryfruitladdoo.png" }
+  { slug: "dry-fruit-laddoo", name: "Dry Fruit Laddoo", desc: "Dry fruit laddoos for sharing or gifting.", price: "Rs 900/kg", image: "/products/dryfruitladdoo.png" }
 ];
 
 const giftHampers = [
@@ -70,7 +70,7 @@ export default function Home() {
     <div className="noise-bg">
       <SEO
         title="PAHWAJEE Meerut | Rewri, Gajak, Nankhatai & Gift Hampers"
-        description="Meerut's trusted brand for authentic Rewri, Gazak, Desi Ghee Nankhatai, Dry Fruit Hampers, and Diwali festive gifting. Order on WhatsApp."
+        description="Pahwajee at 19B Abu Lane, Meerut: compare Rewri, Gajak, Desi Ghee and Vanaspati Nankhatai, sweets and gift boxes. View prices and order availability."
       />
 
       {/* 1. Hero Section */}
@@ -84,7 +84,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="mt-5 max-w-xl text-base md:text-lg leading-relaxed text-muted-foreground">
-            Meerut's destination for authentic Punjabi Rewri, flaky winter Gazak, Pure Desi Ghee Nankhatai, and luxury dry fruit hampers.
+            Explore Pahwajee’s Rewri, Gajak and Nankhatai at 19B, Abu Lane, Meerut. Compare current prices and packs, choose sweets for your family, or build a 1 kg mithai gift box.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link to="/products" className="btn-primary flex items-center gap-2">
@@ -272,8 +272,8 @@ export default function Home() {
           </div>
           <div className="card-warm p-6 text-center">
             <ShieldCheck className="w-8 h-8 text-primary mx-auto mb-3" />
-            <h3 className="font-serif text-xl font-bold mb-2">Pure Desi Ghee & Jaggery</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">Made with 100% pure desi ghee and organic jaggery for genuine flavor.</p>
+            <h3 className="font-serif text-xl font-bold mb-2">Know Your Nankhatai</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">Choose Pure Desi Ghee or Vanaspati Ghee Nankhatai, each listed with its own price and pack options.</p>
           </div>
           <div className="card-warm p-6 text-center">
             <Gift className="w-8 h-8 text-primary mx-auto mb-3" />
