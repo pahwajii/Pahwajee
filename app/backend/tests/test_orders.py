@@ -14,7 +14,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from pydantic import ValidationError
 from pymongo.errors import AutoReconnect
 
-from orders import OrderBodyLimitMiddleware, OrderRequest, OrderService, migrate_purchase_fields, order_summary, price_order, purchase_fields, send_order_email
+from orders import OrderBodyLimitMiddleware, OrderRequest, OrderService, migrate_purchase_fields, order_summary, price_order, purchase_fields, send_order_email, smtp_settings
 
 PRODUCTS = [
     {"id": "ghee", "slug": "pure-desi-ghee-nankhatai", "name": "Pure Desi Ghee Nankhatai", "price": "Rs 600/kg", "category": "signature", "availability": "Available"},
@@ -141,15 +141,20 @@ class PricingTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             OrderRequest(**body)
 
+    def test_smtp_defaults_to_shop_support_email(self):
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(smtp_settings()["to_email"], "pahwajee@gmail.com")
+
     def test_smtp_uses_saved_summary_and_correct_recipient(self):
         order = {"id": "test-id", "reference": "PJ-TEST", "customer": {"email": None}, "summary": "Saved exact order summary"}
-        with patch.dict(os.environ, {"SMTP_HOST": "smtp.gmail.com", "SMTP_PORT": "465", "SMTP_USERNAME": "sender@example.com", "SMTP_PASSWORD": "test-only", "ORDER_FROM_EMAIL": "sender@example.com", "ORDER_NOTIFICATION_EMAIL": "lakshaypahwa47@gmail.com"}), patch('orders.smtplib.SMTP_SSL') as smtp:
+        with patch.dict(os.environ, {"SMTP_HOST": "smtp.gmail.com", "SMTP_PORT": "465", "SMTP_USERNAME": "lakshaypahwa47@gmail.com", "SMTP_PASSWORD": "test-only", "ORDER_FROM_EMAIL": "lakshaypahwa47@gmail.com", "ORDER_NOTIFICATION_EMAIL": "pahwajee@gmail.com"}), patch('orders.smtplib.SMTP_SSL') as smtp:
             send_order_email(order)
             connection = smtp.return_value.__enter__.return_value
             message = connection.send_message.call_args.args[0]
-            self.assertEqual(str(message["To"]), "lakshaypahwa47@gmail.com")
+            self.assertEqual(str(message["From"]), "lakshaypahwa47@gmail.com")
+            self.assertEqual(str(message["To"]), "pahwajee@gmail.com")
             self.assertEqual(message.get_content().strip(), order["summary"])
-            connection.login.assert_called_once_with("sender@example.com", "test-only")
+            connection.login.assert_called_once_with("lakshaypahwa47@gmail.com", "test-only")
 
 
 @unittest.skipUnless(os.getenv("RUN_DB_TESTS") == "1", "Set RUN_DB_TESTS=1 for isolated Mongo integration tests")

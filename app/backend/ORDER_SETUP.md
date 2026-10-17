@@ -15,11 +15,12 @@ SMTP_PORT=465
 SMTP_USERNAME=lakshaypahwa47@gmail.com
 SMTP_PASSWORD=<Gmail App Password>
 ORDER_FROM_EMAIL=lakshaypahwa47@gmail.com
-ORDER_NOTIFICATION_EMAIL=lakshaypahwa47@gmail.com
+ORDER_NOTIFICATION_EMAIL=pahwajee@gmail.com
 ```
 
 Use an App Password for the sender account, not its normal sign-in password.
-Restart the API after changing settings. No credentials are logged. The worker
+Restart the local API after changing settings; on Vercel, redeploy for updated
+environment variables to take effect. No credentials are logged. The worker
 keeps orders queued when SMTP is missing. SMTP success means Gmail accepted the
 message; it does not prove placement in the recipient's inbox.
 

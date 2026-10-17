@@ -26,7 +26,8 @@ GALLERY_ONLY_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] /
 BOX_SLUGS = frozenset(json.loads((Path(__file__).resolve().parents[1] / "mithai-boxes.json").read_text(encoding="utf-8"))["boxSlugs"])
 PACKS = (500, 1000)
 PRODUCT_PACKS = json.loads((Path(__file__).resolve().parents[1] / "product-packs.json").read_text(encoding="utf-8"))
-DELIVERY_INFO = json.loads((Path(__file__).resolve().parents[1] / "store-policy.json").read_text(encoding="utf-8"))["deliverySummary"]
+STORE_POLICY = json.loads((Path(__file__).resolve().parents[1] / "store-policy.json").read_text(encoding="utf-8"))
+DELIVERY_INFO = STORE_POLICY["deliverySummary"]
 
 
 def purchase_fields(product):
@@ -194,7 +195,7 @@ def smtp_settings():
         "host": os.getenv("SMTP_HOST", ""), "port": int(os.getenv("SMTP_PORT", "465")),
         "username": os.getenv("SMTP_USERNAME", ""), "password": os.getenv("SMTP_PASSWORD", ""),
         "from_email": os.getenv("ORDER_FROM_EMAIL", ""),
-        "to_email": os.getenv("ORDER_NOTIFICATION_EMAIL", "lakshaypahwa47@gmail.com"),
+        "to_email": os.getenv("ORDER_NOTIFICATION_EMAIL", STORE_POLICY["email"]),
     }
 
 
