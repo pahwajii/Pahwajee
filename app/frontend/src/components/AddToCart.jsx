@@ -52,7 +52,7 @@ export default function AddToCart({ product }) {
       <span className="cart-label-full">{catalogStatus === 'loading' ? 'Loading...' : 'Add to Cart'}</span><span className="cart-label-compact" aria-hidden="true">{catalogStatus === 'loading' ? 'Loading...' : added ? 'Added' : 'Add'}</span>{amount !== null && quantity > 0 && <span className="cart-button-total"><span className="cart-button-separator">· </span>{formatMoney(amount)}</span>}
     </button>
     <div aria-live="polite" className="cart-feedback text-xs leading-relaxed" data-empty={!feedback}>
-      {feedback && <p className={added ? 'text-emerald-700 dark:text-emerald-400' : 'text-destructive'}>{feedback} {added && <Link className="underline font-semibold" to="/cart">View cart</Link>}</p>}
+      {feedback && <p className={added ? 'text-emerald-700 dark:text-emerald-400' : 'text-destructive'}>{feedback} {added && <Link className="underline font-semibold" to="/cart">Review cart &amp; order</Link>}</p>}
     </div>
   </div>;
 }

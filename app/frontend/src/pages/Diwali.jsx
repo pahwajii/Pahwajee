@@ -1,198 +1,51 @@
-import OptimizedImage from '../components/OptimizedImage';
-import SEO from '../components/SEO';
-import { waLink, telLink } from '../lib/api';
-import { MessageCircle, Phone, Sparkles, Gift, ShieldCheck, HelpCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
+import OptimizedImage from '../components/OptimizedImage';
+import HamperCard from '../components/HamperCard';
+import useGiftCollection from '../lib/useGiftCollection';
+import { displayPrice } from '../lib/cart';
 
-const packages = [
-  {
-    name: "Dry Fruit Trays",
-    desc: "Premium wooden trays filled with handpicked cashew, almond, pistachio, and raisin assortments.",
-    price: "Rs 1100 – Rs 2500",
-    image: "/products/Dryfruit-tray1.png"
-  },
-  {
-    name: "Diwali Gift Hampers",
-    desc: "Exquisite celebratory boxes curated with premium dry fruits, authentic laddoos, candles, and decorative packaging.",
-    price: "Rs 1500+",
-    image: "/products/Dryfruit-tray3.png"
-  },
-  {
-    name: "Dry Fruit Sweets & Laddoos",
-    desc: "Luxury Indian mithai assortments including Dry Fruit Laddoos, Khajoor rolls, and pinni made with pure desi ghee.",
-    price: "Rs 850/kg",
-    image: "/products/dryfruitladdoo.png"
-  },
-  {
-    name: "Executive Custom Hampers",
-    desc: "Tailored to your needs. Pick your own selection of signature sweets, cookies, bakery products, and custom corporate branding.",
-    price: "On Request",
-    image: "/products/Dryfruit-tray7.png"
-  }
-];
-
-const diwaliFAQs = [
-  {
-    question: "Do you offer personalized corporate branding on Diwali hampers?",
-    answer: "Yes, for bulk orders we can customize box printing, insert personalized cards, and print company logos. Please order at least 7-10 days in advance."
-  },
-  {
-    question: "Can I customize the items in my gift box?",
-    answer: "Absolutely! You can choose your combinations of pure desi ghee nankhatai, dry fruits, traditional sweets, namkeen, or premium cookies."
-  },
-  {
-    question: "Do you deliver bulk orders across Meerut?",
-    answer: "Yes, we handle bulk deliveries to offices and residential addresses across Meerut. Delivery scheduling details can be aligned during order confirmation."
-  }
+const faqs = [
+  { question: 'How do I order a Diwali hamper?', answer: 'Choose a design from the collection to open it on our gifting page. Use Order now there to confirm the contents, quantity, final price and required date on WhatsApp. Ready-made mithai boxes can be added to your cart.' },
+  { question: 'Can I customise a mithai box?', answer: 'Yes. A custom 1 kg box has four 250 g sections. Repeats are allowed and the total uses the individual sweet prices, with no extra packaging charge. Review your selection before sending the enquiry.' },
+  { question: 'How do delivery and bulk orders work?', answer: 'Delivery is currently available in Meerut, usually with a distance-based charge of Rs 40-80. Contact us for addresses outside Meerut. For bulk orders, share your quantity, budget and required date so the team can confirm timing and packaging options.' },
 ];
 
 export default function Diwali() {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": diwaliFAQs.map(f => ({
-      "@type": "Question",
-      "name": f.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": f.answer
-      }
-    }))
-  };
-
-  return (
-    <div className="noise-bg min-h-screen pb-16 pt-8">
-      <SEO
-        title="Diwali Sweets & Gift Hampers in Meerut | PAHWAJEE"
-        description="Celebrate Diwali with PAHWAJEE Meerut. Browse premium Diwali gift boxes, customized corporate hampers, dry fruit trays, and pure desi ghee sweets. Order on WhatsApp."
-        schema={schema}
-      />
-
-      {/* Hero Banner */}
-      <section className="container-x py-12">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-950 via-primary to-amber-950 text-white p-8 md:p-16 shadow-2xl flex flex-col items-center text-center">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
-
-          <div className="h-14 w-14 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mb-6 border border-secondary/30">
-            <Sparkles className="w-7 h-7" />
-          </div>
-
-          <p className="eyebrow text-secondary tracking-[0.3em] font-semibold">Festive Gifting 2026</p>
-          <h1 className="mt-4 text-4xl md:text-6xl font-serif leading-tight max-w-3xl">
-            Bring Home the Sparkle with <span className="text-secondary font-bold">PAHWAJEE's Diwali Collection</span>
-          </h1>
-          <p className="mt-6 text-base md:text-lg text-primary-foreground/90 max-w-2xl leading-relaxed">
-            Delight your family, friends, and corporate associates in Meerut with our handpicked dry fruit trays, premium sweet boxes, and custom-made festival hampers.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href={waLink("Diwali gift hampers")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold !bg-emerald-600 !text-white hover:!bg-emerald-700 flex items-center gap-2"
-            >
-              <MessageCircle size={18} /> Order on WhatsApp
-            </a>
-            <Link to="/gifting" className="btn-primary flex items-center gap-2">
-              Corporate Bulk Quote <ArrowRight size={16} />
-            </Link>
-            <a href={telLink()} className="btn-outline !border-white !text-white hover:!bg-white hover:!text-primary flex items-center gap-2">
-              <Phone size={16} /> Call Store
-            </a>
-          </div>
+  const { collection, hampers, boxes } = useGiftCollection();
+  const schema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(faq => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) };
+  return <div className="noise-bg min-h-screen pb-12 pt-5 sm:pt-8">
+    <SEO title="Diwali Sweets & Gift Hampers in Meerut | PAHWAJEE" description="Explore Pahwajee's Diwali dry fruit hamper designs and 1 kg mithai boxes in Meerut. Choose your gift, then review the options and order on our gifting page." schema={schema} />
+    <div className="container-x">
+      <section className="rounded-2xl bg-gradient-to-r from-amber-950 via-primary to-amber-950 px-5 py-7 sm:p-10 text-white">
+        <h1 className="max-w-3xl text-3xl sm:text-5xl font-serif leading-tight">Diwali Gift Hampers &amp; Mithai in Meerut</h1>
+        <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-white/90">Find a dry fruit hamper or a 1 kg mithai box for family, friends or your team. Choose a design here, then order from the gifting page.</p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link to="/gifting#dry-fruit-hampers" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-secondary px-5 py-2 text-sm font-bold text-amber-950">Explore gift hampers <ArrowRight size={16} aria-hidden="true" /></Link>
+          <Link to="/gifting#mithai-gift-boxes" className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/70 px-5 py-2 text-sm font-semibold">Browse mithai boxes</Link>
         </div>
       </section>
-
-      {/* Collection Grid */}
-      <section className="container-x my-12">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="eyebrow">A Taste of Festivity</p>
-          <h2 className="text-4xl font-serif mt-2">Premium Diwali Hampers & Sweets</h2>
-          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-            Handcrafted treats packed in elegant celebratory boxes. Designed to express appreciation and share joy.
-          </p>
-        </div>
-
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {packages.map((pkg, idx) => (
-            <article key={idx} className="card-warm group hover:shadow-xl transition-all duration-300">
-              <div className="aspect-square overflow-hidden bg-muted">
-                <OptimizedImage square
-                  sizes="(min-width: 1280px) 300px, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                  src={pkg.image}
-                  alt={pkg.name}
-                  className="block h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="font-serif text-2xl mb-2 text-foreground font-semibold">{pkg.name}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed mb-4 min-h-[48px]">{pkg.desc}</p>
-                <div className="flex items-center justify-between border-t border-border/40 pt-4 mt-2">
-                  <span className="text-sm font-bold text-secondary">{pkg.price}</span>
-                  <a
-                    href={waLink(pkg.name)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-semibold text-primary flex items-center gap-1 hover:underline"
-                  >
-                    Order Now &rarr;
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+      <section className="my-8 sm:my-10" aria-labelledby="diwali-hampers">
+        <h2 id="diwali-hampers" className="text-2xl sm:text-3xl font-serif">Choose your Diwali hamper</h2>
+        <p className="mt-2 mb-5 text-sm text-muted-foreground">{collection ? `${displayPrice(collection)}. ` : ''}Compare the designs; the store confirms the contents and final price for your selection.</p>
+        {hampers.length ? <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">{hampers.map(hamper => <HamperCard key={hamper.id} hamper={hamper} collection={collection} browse />)}</div> : <p className="text-sm">Please <Link to="/gifting#bulk-gifting" className="underline">ask about the current gifting selection</Link>.</p>}
       </section>
-
-      {/* Gifting Quality Pillars */}
-      <section className="container-x my-16 bg-white/40 dark:bg-card/30 border border-border/50 rounded-3xl p-8 md:p-12 grid gap-8 md:grid-cols-3">
-        <div className="flex gap-4">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-            <Gift className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="font-serif text-xl font-bold mb-1.5">Custom Combinations</h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">Mix and match premium sweets, traditional nankhatai, gourmet cookies, and savories in custom packaging.</p>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="font-serif text-xl font-bold mb-1.5">Assured Quality</h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">All products are baked fresh and sweets are made using 100% pure desi ghee and hand-selected nuts.</p>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-            <Phone className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="font-serif text-xl font-bold mb-1.5">Seamless Delivery</h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">Dedicated local delivery across Meerut ensures your hampers reach clients and loved ones fresh and intact.</p>
-          </div>
-        </div>
+      {boxes.length > 0 && <section className="my-8 sm:my-10" aria-labelledby="diwali-mithai">
+        <h2 id="diwali-mithai" className="text-2xl sm:text-3xl font-serif">1 kg mithai gift boxes</h2>
+        <p className="mt-2 mb-5 text-sm text-muted-foreground">See the assortment and choose your box quantity on the gifting page.</p>
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">{boxes.map(product => <article key={product.slug} className="card-warm overflow-hidden">
+          <Link to={`/gifting#gift-${product.slug}`} className="flex h-full flex-col" aria-label={`Choose ${product.name} on the gifting page`}>
+            <OptimizedImage square src={product.image} alt={product.name} sizes="(min-width: 1024px) 33vw, 50vw" className="block aspect-square w-full object-cover" />
+            <div className="flex flex-1 flex-col p-3 sm:p-4"><h3 className="text-base sm:text-xl font-serif leading-snug">{product.name}</h3><p className="mt-2 text-sm font-semibold text-primary dark:text-secondary">{displayPrice(product)}</p><p className="mt-2 text-xs text-muted-foreground">{product.availability || 'Confirm availability'}</p><span className="mt-auto inline-flex min-h-11 items-center gap-2 text-sm font-semibold">Choose this box <ArrowRight size={16} aria-hidden="true" /></span></div>
+          </Link>
+        </article>)}</div>
+      </section>}
+      <section className="my-8 grid gap-4 sm:grid-cols-2" aria-label="More gifting options">
+        <div className="card-warm p-4 sm:p-6"><h2 className="text-xl sm:text-2xl font-serif">Make your own mithai box</h2><p className="mt-2 text-sm text-muted-foreground">Pick four 250 g sections and see the total for your 1 kg box.</p><Link to="/gifting#custom-box" className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary dark:text-secondary">Customise your box <ArrowRight size={16} aria-hidden="true" /></Link></div>
+        <div className="card-warm p-4 sm:p-6"><h2 className="text-xl sm:text-2xl font-serif">Gifts for your team or event</h2><p className="mt-2 text-sm text-muted-foreground">Share your quantity, budget and date for a bulk gifting quote.</p><Link to="/gifting#bulk-gifting" className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary dark:text-secondary">Plan a bulk order <ArrowRight size={16} aria-hidden="true" /></Link></div>
       </section>
-
-      {/* Diwali FAQs */}
-      <section className="container-x max-w-3xl my-16">
-        <h3 className="font-serif text-3xl text-center mb-8">Diwali Order Information</h3>
-        <div className="space-y-4">
-          {diwaliFAQs.map((faq, idx) => (
-            <div key={idx} className="card-warm p-6 bg-white/60 dark:bg-card/40">
-              <h4 className="font-serif text-lg font-bold flex gap-2 items-center text-foreground mb-2">
-                <HelpCircle className="w-5 h-5 text-primary shrink-0" /> {faq.question}
-              </h4>
-              <p className="text-sm text-muted-foreground pl-7 leading-relaxed">{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <section className="my-8 max-w-3xl" aria-labelledby="diwali-ordering"><h2 id="diwali-ordering" className="text-2xl font-serif mb-4">Before you order</h2><div className="space-y-3">{faqs.map(faq => <details key={faq.question} className="rounded-xl border border-border bg-card px-4"><summary className="cursor-pointer py-3 text-sm font-semibold">{faq.question}</summary><p className="pb-4 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p></details>)}</div><Link to="/blog/diwali-gift-hampers-meerut-guide" className="mt-3 inline-flex min-h-11 items-center text-sm underline underline-offset-4">Read the Meerut gift hamper buying guide</Link></section>
     </div>
-  );
+  </div>;
 }

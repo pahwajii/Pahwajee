@@ -6,6 +6,7 @@ import { Menu, X, Phone, MessageCircle, Sun, Moon, Clock, Instagram, Facebook, S
 import { BUSINESS, waLink, telLink } from "@/lib/api";
 import { useCart } from "../context/CartContext";
 import BrandLogo from './BrandLogo';
+import ShoppingNav from './ShoppingNav';
 
 const NAV = [
   { to: "/diwali", label: "Diwali" },
@@ -142,7 +143,8 @@ function Navbar({ dark, onToggleTheme }) {
 
 function FloatingButtons() {
   const { pathname } = useLocation();
-  const shoppingPage = pathname.startsWith('/products') || ['/favourites', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
+  if (pathname === '/diwali') return null;
+  const shoppingPage = pathname.startsWith('/products') || ['/gifting', '/favourites', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
     <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons">
       <a
@@ -175,6 +177,7 @@ export default function Layout() {
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar dark={dark} onToggleTheme={() => setDark((value) => !value)} />
       <main className="flex-grow pt-24">
+        <ShoppingNav />
         <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>
       <FloatingButtons />

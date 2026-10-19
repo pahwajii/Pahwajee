@@ -1,3 +1,6 @@
+import { useCart } from '../context/CartContext';
+import fallbackProducts from '../generated/catalog.json';
+import { relatedProductsFor } from '../lib/relatedProducts';
 import { collectionFor, productDescription, productSpecs, availabilityNote } from '../lib/catalogueContent';
 import { productPackSizes, packLabel } from '../lib/cart';
 import FavouriteButton from '../components/FavouriteButton';
@@ -18,10 +21,10 @@ import { ChevronRight, ChevronLeft, Phone, MessageCircle, ShieldAlert, Calendar,
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const initialProducts = usePageData().products || [];
+  const initialProducts = usePageData().products || fallbackProducts;
+  const { catalog, catalogStatus } = useCart();
   const initialProduct = initialProducts.find(item => item.slug === slug);
   const [product, setProduct] = useState(initialProduct || null);
-  const [relatedProducts, setRelatedProducts] = useState(() => initialProducts.filter(item => item.slug !== slug && item.category === initialProduct?.category).slice(0, 4));
   const [loading, setLoading] = useState(!initialProduct);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
 
@@ -32,20 +35,13 @@ export default function ProductDetail() {
     setProduct(cached || null);
     setLoading(!cached);
     setActiveImgIndex(0);
-    setRelatedProducts(initialProducts.filter(item => item.slug !== slug && item.category === cached?.category).slice(0, 4));
 
     api.get(`/products/${slug}`)
       .then((data) => {
         if (!active) return;
         setProduct(data);
         setActiveImgIndex(0);
-        // Fetch related products of the same category
-        api.get(`/products?category=${data.category}`)
-          .then((items) => {
-            // Filter out current product
-            if (active) setRelatedProducts(items.filter(item => item.slug !== data.slug).slice(0, 4));
-          })
-          .catch(() => { if (active) setRelatedProducts([]); });
+
       })
       // Keep the public snapshot during temporary API failures. A confirmed 404
       // still removes deleted products and switches their metadata to noindex.
@@ -69,6 +65,7 @@ export default function ProductDetail() {
     );
   }
 
+  const relatedProducts = relatedProductsFor(product, catalogStatus === 'ready' ? Object.values(catalog) : initialProducts);
   const specs = productSpecs(product);
   const collection = collectionFor(product);
   const description = productDescription(product);
@@ -221,7 +218,7 @@ export default function ProductDetail() {
             {isMithaiBox(product.slug) && <p className="text-sm font-medium mb-4">Available as a 1 kg box only. Customise your selection below.</p>}
             {hasAssortmentPhoto(product.slug) && <p className="text-xs text-muted-foreground mb-4">Photo shows this sweet as part of an assorted box.</p>}
             {/* CTAs */}
-            <div className="mb-6"><AddToCart product={product} /></div>
+            <div className="mb-6"><AddToCart key={product.slug} product={product} /></div>
             <div className="flex flex-wrap gap-4 pt-2">
               <a
                 href={waLink(`${product.name} (${displayPrice(product)}). ${unavailable ? "Please let me know when it is available again" : "Please confirm my preferred quantity and date"}`)}
@@ -241,6 +238,19 @@ export default function ProductDetail() {
           </div>
         </section>
 
+        <section className="my-8 sm:my-12" aria-labelledby="related-products">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <h2 id="related-products" className="font-serif text-2xl sm:text-3xl">More to explore</h2>
+            <Link to={collection.to} className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4">Explore {collection.label}</Link>
+          </div>
+          {relatedProducts.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">{relatedProducts.map(item => <ProductCard key={item.slug} product={item} />)}</div>}
+          <nav aria-label="Continue shopping" className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm font-semibold text-primary dark:text-secondary">
+            <Link to="/diwali" className="inline-flex min-h-11 items-center underline underline-offset-4">Explore Diwali gifts</Link>
+            <Link to="/gifting" className="inline-flex min-h-11 items-center underline underline-offset-4">Gift hampers &amp; mithai boxes</Link>
+            <Link to="/products" className="inline-flex min-h-11 items-center underline underline-offset-4">Browse all products</Link>
+          </nav>
+        </section>
+
         <section className="my-8 rounded-2xl border border-border bg-card p-4 sm:p-6" aria-labelledby="product-ordering-help">
           <h2 id="product-ordering-help" className="text-2xl font-serif">Choosing &amp; ordering {product.name}</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Choose a listed pack and quantity for cart orders. For a gift, special order or unavailable item, send an enquiry with your required date. Confirm the collection outlet or delivery arrangements with the team before making a trip.</p>
@@ -250,17 +260,7 @@ export default function ProductDetail() {
         </section>
         {isMithaiBox(product.slug) && <CustomMithaiBox />}
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <section className="my-16">
-            <h3 className="font-serif text-3xl mb-8">You May Also Like</h3>
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
-              {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </section>
-        )}
+
       </div>
     </div>
   );

@@ -1,14 +1,32 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
-
+  const { pathname, hash, key } = useLocation();
+  const previous = useRef(null);
   useLayoutEffect(() => {
-    // Reset before paint so the previous page's offset cannot anchor to the
-    // footer while the next page's product data is loading.
+    const last = previous.current;
+    previous.current = { pathname, hash };
+    if (!hash) {
+      if (last?.pathname !== pathname || last?.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+    let id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
+    let frame;
+    const scrollToTarget = () => {
+      const target = document.getElementById(id);
+      if (!target) return false;
+      frame = requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'instant' }));
+      return true;
+    };
+    // Lazy routes mount after the router updates. Observe until their anchor exists.
+    if (scrollToTarget()) return () => cancelAnimationFrame(frame);
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [pathname]);
-
+    const observer = new MutationObserver(() => { if (scrollToTarget()) observer.disconnect(); });
+    observer.observe(document.getElementById('root'), { childList: true, subtree: true });
+    const timeout = setTimeout(() => observer.disconnect(), 10000);
+    return () => { observer.disconnect(); clearTimeout(timeout); cancelAnimationFrame(frame); };
+  }, [pathname, hash, key]);
   return null;
 }

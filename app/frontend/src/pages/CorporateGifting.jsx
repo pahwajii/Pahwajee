@@ -1,24 +1,17 @@
 import OrderHelp from '../components/OrderHelp';
-import { giftHamperDesigns } from '../lib/giftHampers';
-import OptimizedImage from '../components/OptimizedImage';
+import HamperCard from '../components/HamperCard';
+import useGiftCollection from '../lib/useGiftCollection';
 import { Link } from 'react-router-dom';
 import { displayPrice } from '../lib/cart';
 import CustomMithaiBox from '../components/CustomMithaiBox';
-import { boxSlugs } from '../lib/mithaiBox';
 import ProductCard from '../components/ProductCard';
-import { useCart } from '../context/CartContext';
-import fallbackProducts from '../generated/catalog.json';
 import { useState } from 'react';
 import SEO from '../components/SEO';
-import api, { waLink, telLink } from '../lib/api';
-import { Send, CheckCircle2, AlertCircle, MessageCircle, Phone, Award, Truck, Palette } from 'lucide-react';
+import api from '../lib/api';
+import { Send, CheckCircle2, AlertCircle, Award, Truck, Palette } from 'lucide-react';
 
 export default function CorporateGifting() {
-  const { catalog, catalogStatus } = useCart();
-  const hamperCollection = catalog['dry-fruit-gift-trays'] || (catalogStatus !== 'ready' ? fallbackProducts.find(item => item.slug === 'dry-fruit-gift-trays') : null);
-  const hamperImages = new Set(hamperCollection?.images?.length ? hamperCollection.images : [hamperCollection?.image]);
-  const hampers = giftHamperDesigns.filter(item => hamperImages.has(item.image));
-  const giftBoxes = boxSlugs.map(slug => catalog[slug] || fallbackProducts.find(item => item.slug === slug)).filter(Boolean);
+  const { collection: hamperCollection, hampers, boxes: giftBoxes } = useGiftCollection();
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -65,52 +58,26 @@ export default function CorporateGifting() {
       />
 
       <div className="container-x">
-        {/* Hero Section */}
-        <section className="text-center max-w-3xl mx-auto py-12">
-          
-          <h1 className="mt-4 text-3xl sm:text-5xl font-serif leading-tight">
-            Gift Hampers &amp; Mithai Boxes in Meerut
-          </h1>
-          <p className="mt-5 text-base text-muted-foreground leading-relaxed">
-            Choose a dry fruit hamper or a 1 kg mithai box from Pahwajee, Meerut. Ready-made boxes have their own listed prices; custom boxes contain four 250 g sections, priced at the selected sweets’ individual rates.
-          </p>
-
-          <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <a 
-              href={waLink("Hi PAHWAJEE, I'd like to get a quote for a bulk corporate order. Please share details.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold !bg-emerald-600 !text-white hover:!bg-emerald-700 flex items-center gap-2"
-            >
-              <MessageCircle size={18} /> Chat with Gifting Expert
-            </a>
-            <a href={telLink()} className="btn-primary flex items-center gap-2">
-              <Phone size={18} /> Call Store Manager
-            </a>
-          </div>
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <Link to="/" className="inline-flex min-h-11 items-center hover:underline">Home</Link><span aria-hidden="true">/</span>
+          <Link to="/diwali" className="inline-flex min-h-11 items-center hover:underline">Diwali collection</Link><span aria-hidden="true">/</span><span aria-current="page">Gift hampers</span>
+        </nav>
+        <section className="max-w-3xl pt-4 pb-6 sm:pb-8">
+          <h1 className="text-3xl sm:text-5xl font-serif leading-tight">Gift Hampers &amp; Mithai Boxes in Meerut</h1>
+          <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">Choose a dry fruit design and use Order now to confirm it on WhatsApp. For a ready-made 1 kg mithai box, choose your quantity, add it to the cart and review your order.</p>
+          <nav aria-label="Gifting sections" className="mt-4 flex flex-wrap gap-2">
+            {[['dry-fruit-hampers','Dry fruit hampers'],['mithai-gift-boxes','Mithai boxes'],['custom-box','Customise a box'],['bulk-gifting','Bulk orders']].map(([id,label]) => <Link key={id} to={`/gifting#${id}`} className="inline-flex min-h-11 items-center rounded-full border border-border px-3 text-sm font-semibold hover:bg-primary/10">{label}</Link>)}
+          </nav>
         </section>
-
-        {hampers.length > 0 && <section className="my-8 sm:my-10" aria-labelledby="dry-fruit-hampers">
-          <h2 id="dry-fruit-hampers" className="text-2xl sm:text-3xl mb-2">Dry Fruit Gift Hampers</h2>
-          <p className="text-sm text-muted-foreground mb-5">{displayPrice(hamperCollection)}. Enquire for the price and contents of your preferred design.</p>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            {hampers.map(hamper => <article key={hamper.image} className="card-warm overflow-hidden flex flex-col" data-testid="gift-hamper-card">
-              <Link to="/products/dry-fruit-gift-trays" aria-label={`View ${hamper.name}`}>
-                <OptimizedImage square src={hamper.image} alt={hamper.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-cover bg-muted" loading="lazy" />
-              </Link>
-              <div className="p-2 sm:p-4 flex flex-col flex-1">
-                <h3 className="text-base sm:text-xl leading-tight mb-2">{hamper.name}</h3>
-                <p className="text-xs text-muted-foreground mb-2">{hamperCollection.availability}</p>
-                <a href={waLink(`${hamper.name}. Photo: https://pahwajee.in${hamper.image}`)} target="_blank" rel="noopener noreferrer" className="mt-auto min-h-11 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground px-3 py-2 text-xs sm:text-sm font-semibold" aria-label={`Enquire about ${hamper.name}`}>Enquire on WhatsApp</a>
-              </div>
-            </article>)}
-          </div>
+        {hampers.length > 0 && <section id="dry-fruit-hampers" className="my-6 sm:my-8 scroll-mt-28" aria-labelledby="dry-fruit-hampers-heading">
+          <h2 id="dry-fruit-hampers-heading" className="text-2xl sm:text-3xl mb-2">Dry Fruit Gift Hampers</h2>
+          <p className="text-sm text-muted-foreground mb-5">{displayPrice(hamperCollection)}. Order now opens WhatsApp with your chosen design. Confirm contents, final price and delivery or collection date there.</p>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{hampers.map(hamper => <HamperCard key={hamper.id} hamper={hamper} collection={hamperCollection} />)}</div>
         </section>}
-
-        <section className="my-10" aria-labelledby="mithai-gift-boxes">
-          <h2 id="mithai-gift-boxes" className="text-2xl sm:text-3xl mb-2">Mithai Gift Boxes</h2>
-          <p className="text-base text-muted-foreground mb-5">All mithai gift boxes, including Mixed Fruit Special Bites, are available in 1 kg boxes only.</p>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{giftBoxes.map(product => <ProductCard key={product.slug} product={product} />)}</div>
+        <section id="mithai-gift-boxes" className="my-10 scroll-mt-28" aria-labelledby="mithai-gift-boxes-heading">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2"><h2 id="mithai-gift-boxes-heading" className="text-2xl sm:text-3xl">Mithai Gift Boxes</h2><Link to="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline">Review cart &amp; order</Link></div>
+          <p className="text-sm text-muted-foreground mb-5">All mithai gift boxes, including Mixed Fruit Special Bites, are available in 1 kg boxes only.</p>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{giftBoxes.map(product => <div key={product.slug} id={`gift-${product.slug}`} className="scroll-mt-28 rounded-2xl target:ring-2 target:ring-primary"><ProductCard product={product} /></div>)}</div>
         </section>
 
         <CustomMithaiBox />
@@ -154,7 +121,7 @@ export default function CorporateGifting() {
         </section>
 
         {/* Lead Intake Form */}
-        <section className="max-w-2xl mx-auto my-12 bg-white/60 dark:bg-card/40 p-8 rounded-3xl border border-border/50 backdrop-blur-md">
+        <section id="bulk-gifting" className="scroll-mt-28 max-w-2xl mx-auto my-12 bg-white/60 dark:bg-card/40 p-8 rounded-3xl border border-border/50 backdrop-blur-md">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-serif font-bold text-foreground">Request a Bulk Gifting Quote</h2>
             <p className="text-sm text-muted-foreground mt-2">Share your quantity, budget and required date. The team will confirm the contents, availability and final quote.</p>
