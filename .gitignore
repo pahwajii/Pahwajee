@@ -28,3 +28,6 @@ pnpm-debug.log*
 app/frontend/scratch/
 public/Photos-1-001*/
 public/products/
+
+# Local runtime logs
+*.log
