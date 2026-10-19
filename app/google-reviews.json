@@ -1,30 +1,85 @@
 {
-  "checked_at": "2026-10-11",
+  "checked_at": "2026-10-19",
   "source": "Google",
   "reviews_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
   "write_review_url": "https://g.page/r/CaM6_d03sf_4EAE/review",
   "reviews": [
     {
-      "id": "google-mukesh-sharma",
-      "name": "Mukesh Sharma",
+      "id": "google-anil-anand",
+      "name": "ANIL ANAND",
       "rating": 5,
-      "review": "Good food and taste of rewri gazak is so good with ghee nankhatayi also great",
+      "review": "Rewri gazal here is excellent and taste is very good and also dry fruits gift pack also very great",
       "source": "Google",
       "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
-      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tKeFlWSlZWbVpmTmpVNU9XTTFZMlIzWm01dmRWRRAB",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2podk9ETklVekF4WjFkb1kwVm5Za1Z5V2podk5rRRAB",
       "excerpt": false,
       "order": 1
     },
     {
-      "id": "google-ashish-grover",
-      "name": "Ashish grover",
+      "id": "google-mani-budhraja",
+      "name": "MANI BUDHRAJA",
       "rating": 5,
-      "review": "Good quality products.......GAJAK is too Tasty...",
+      "review": "",
       "source": "Google",
       "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
-      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tOUGFHUkpOM2M1TjFGeE9EZExhRWN5YW1OVmIwRRAB",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2xKTGMxWk1VMms0TWsxT01IWnFlazFsVlZGWlJIYxAB",
       "excerpt": false,
       "order": 2
+    },
+    {
+      "id": "google-mahir-khan",
+      "name": "Mahir Khan",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2xWNFIyZFdSemh1TVdOVFoyUjBYM3BsYVU1dE4wRRAB",
+      "excerpt": false,
+      "order": 3
+    },
+    {
+      "id": "google-ishi-hassan",
+      "name": "Ishi Hassan",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT21SR09HcHlNVGh1VkhkNFpHWldOMGc0YTFNeFZYYxAB",
+      "excerpt": false,
+      "order": 4
+    },
+    {
+      "id": "google-sanjay-pahwa",
+      "name": "Sanjay Pahwa",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tWTGVGOU1jbEpaYldaeVFqZGFhVTl4YTFNNVVWRRAB",
+      "excerpt": false,
+      "order": 5
+    },
+    {
+      "id": "google-mahesh-sagar",
+      "name": "Mahesh sagar",
+      "rating": 5,
+      "review": "All items is very tasty",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2xGVmIyRkNRM0paVURkR2VqWXRkMUZNZHpkUE4yYxAB",
+      "excerpt": false,
+      "order": 6
+    },
+    {
+      "id": "google-wasimuddin",
+      "name": "Wasimuddin",
+      "rating": 4,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2xFNFZtVktTRkJsVUZGcU0ydElURzEyWldkeFJVRRAB",
+      "excerpt": false,
+      "order": 7
     },
     {
       "id": "google-javed-khan",
@@ -35,7 +90,139 @@
       "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
       "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT214NFluUnliRlJLYjNOMmRtSkZPRjlhY21VeU5FRRAB",
       "excerpt": true,
-      "order": 3
+      "order": 8
+    },
+    {
+      "id": "google-avnish-kumar",
+      "name": "Avnish Kumar",
+      "rating": 5,
+      "review": "Best and fresh all products and specially for Ravri gajjak",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT25sSlpXMW5ZVmRtV1RscVZtWk9WM1V0Y0ZsSlUxRRAB",
+      "excerpt": false,
+      "order": 9
+    },
+    {
+      "id": "google-modern-look",
+      "name": "Modern Look",
+      "rating": 5,
+      "review": "Very good service 👏 👍 👌",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT21oeFJrUXdRalZFUlROMGJrTjBSbXh5WkdFdGFIYxAB",
+      "excerpt": false,
+      "order": 10
+    },
+    {
+      "id": "google-himanshu-rajput",
+      "name": "Himanshu Rajput",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2pCak5URlJNMjFNV1VKM1psZGtibWx3TW10eE0wRRAB",
+      "excerpt": false,
+      "order": 11
+    },
+    {
+      "id": "google-arshan-sheikh",
+      "name": "Arshan Sheikh",
+      "rating": 5,
+      "review": "good behaviour good service good food",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT25aTmIyeEdWVFV3YjIxWFgzTmZSWHAwTFVWM1dsRRAB",
+      "excerpt": false,
+      "order": 12
+    },
+    {
+      "id": "google-jatin-kushwaha",
+      "name": "Jatin Kushwaha",
+      "rating": 5,
+      "review": "Good 👍",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT210TloxQlJNMGcxTmxkdmMya3RTVGx4VFhNNFFsRRAB",
+      "excerpt": false,
+      "order": 13
+    },
+    {
+      "id": "google-khyati-gupta",
+      "name": "Khyati Gupta",
+      "rating": 5,
+      "review": "Veryy soft and tasty nankhatai",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT21KeVJYUmtZV1ZsWmpZemFsUkRWWGxhWjE5VmNGRRAB",
+      "excerpt": false,
+      "order": 14
+    },
+    {
+      "id": "google-aman-sahu",
+      "name": "Aman Sahu",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tjeWNGQTJORmx5ZEdWdFpVUTFTRFpOUW1SR1RsRRAB",
+      "excerpt": false,
+      "order": 15
+    },
+    {
+      "id": "google-gaurav-sharma",
+      "name": "Gaurav Sharma",
+      "rating": 5,
+      "review": "Best lassi I ever drink",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT25wbVZHNXBlWHBzWHpGYU1WUldhSEZ6V1VaNE4zYxAB",
+      "excerpt": false,
+      "order": 16
+    },
+    {
+      "id": "google-ankit-sharma",
+      "name": "Ankit Sharma",
+      "rating": 5,
+      "review": "Nice",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT20xaExVaHJPRU15VTJoNlZYQmhMV1ZuYW5SYWFuYxAB",
+      "excerpt": false,
+      "order": 17
+    },
+    {
+      "id": "google-ashish-grover",
+      "name": "Ashish grover",
+      "rating": 5,
+      "review": "Good quality products.......GAJAK is too Tasty...",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tOUGFHUkpOM2M1TjFGeE9EZExhRWN5YW1OVmIwRRAB",
+      "excerpt": false,
+      "order": 18
+    },
+    {
+      "id": "google-prakhar-agarwal",
+      "name": "Prakhar Agarwal",
+      "rating": 5,
+      "review": "So tempting and atmospheric....love it👍",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT21oMFZHMTFaMjQxWTJ3MFFVUktZVnBrV204eGMyYxAB",
+      "excerpt": false,
+      "order": 19
+    },
+    {
+      "id": "google-mukesh-sharma",
+      "name": "Mukesh Sharma",
+      "rating": 5,
+      "review": "Good food and taste of rewri gazak is so good with ghee nankhatayi also great",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tKeFlWSlZWbVpmTmpVNU9XTTFZMlIzWm01dmRWRRAB",
+      "excerpt": false,
+      "order": 20
     },
     {
       "id": "google-krish-sharma",
@@ -46,18 +233,7 @@
       "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
       "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2pCMU5FZDZNelIyY0hWQk5GcGlhVlV0V0ZaV1VWRRAB",
       "excerpt": false,
-      "order": 4
-    },
-    {
-      "id": "google-sumit-jain",
-      "name": "057 Sumit jain",
-      "rating": 5,
-      "review": "The best gazak rewri and naan khatayi are truly exceptional.",
-      "source": "Google",
-      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
-      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2tOS1EweDNWVTVzU0dWblpVTkxOVTk1YWpGYVVYYxAB",
-      "excerpt": false,
-      "order": 5
+      "order": 21
     },
     {
       "id": "google-aditya-kumar",
@@ -68,7 +244,63 @@
       "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
       "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT214M1RqSXRiVXhyVDNBeVpGWTRXbUpyUVdkak0xRRAB",
       "excerpt": false,
-      "order": 6
+      "order": 22
+    },
+    {
+      "id": "google-rajan-pahwa",
+      "name": "Rajan Pahwa",
+      "rating": 5,
+      "review": "Awesome taste",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2t0NFkyWmhPVE40VGpGMmFHVkROSHBJY1ZKbGRFRRAB",
+      "excerpt": false,
+      "order": 23
+    },
+    {
+      "id": "google-sanjay-kumar",
+      "name": "Sanjay Kumar",
+      "rating": 5,
+      "review": "It was nice experience at Pahwa ji…",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT25sQ2FGUm5TM1ZvZG5kRFVHNVhTR296VmxCTWVrRRAB",
+      "excerpt": false,
+      "order": 24
+    },
+    {
+      "id": "google-mohit-pahwa",
+      "name": "Mohit Pahwa",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT21ObGMyNVpTRGRHTUhCTE5IaE1SVEJ0T0ZNM1pWRRAB",
+      "excerpt": false,
+      "order": 25
+    },
+    {
+      "id": "google-growth-network",
+      "name": "Growth Network",
+      "rating": 5,
+      "review": "Wah ji wah. Maja aa gaya. Nani yaad aa gayi. God bless you",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2xaNFZDMXFTWFpEZURKQmFqUTFRMDlXUVd4Nk9XYxAB",
+      "excerpt": false,
+      "order": 26
+    },
+    {
+      "id": "google-pinky-dhingra",
+      "name": "Pinky Dhingra",
+      "rating": 5,
+      "review": "",
+      "source": "Google",
+      "source_url": "https://www.google.com/maps/place/Pahwajee/@28.9950665,77.7023997,17z/data=!4m8!3m7!1s0x390c6500380d09a7:0xf8ffb137ddfd3aa3!8m2!3d28.9950665!4d77.7049746!9m1!1b1!16s%2Fg%2F11x8gn4hqr",
+      "google_review_id": "Ci9DQUlRQUNvZENodHljRjlvT2pkMlNWZExVVVZIWVdKeVVXbHBOa05rWlY5cmFWRRAB",
+      "excerpt": false,
+      "order": 27
     }
-  ]
+  ],
+  "sort_order": "newest"
 }

@@ -1,7 +1,7 @@
 import { giftHamperDesigns } from '../lib/giftHampers';
 import BlogCards from '../components/BlogCards';
 import { blogPosts } from '../lib/blog';
-import { reviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
+import { writtenReviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
@@ -289,10 +289,10 @@ export default function Home() {
           <div>
             <div className="text-center max-w-xl mx-auto mb-8">
               <h2 className="text-2xl sm:text-3xl font-serif">Our Customers on Google</h2>
-              <p className="mt-3 text-sm text-muted-foreground">Selected reviews from our Google listing.</p>
+              <p className="mt-3 text-sm text-muted-foreground">The latest written reviews from our Google listing.</p>
             </div>
             <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
-              {reviews.slice(0, 3).map(review => <GoogleReviewCard key={review.id} review={review} />)}
+              {writtenReviews.slice(0, 3).map(review => <GoogleReviewCard key={review.id} review={review} />)}
             </div>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               <GoogleReviewButton />
