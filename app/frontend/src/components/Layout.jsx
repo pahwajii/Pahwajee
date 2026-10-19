@@ -20,6 +20,30 @@ const NAV = [
   { to: "/contact", label: "Contact" },
 ];
 
+const FOOTER_LINK_GROUPS = [
+  { title: 'Shop', links: [
+    { to: '/diwali', label: 'Diwali Specials', featured: true },
+    { to: '/gifting', label: 'Gift Hampers' },
+    { to: '/products', label: 'Shop Catalogue' },
+    { to: '/rewri-gajak-meerut', label: 'Rewri & Gajak' },
+    { to: '/nankhatai-meerut', label: 'Nankhatai' },
+    { to: '/sweets-meerut', label: 'Sweets & Laddoos' },
+    { to: '/bakery-meerut', label: 'Bakery & Cakes' },
+    { to: '/in-store-menu', label: 'In-store Menu' },
+    { to: '/favourites', label: 'Your Favourites' },
+  ] },
+  { title: 'Explore & Help', links: [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About PAHWAJEE' },
+    { to: '/gallery', label: 'Store Gallery' },
+    { to: '/blog', label: 'Blog' },
+    { to: '/testimonials', label: 'Customer Reviews' },
+    { href: BUSINESS.googleReviewUrl, label: 'Review us on Google' },
+    { to: '/faqs', label: 'Ordering FAQs' },
+    { to: '/contact', label: 'Contact Us' },
+  ] },
+];
+
 function useDarkMode() {
   // Match prerendered markup; restore the visitor's preference after hydration.
   const [dark, setDark] = useState(false);
@@ -181,9 +205,9 @@ export default function Layout() {
         <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>
       <FloatingButtons />
-      <footer className="bg-card border-t border-border mt-auto py-12">
-        <div className="container-x grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
+      <footer className="bg-card border-t border-border mt-auto py-10 sm:py-12">
+        <div className="container-x grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-[1.1fr_1.35fr_1fr] xl:gap-10">
+          <div className="min-w-0 md:col-span-2 xl:col-span-1">
             <BrandLogo loading="lazy" className="h-auto w-52 sm:w-64 max-w-full mb-4" sizes="(min-width: 640px) 256px, 208px" />
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed max-w-sm">{BUSINESS.tagline}</p>
             <FssaiNotice className="mb-4" />
@@ -202,27 +226,19 @@ export default function Layout() {
             </div>
 
           </div>
-          <div>
-            <h2 className="font-medium text-sm mb-4 uppercase tracking-wider text-gold-ink">Quick Links</h2>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
-              <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Shop Catalogue</Link></li>
-              <li><Link to="/favourites" className="text-muted-foreground hover:text-primary transition-colors">Your Favourites</Link></li>
-              <li><Link to="/in-store-menu" className="text-muted-foreground hover:text-primary transition-colors">In-store Menu</Link></li>
-              <li><Link to="/rewri-gajak-meerut" className="text-muted-foreground hover:text-primary transition-colors">Rewri & Gajak</Link></li>
-              <li><Link to="/nankhatai-meerut" className="text-muted-foreground hover:text-primary transition-colors">Nankhatai</Link></li>
-              <li><Link to="/gifting" className="text-muted-foreground hover:text-primary transition-colors">Gift Hampers</Link></li>
-              <li><Link to="/diwali" className="text-muted-foreground hover:text-primary transition-colors font-medium text-primary">Diwali Specials</Link></li>
-              <li><Link to="/sweets-meerut" className="text-muted-foreground hover:text-primary transition-colors">Sweets & Laddoos</Link></li>
-              <li><Link to="/bakery-meerut" className="text-muted-foreground hover:text-primary transition-colors">Bakery & Cakes</Link></li>
-              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors">Ordering FAQs</Link></li>
-              <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About PAHWAJEE</Link></li>
-              <li><Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors">Store Gallery</Link></li>
-              <li><Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
-              <li><Link to="/testimonials" className="text-muted-foreground hover:text-primary transition-colors">Customer Reviews</Link></li>
-              <li><a href={BUSINESS.googleReviewUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Review us on Google</a></li>
-              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
-            </ul>
+          <div className="grid min-w-0 grid-cols-2 gap-5 sm:gap-8">
+            {FOOTER_LINK_GROUPS.map(group => <nav key={group.title} aria-label={`Footer ${group.title}`} className="min-w-0">
+              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-gold-ink">{group.title}</h2>
+              <ul className="text-sm">
+                {group.links.map(link => {
+                  const className = `inline-flex min-h-11 items-center py-2 leading-snug rounded-sm transition-colors hover:text-primary dark:hover:text-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${link.featured ? 'font-semibold text-primary dark:text-secondary' : 'text-muted-foreground'}`;
+                  return <li key={link.to || link.href}>{link.href
+                    ? <a href={link.href} target="_blank" rel="noopener noreferrer" className={className}>{link.label}</a>
+                    : <Link to={link.to} className={className}>{link.label}</Link>}
+                  </li>;
+                })}
+              </ul>
+            </nav>)}
           </div>
           <div>
             <h2 className="font-medium text-sm mb-4 uppercase tracking-wider text-gold-ink">Contact Info</h2>
