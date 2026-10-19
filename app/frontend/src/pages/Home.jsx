@@ -100,13 +100,13 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <OptimizedImage
+          <OptimizedImage square
             loading="eager"
             fetchPriority="high"
             sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)"
             src={realHeroImage}
             alt="PAHWAJEE Store Front in Abu Lane Meerut"
-            className="h-[480px] w-full rounded-3xl object-cover shadow-2xl border border-white/60"
+            className="aspect-square w-full rounded-3xl object-cover shadow-2xl border border-white/60"
           />
           <div className="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/70 dark:border-white/10 bg-white/90 dark:bg-card/90 p-5 shadow-xl backdrop-blur-md">
             <div className="flex items-start gap-3">
@@ -137,7 +137,7 @@ export default function Home() {
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <OptimizedImage src={signatureRewri.image} alt={signatureRewri.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage square src={signatureRewri.image} alt={signatureRewri.name} className="aspect-square w-full rounded-3xl object-cover shadow-lg border border-white/60" />
           </div>
         </div>
       </section>
@@ -146,7 +146,7 @@ export default function Home() {
       <section className="py-16">
         <div className="container-x grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <OptimizedImage src={signatureGajak.image} alt={signatureGajak.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage square src={signatureGajak.image} alt={signatureGajak.name} className="aspect-square w-full rounded-3xl object-cover shadow-lg border border-white/60" />
           </div>
           <div>
             <span className="eyebrow">Signature #2</span>
@@ -181,7 +181,7 @@ export default function Home() {
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <OptimizedImage src={signatureNankhatai.image} alt={signatureNankhatai.name} className="rounded-3xl object-cover h-[350px] w-full shadow-lg border border-white/60" />
+            <OptimizedImage square src={signatureNankhatai.image} alt={signatureNankhatai.name} className="aspect-square w-full rounded-3xl object-cover shadow-lg border border-white/60" />
           </div>
         </div>
       </section>
@@ -196,7 +196,7 @@ export default function Home() {
           {winterFavourites.map((item, idx) => (
             <div key={idx} className="card-warm p-5 flex flex-col justify-between">
               <div>
-                <OptimizedImage sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={item.image} alt={item.name} className="h-44 w-full object-cover rounded-xl mb-4" />
+                <OptimizedImage square sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={item.image} alt={item.name} className="aspect-square w-full object-cover rounded-xl mb-4" />
                 <h3 className="font-serif text-xl font-bold mb-1">{item.name}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">{item.desc}</p>
               </div>
@@ -224,7 +224,7 @@ export default function Home() {
             {giftHampers.map((hamper, idx) => (
               <div key={idx} className="card-warm p-6 flex flex-col justify-between">
                 <div>
-                  <OptimizedImage sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={hamper.image} alt={hamper.name} className="h-48 w-full object-cover rounded-xl mb-4" />
+                  <OptimizedImage square sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={hamper.image} alt={hamper.name} className="aspect-square w-full object-cover rounded-xl mb-4" />
                   <h3 className="font-serif text-2xl font-bold mb-2">{hamper.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mb-4">{hamper.desc}</p>
                 </div>
@@ -304,10 +304,10 @@ export default function Home() {
           <div className="card-warm p-8 bg-white/70 dark:bg-card/50 max-w-4xl mx-auto border border-border/60 shadow-lg">
             <div className="grid md:grid-cols-12 gap-8 items-center">
               <div className="md:col-span-5 relative group">
-                <OptimizedImage
+                <OptimizedImage square
                   src="/pahwa_family.jpg"
                   alt="The Pahwa Brothers at PAHWA JEE Abu Lane Meerut"
-                  className="rounded-2xl object-cover w-full h-[280px] shadow-md border-2 border-white/80 group-hover:scale-[1.02] transition duration-300"
+                  className="rounded-2xl object-cover w-full aspect-[3/2] shadow-md border-2 border-white/80"
                 />
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-semibold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
                   Custodians of Abu Lane

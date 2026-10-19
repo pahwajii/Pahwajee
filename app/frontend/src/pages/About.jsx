@@ -77,7 +77,7 @@ export default function About() {
             <OptimizedImage
               src="/our_shop_main.jpeg"
               alt="PAHWA JEE Main Shop Front in Abu Lane Meerut"
-              className="rounded-2xl object-cover w-full h-[400px] shadow-lg border border-white/80"
+              className="rounded-2xl object-cover w-full aspect-square shadow-lg border border-white/80"
             />
             <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground p-5 rounded-2xl shadow-xl flex items-center gap-3">
               <MapPin className="w-6 h-6 shrink-0" />
@@ -96,7 +96,7 @@ export default function About() {
               <OptimizedImage
                 src="/pahwa_family.jpg"
                 alt="The Pahwa Brothers at PAHWA JEE 19 Abu Lane Meerut"
-                className="rounded-2xl object-cover w-full h-[340px] shadow-md border-2 border-white/80 group-hover:scale-[1.01] transition duration-300"
+                className="rounded-2xl object-cover w-full aspect-[3/2] shadow-md border-2 border-white/80"
               />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
                 The Pahwa Brothers · 19 Abu Lane

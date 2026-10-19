@@ -16,12 +16,12 @@ export default function ProductCard({ product }) {
       <div className="relative">
         <FavouriteButton item={product} className="absolute top-2 right-2 z-10" />
         <Link to={`/products/${slug}`} className="block">
-          <div className="relative aspect-[6/5] sm:aspect-[4/5] overflow-hidden bg-muted">
-            <OptimizedImage
+          <div className="relative aspect-square overflow-hidden bg-muted">
+            <OptimizedImage square
               sizes="(min-width: 1280px) 300px, (min-width: 1024px) 33vw, 50vw"
               src={image || '/placeholder.jpg'}
               alt={name}
-              className={`h-full w-full ${category === "festival-collection" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-105`}
+              className="block h-full w-full object-cover"
               loading="lazy"
             />
             {['mawa-barfi', 'mawa-til-laddoo', 'gond-laddoo', 'strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(slug) && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-[11px]">Illustrative</span>}

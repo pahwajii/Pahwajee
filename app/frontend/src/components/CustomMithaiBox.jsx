@@ -68,7 +68,7 @@ export default function CustomMithaiBox() {
             const available = canChooseSweet(product);
             const count = selections.filter(slug => slug === product.slug).length;
             return <article key={product.slug} className="card-warm flex min-w-0 flex-col overflow-hidden">
-              <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`}><OptimizedImage src={product.image} alt={product.name} width={300} height={240} sizes="(min-width: 1280px) 230px, (min-width: 1024px) 300px, 45vw" className="aspect-[5/4] w-full object-cover" /></Link>
+              <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`}><OptimizedImage square src={product.image} alt={product.name} sizes="(min-width: 1280px) 230px, (min-width: 1024px) 300px, 45vw" width={300} height={300} className="aspect-square w-full object-cover" /></Link>
               <div className="flex flex-1 flex-col p-3">
                 <Link to={`/products/${product.slug}`} className="font-semibold text-sm leading-snug hover:underline">{product.name}</Link>
                 {['strawberry-bite', 'kachha-aam-bite', 'khajoor-barfi'].includes(product.slug) && <p className="mt-1 text-[11px] text-muted-foreground">Illustrative photo</p>}

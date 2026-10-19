@@ -96,7 +96,7 @@ export default function CorporateGifting() {
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {hampers.map(hamper => <article key={hamper.image} className="card-warm overflow-hidden flex flex-col" data-testid="gift-hamper-card">
               <Link to="/products/dry-fruit-gift-trays" aria-label={`View ${hamper.name}`}>
-                <OptimizedImage src={hamper.image} alt={hamper.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-contain bg-muted" loading="lazy" />
+                <OptimizedImage square src={hamper.image} alt={hamper.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-cover bg-muted" loading="lazy" />
               </Link>
               <div className="p-2 sm:p-4 flex flex-col flex-1">
                 <h3 className="text-base sm:text-xl leading-tight mb-2">{hamper.name}</h3>

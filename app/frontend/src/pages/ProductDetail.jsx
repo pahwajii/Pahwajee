@@ -107,12 +107,12 @@ export default function ProductDetail() {
           <div className="flex flex-col gap-4 w-full">
             {/* Main Image Container */}
             <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted border border-white/60 shadow-lg group">
-              <OptimizedImage
+              <OptimizedImage square
                 loading="eager"
                 fetchPriority="high"
                 src={currentImage}
                 alt={product.name}
-                className="w-full h-full object-cover transition-all duration-300"
+                className="block h-full w-full object-cover"
               />
 
               {/* Navigation Arrows (only if multiple images exist) */}
@@ -155,7 +155,7 @@ export default function ProductDetail() {
                           : 'border-transparent hover:border-primary/40'
                       }`}
                     >
-                      <OptimizedImage sizes="80px" src={img} alt={`${product.name} variant ${idx + 1}`} className="h-full w-full object-cover" />
+                      <OptimizedImage square sizes="80px" src={img} alt={`${product.name} variant ${idx + 1}`} className="h-full w-full object-cover" />
                     </button>
                   );
                 })}

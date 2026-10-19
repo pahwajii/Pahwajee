@@ -1,9 +1,10 @@
 import images from '../generated/images.json';
+import menuDimensions from '../generated/menu-image-dimensions.json';
 
 // Unknown URLs (including new admin uploads) keep their original source.
 export function imageProps(src, sizes = '(min-width: 1280px) 600px, (min-width: 768px) 50vw, 100vw') {
   const image = images[src];
-  if (!image) return { src };
+  if (!image) return { src, ...menuDimensions[src] };
   const fallbackWidth = image.widths.find(width => width >= 960) || image.widths.at(-1);
   return {
     src: `${image.base}-${fallbackWidth}.webp`,

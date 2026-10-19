@@ -149,7 +149,7 @@ export default function Cart() {
               const unavailable = catalogStatus === 'ready' && (!canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit || !validCartPack(item, catalog[item.slug]));
               return <div key={key} className="p-4 sm:p-6">
                 <div className="flex gap-4">
-                  <Link to={`/products/${item.slug}`} className="shrink-0">{item.image ? <OptimizedImage sizes="96px" src={item.image} alt={item.name} className="h-20 w-20 rounded-xl object-cover sm:h-24 sm:w-24" /> : <BrandLogo alt={item.name} className="h-20 w-20 rounded-xl p-2 sm:h-24 sm:w-24" />}</Link>
+                  <Link to={`/products/${item.slug}`} className="shrink-0">{item.image ? <OptimizedImage square sizes="96px" src={item.image} alt={item.name} className="h-20 w-20 rounded-xl object-cover sm:h-24 sm:w-24" /> : <BrandLogo alt={item.name} className="h-20 w-20 rounded-xl p-2 sm:h-24 sm:w-24" />}</Link>
                   <div className="min-w-0 flex-1">
                     <Link to={`/products/${item.slug}`} className="font-serif text-xl font-semibold hover:text-primary">{item.name}</Link>
                     <p className="mt-1 text-sm text-muted-foreground">{formatMoney(item.unit_price_paise)}/{item.sale_unit}</p>

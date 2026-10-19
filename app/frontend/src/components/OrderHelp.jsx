@@ -18,7 +18,7 @@ export default function OrderHelp({ photo, caption }) {
       </div>
     </div>
     <figure className="min-w-0">
-      <Link to="/gallery"><OptimizedImage src={photo || '/our_shop_main.jpeg'} alt={caption || 'The Pahwa Jee shop entrance in Meerut'} sizes="(min-width: 768px) 240px, 80vw" className="w-full max-h-52 object-cover rounded-xl" /></Link>
+      <Link to="/gallery"><OptimizedImage src={photo || '/our_shop_main.jpeg'} alt={caption || 'The Pahwa Jee shop entrance in Meerut'} sizes="(min-width: 768px) 240px, 80vw" className="aspect-square w-full object-cover rounded-xl" /></Link>
       <figcaption className="mt-2 text-xs leading-relaxed text-muted-foreground">{caption || 'Our Meerut storefront.'} <Link className="underline underline-offset-4" to="/gallery">See real shop photos</Link>.</figcaption>
     </figure>
   </section>;

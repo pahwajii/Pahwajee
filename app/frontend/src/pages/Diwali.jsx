@@ -117,12 +117,12 @@ export default function Diwali() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {packages.map((pkg, idx) => (
             <article key={idx} className="card-warm group hover:shadow-xl transition-all duration-300">
-              <div className="aspect-[4/3] overflow-hidden bg-muted">
-                <OptimizedImage
+              <div className="aspect-square overflow-hidden bg-muted">
+                <OptimizedImage square
                   sizes="(min-width: 1280px) 300px, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                   src={pkg.image}
                   alt={pkg.name}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="block h-full w-full object-cover"
                   loading="lazy"
                 />
               </div>

@@ -1,0 +1,17 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-19",
+  "frame": "1:1 square",
+  "brief": "Extend existing photographic backgrounds seamlessly to square. Preserve the original products, arrangement, proportions, colors and lighting. Keep the whole product visible; no blank bars, blurred padding, stretching, added text or product redesign. Collages retain all four original designs with each tray fully visible.",
+  "sources": {
+    "/products/Dryfruit-tray1.png": "/menu/peacock-hamper-square.webp",
+    "/products/golgazzak.png": "/menu/gol-gazak-square.webp",
+    "/products/dilkhush-gazzak.png": "/menu/dilkhush-gazak-square.webp",
+    "/menu/jachha-bachha-panjeeri.webp": "/menu/panjeeri-square.webp",
+    "/menu/mawa-malai-gajar-barfi.webp": "/menu/mawa-malai-gajar-barfi-square.webp",
+    "/products/Dryfruit-tray5.png": "/menu/festive-trays-square.webp",
+    "/products/Dryfruit-tray6.png": "/menu/celebration-trays-square.webp",
+    "/products/sprouts.png": "/menu/sprouts-square.webp",
+    "/products/Dryfruit-tray7.png": "/menu/festive-trays-square.webp"
+  }
+}

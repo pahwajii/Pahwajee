@@ -138,11 +138,11 @@ export default function Gallery() {
             <LoaderCircle className="animate-spin text-primary" size={30} />
           </div>
         ) : filteredPhotos.length ? (
-          <div className="mt-10 columns-1 gap-5 sm:columns-2 lg:columns-3">
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
             {filteredPhotos.map((photo) => (
               <figure
                 key={photo.id}
-                className="group mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-lg"
               >
                 <button
                   type="button"
@@ -154,10 +154,10 @@ export default function Gallery() {
                     #{photo.index}
                   </span>
                   <OptimizedImage
-                    sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, 50vw"
                     src={photo.src}
                     alt={photo.alt}
-                    className="w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    className="block aspect-square w-full object-cover"
                     loading="lazy"
                   />
                 </button>

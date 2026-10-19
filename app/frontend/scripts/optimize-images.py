@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / 'public'
 OUTPUT = PUBLIC / 'media'
 OUTPUT.mkdir(exist_ok=True)
-sources = sorted([*PUBLIC.glob('products/*'), *PUBLIC.glob('gallery/*')])
+sources = sorted([*PUBLIC.glob('products/*'), *PUBLIC.glob('gallery/*'), *PUBLIC.glob('menu/*')])
 sources += [PUBLIC / name for name in ['our_shop_main.jpeg', 'pahwa_family.jpg', 'brand/pahwajee-day.png', 'brand/pahwajee-dark.png']]
 target = ROOT / "src/generated/images.json"
 manifest = json.loads(target.read_text()) if args.only and target.exists() else {}
@@ -26,6 +26,15 @@ if args.only:
     sources = [PUBLIC / name.lstrip("/") for name in args.only]
     if any(not source.resolve().is_relative_to(PUBLIC.resolve()) for source in sources):
         raise ValueError("Image sources must be inside public")
+# Menu photos are already compressed; retain intrinsic dimensions to reserve
+# their natural frame before lazy-loaded images arrive.
+menu_dimensions = {}
+for source in sorted((PUBLIC / 'menu').glob('*')):
+    if source.suffix.lower() in {'.png', '.jpg', '.jpeg', '.webp'}:
+        photo = ImageOps.exif_transpose(Image.open(source))
+        menu_dimensions['/menu/' + source.name] = {'width': photo.width, 'height': photo.height}
+(ROOT / 'src/generated/menu-image-dimensions.json').write_text(json.dumps(menu_dimensions, separators=(',', ':')) + '\n', encoding='utf-8')
+
 original_bytes = largest_bytes = card_bytes = 0
 for source in sources:
     if source.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.webp'}:

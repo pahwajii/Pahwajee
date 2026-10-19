@@ -47,7 +47,7 @@ export default function CategoryLanding({ type }) {
         <h2 id="cakes-and-biscuits" className="font-serif text-2xl sm:text-3xl mb-2">Cakes on order & bakery biscuits</h2>
         <p className="text-sm text-muted-foreground mb-5">Cake prices depend on size and design. Confirm your flavour, date and collection arrangements with the store. Photos marked illustrative are representative.</p>
         <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">{bakeryItems.map(item => <article key={item.slug} className="card-warm overflow-hidden">
-          <div className="relative"><OptimizedImage src={item.image} alt={item.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-cover" />{item.representative && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-xs">Illustrative</span>}</div>
+          <div className="relative"><OptimizedImage square src={item.image} alt={item.name} sizes="(min-width: 1024px) 33vw, 50vw" className="aspect-square w-full object-cover" />{item.representative && <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-1 text-xs">Illustrative</span>}</div>
           <div className="p-3 sm:p-4"><h3 className="font-serif text-lg">{item.name}</h3><p className="mt-2 text-sm font-semibold">{item.priceLabel}</p><p className="mt-1 text-xs text-muted-foreground">{item.availability || 'Confirm selection in store'}</p><a href={waLink(item.name + ' — please confirm size, price and collection date')} className="inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline">Enquire about {item.name}</a></div>
         </article>)}</div>
       </section>}

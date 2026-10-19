@@ -41,7 +41,7 @@ export default function BlogArticle() {
             <p className="mt-6 text-base leading-relaxed text-muted-foreground">{post.introduction}</p>
           </div>
           <div>
-            <OptimizedImage src={post.image} alt={post.imageAlt} loading="eager" fetchPriority="high" sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)" className="aspect-[4/3] w-full rounded-2xl object-cover border border-border" />
+            <OptimizedImage square src={post.image} alt={post.imageAlt} loading="eager" fetchPriority="high" sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)" className="aspect-square w-full rounded-2xl object-cover border border-border" />
           </div>
         </header>
         <div className="mx-auto max-w-3xl space-y-10 pt-6">
