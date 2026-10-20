@@ -9,7 +9,7 @@ export default function PolicyPage({ page }) {
     <SEO title={content.title + ' | PAHWAJEE Meerut'} description={content.description} />
     <article className="container-x max-w-4xl">
       <h1 className="text-3xl sm:text-5xl font-serif leading-tight">{content.title}</h1>
-      <p className="mt-3 text-sm text-muted-foreground">{policy.businessName} · Updated {policy.updated}</p>
+      <p className="mt-3 text-sm text-muted-foreground">{policy.businessName} · Updated {content.updated || policy.updated}</p>
       <nav aria-label="Store policies" className="my-5 flex flex-wrap gap-x-5 text-sm font-semibold text-primary dark:text-secondary">
         {Object.entries(policyPages).filter(([slug]) => slug !== page).map(([slug,item]) => <Link key={slug} to={'/' + slug} className="inline-flex min-h-11 items-center underline underline-offset-4">{item.title}</Link>)}
       </nav>
