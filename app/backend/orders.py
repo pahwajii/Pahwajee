@@ -214,6 +214,11 @@ def send_order_email(order):
     if order["customer"].get("email"):
         message["Reply-To"] = order["customer"]["email"]
     message.set_content(order["summary"])
+    send_email_message(message)
+
+
+def send_email_message(message):
+    settings = smtp_settings()
     context = ssl.create_default_context()
     if settings["port"] == 465:
         connection = smtplib.SMTP_SSL(settings["host"], settings["port"], timeout=20, context=context)
@@ -226,9 +231,93 @@ def send_order_email(order):
         smtp.send_message(message)
 
 
-class OrderService:
+class NotificationOutbox:
+    """Durable SMTP jobs shared by orders and enquiries."""
+    email_state_field = "email"
+
+    async def deliver_one(self, reference=None):
+        if not smtp_ready():
+            return False
+        now = datetime.now(timezone.utc)
+        eligible = {"$or": [
+                {f"{self.email_state_field}.status": {"$in": ["pending", "retry"]}, f"{self.email_state_field}.next_attempt_at": {"$lte": now}},
+                {f"{self.email_state_field}.status": "sending", f"{self.email_state_field}.locked_until": {"$lte": now}},
+            ]}
+        if reference is not None:
+            eligible["reference"] = reference
+        order = await self.email_collection.find_one_and_update(
+            eligible,
+            {"$set": {f"{self.email_state_field}.status": "sending", f"{self.email_state_field}.locked_until": now + timedelta(minutes=5)}, "$inc": {f"{self.email_state_field}.attempts": 1}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if not order:
+            return False
+        try:
+            await asyncio.to_thread(self.send_notification, order)
+        except Exception as error:
+            attempts = order[self.email_state_field]["attempts"]
+            await self.email_collection.update_one({"id": order["id"]}, {"$set": {
+                f"{self.email_state_field}.status": "failed" if attempts >= 5 else "retry",
+                f"{self.email_state_field}.next_attempt_at": now + timedelta(seconds=min(60 * 2 ** min(attempts - 1, 6), 3600)),
+                f"{self.email_state_field}.last_error": type(error).__name__,
+            }, "$unset": {f"{self.email_state_field}.locked_until": ""}})
+            logger.warning("Notification email deferred: %s (%s)", order["reference"], type(error).__name__)
+        else:
+            await self.email_collection.update_one({"id": order["id"]}, {"$set": {
+                f"{self.email_state_field}.status": "sent", f"{self.email_state_field}.sent_at": datetime.now(timezone.utc),
+            }, "$unset": {f"{self.email_state_field}.locked_until": "", f"{self.email_state_field}.last_error": ""}})
+        return True
+
+    async def deliver_saved_order(self, reference):
+        """Attempt delivery within a serverless request without undoing a saved order."""
+        try:
+            return await self.deliver_one(reference)
+        except Exception as error:
+            logger.error("Notification outbox deferred (%s); the saved job will retry", type(error).__name__)
+            return False
+
+    async def drain_outbox(self, limit=10):
+        processed = 0
+        deadline = asyncio.get_running_loop().time() + 120
+        while processed < limit and asyncio.get_running_loop().time() < deadline:
+            if not await self.deliver_one():
+                break
+            processed += 1
+        return {"processed": processed, "smtp_configured": smtp_ready()}
+
+    async def worker(self):
+        if not smtp_ready():
+            logger.warning("Notification email SMTP is not configured. Notifications will stay queued until configuration is added and the API restarted.")
+        while True:
+            try:
+                worked = await self.deliver_one()
+            except Exception as error:
+                logger.error("Notification outbox error (%s); will retry", type(error).__name__)
+                worked = False
+            await asyncio.sleep(1 if worked else 15)
+
+    async def retry_email(self, reference):
+        order = await self.email_collection.find_one_and_update(
+            {"reference": reference, f"{self.email_state_field}.status": {"$in": ["failed", "retry", "pending"]}},
+            {"$set": {f"{self.email_state_field}.status": "pending", f"{self.email_state_field}.attempts": 0, f"{self.email_state_field}.next_attempt_at": datetime.now(timezone.utc)},
+             "$unset": {f"{self.email_state_field}.last_error": "", f"{self.email_state_field}.locked_until": ""}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if not order:
+            raise HTTPException(409, "Request not found, or email is already sent/in progress.")
+        return {"reference": reference, "email_status": "pending", "smtp_configured": smtp_ready()}
+
+
+class OrderService(NotificationOutbox):
     def __init__(self, db):
         self.db = db
+
+    @property
+    def email_collection(self):
+        return self.db.orders
+
+    def send_notification(self, document):
+        send_order_email(document)
 
     async def initialize(self):
         await self.db.orders.create_index("idempotency_key", unique=True)
@@ -288,77 +377,6 @@ class OrderService:
             raise HTTPException(409, {"code": "idempotency_conflict", "message": "This request was already submitted with different details. Please start a new request."})
         return receipt(existing)
 
-    async def deliver_one(self, reference=None):
-        if not smtp_ready():
-            return False
-        now = datetime.now(timezone.utc)
-        eligible = {"$or": [
-                {"email.status": {"$in": ["pending", "retry"]}, "email.next_attempt_at": {"$lte": now}},
-                {"email.status": "sending", "email.locked_until": {"$lte": now}},
-            ]}
-        if reference is not None:
-            eligible["reference"] = reference
-        order = await self.db.orders.find_one_and_update(
-            eligible,
-            {"$set": {"email.status": "sending", "email.locked_until": now + timedelta(minutes=5)}, "$inc": {"email.attempts": 1}},
-            return_document=ReturnDocument.AFTER,
-        )
-        if not order:
-            return False
-        try:
-            await asyncio.to_thread(send_order_email, order)
-        except Exception as error:
-            attempts = order["email"]["attempts"]
-            await self.db.orders.update_one({"id": order["id"]}, {"$set": {
-                "email.status": "failed" if attempts >= 5 else "retry",
-                "email.next_attempt_at": now + timedelta(seconds=min(60 * 2 ** min(attempts - 1, 6), 3600)),
-                "email.last_error": type(error).__name__,
-            }, "$unset": {"email.locked_until": ""}})
-            logger.warning("Order email deferred: %s (%s)", order["reference"], type(error).__name__)
-        else:
-            await self.db.orders.update_one({"id": order["id"]}, {"$set": {
-                "email.status": "sent", "email.sent_at": datetime.now(timezone.utc),
-            }, "$unset": {"email.locked_until": "", "email.last_error": ""}})
-        return True
-
-    async def deliver_saved_order(self, reference):
-        """Attempt delivery within a serverless request without undoing a saved order."""
-        try:
-            return await self.deliver_one(reference)
-        except Exception as error:
-            logger.error("Order outbox deferred (%s); the saved job will retry", type(error).__name__)
-            return False
-
-    async def drain_outbox(self, limit=10):
-        processed = 0
-        deadline = asyncio.get_running_loop().time() + 120
-        while processed < limit and asyncio.get_running_loop().time() < deadline:
-            if not await self.deliver_one():
-                break
-            processed += 1
-        return {"processed": processed, "smtp_configured": smtp_ready()}
-
-    async def worker(self):
-        if not smtp_ready():
-            logger.warning("Order email SMTP is not configured. Orders will stay queued until configuration is added and the API restarted.")
-        while True:
-            try:
-                worked = await self.deliver_one()
-            except Exception as error:
-                logger.error("Order outbox error (%s); will retry", type(error).__name__)
-                worked = False
-            await asyncio.sleep(1 if worked else 15)
-
-    async def retry_email(self, reference):
-        order = await self.db.orders.find_one_and_update(
-            {"reference": reference, "email.status": {"$in": ["failed", "retry", "pending"]}},
-            {"$set": {"email.status": "pending", "email.attempts": 0, "email.next_attempt_at": datetime.now(timezone.utc)},
-             "$unset": {"email.last_error": "", "email.locked_until": ""}},
-            return_document=ReturnDocument.AFTER,
-        )
-        if not order:
-            raise HTTPException(409, "Order not found, or email is already sent/in progress.")
-        return {"reference": reference, "email_status": "pending", "smtp_configured": smtp_ready()}
 
 
 class OrderBodyLimitMiddleware:
@@ -367,7 +385,7 @@ class OrderBodyLimitMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        if scope["type"] != "http" or scope["method"] != "POST" or scope["path"] != "/api/orders":
+        if scope["type"] != "http" or scope["method"] != "POST" or scope["path"] not in {"/api/orders", "/api/inquiries"}:
             return await self.app(scope, receive, send)
         chunks, size = [], 0
         while True:
@@ -377,7 +395,7 @@ class OrderBodyLimitMiddleware:
             size += len(message.get("body", b""))
             if size > 32768:
                 await send({"type": "http.response.start", "status": 413, "headers": [(b"content-type", b"application/json")]})
-                await send({"type": "http.response.body", "body": b'{"detail":"Order request is too large."}'})
+                await send({"type": "http.response.body", "body": b'{"detail":"Request is too large."}'})
                 return
             chunks.append(message)
             if not message.get("more_body", False):

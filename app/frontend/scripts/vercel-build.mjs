@@ -11,7 +11,7 @@ function run(command, args, options = {}) {
   const result = spawnSync(command, args, { cwd: frontend, stdio: 'inherit', ...options });
   if (result.error || result.status !== 0) throw new Error(`Release step failed: ${command} ${args[0]}`);
 }
-run(process.execPath, ['--test', 'src/lib/cart.test.js', 'src/lib/mithaiBox.test.js', 'src/lib/favourites.test.js', 'src/lib/productOrder.test.js']);
+run(process.execPath, ['--test', 'src/lib/cart.test.js', 'src/lib/mithaiBox.test.js', 'src/lib/favourites.test.js', 'src/lib/productOrder.test.js', 'src/lib/inquiry.test.js']);
 run(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
 if (!production) {
   // Preview builds must never write to production, even if credentials were shared.

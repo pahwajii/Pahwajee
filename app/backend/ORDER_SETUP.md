@@ -111,3 +111,20 @@ Verify a successful build with `node src/lib/seo.test.js` and
 Google Search Console verification and sitemap submission are separate account
 steps. Submit `https://pahwajee.in/sitemap.xml` for the URL-prefix property
 `https://pahwajee.in/` once ownership is verified.
+
+## Bulk gifting and contact enquiries
+
+`POST /api/inquiries` saves the enquiry before attempting SMTP delivery, using the
+same sender and shop recipient as order notifications. Bulk requests include the
+company, quantity, budget, required date and requirements. Customer email remains
+an optional Reply-To; delivery metadata is stored separately under `notification`.
+
+New submissions have a `PJQ-...` reference and an idempotency key. Duplicate retries
+reuse the saved request. Historical enquiries are not automatically emailed.
+The existing protected daily email cron also retries queued enquiry notifications;
+local development runs a managed worker. Admins can retry a failed notification
+with `POST /api/admin/inquiries/{reference}/retry-email`.
+
+The form confirms the saved reference and distinguishes sent notifications from
+queued notifications. SMTP acceptance does not prove inbox placement. The admin
+enquiry detail shows quote fields and the notification status.

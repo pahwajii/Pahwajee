@@ -21,6 +21,8 @@ class VercelTests(unittest.IsolatedAsyncioTestCase):
         )
         self.patcher = patch.object(server, "order_service", self.service)
         self.patcher.start()
+        self.inquiry_patcher = patch.object(server, "inquiry_service", SimpleNamespace(drain_outbox=AsyncMock(return_value={"processed": 2})))
+        self.inquiry_patcher.start()
         app = FastAPI()
         app.include_router(server.api_router)
         self.http = AsyncClient(transport=ASGITransport(app=app), base_url="https://test")
@@ -28,6 +30,7 @@ class VercelTests(unittest.IsolatedAsyncioTestCase):
     async def asyncTearDown(self):
         await self.http.aclose()
         self.patcher.stop()
+        self.inquiry_patcher.stop()
 
     async def test_vercel_delivers_only_after_order_is_saved(self):
         with patch.object(server, "IS_VERCEL", True):
@@ -54,6 +57,7 @@ class VercelTests(unittest.IsolatedAsyncioTestCase):
             response = await self.http.get("/api/internal/order-email-retry", headers={"Authorization": "Bearer test-only-secret"})
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.headers["cache-control"], "no-store")
+            self.assertEqual(response.json()["inquiries_processed"], 2)
         with patch.dict(os.environ, {"CRON_SECRET": ""}):
             response = await self.http.get("/api/internal/order-email-retry", headers={"Authorization": "Bearer "})
             self.assertEqual(response.status_code, 401)

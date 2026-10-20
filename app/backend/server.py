@@ -23,6 +23,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 from pymongo.errors import DuplicateKeyError
 from admin import create_admin_router
+from inquiries import InquiryIn, InquiryService
 from orders import GALLERY_ONLY_SLUGS, OrderService, OrderRequest, OrderBodyLimitMiddleware, migrate_purchase_fields, purchasable_product, purchase_fields, smtp_ready
 
 # ------------------- Setup -------------------
@@ -30,6 +31,7 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 order_service = OrderService(db)
+inquiry_service = InquiryService(db)
 
 JWT_ALGORITHM = "HS256"
 JWT_SECRET = os.environ["JWT_SECRET"]
@@ -210,13 +212,6 @@ class FAQ(BaseModel):
     question: str
     answer: str
     order: int = 0
-
-class InquiryIn(BaseModel):
-    name: str
-    phone: str
-    email: Optional[str] = ""
-    message: str
-    product: Optional[str] = ""
 
 class NewsletterIn(BaseModel):
     email: EmailStr
@@ -403,17 +398,20 @@ async def startup():
         await seed_data()
         await migrate_purchase_fields(db)
     await order_service.initialize()
+    await inquiry_service.initialize()
     if not IS_VERCEL:
         app.state.order_email_task = asyncio.create_task(order_service.worker())
+        app.state.inquiry_email_task = asyncio.create_task(inquiry_service.worker())
 
 
 async def shutdown():
-    task = getattr(app.state, "order_email_task", None)
-    if task:
-        task.cancel()
-        with suppress(asyncio.CancelledError):
-            await task
-        app.state.order_email_task = None
+    for name in ("order_email_task", "inquiry_email_task"):
+        task = getattr(app.state, name, None)
+        if task:
+            task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
+            setattr(app.state, name, None)
     client.close()
 
 
@@ -515,7 +513,9 @@ async def retry_queued_emails(request: Request, response: Response):
     if not secret or not hmac.compare_digest(request.headers.get("Authorization", ""), f"Bearer {secret}"):
         raise HTTPException(401, "Not authenticated")
     response.headers["Cache-Control"] = "no-store"
-    return await order_service.drain_outbox()
+    result = await order_service.drain_outbox()
+    inquiries = await inquiry_service.drain_outbox(limit=5)
+    return {**result, "inquiries_processed": inquiries["processed"]}
 
 
 @api_router.get("/admin/orders")
@@ -548,14 +548,29 @@ async def get_banners():
 async def get_faqs():
     return await db.faqs.find({}, {"_id": 0}).sort("order", 1).to_list(100)
 
-@api_router.post("/inquiries")
-async def create_inquiry(body: InquiryIn):
-    doc = body.model_dump()
-    doc["id"] = str(uuid.uuid4())
-    doc["created_at"] = datetime.now(timezone.utc).isoformat()
-    doc["status"] = "new"
-    await db.inquiries.insert_one(doc)
-    return {"ok": True, "id": doc["id"]}
+@api_router.post("/inquiries", status_code=201)
+async def create_inquiry(body: InquiryIn, request: Request, response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    client_ip = request.client.host if request.client else "unknown"
+    if IS_VERCEL:
+        try:
+            client_ip = str(ip_address(request.headers.get("x-vercel-forwarded-for", "").split(",")[0].strip()))
+        except ValueError:
+            pass
+    result = await inquiry_service.submit(body, client_ip)
+    # Await SMTP on serverless hosts: background tasks may be frozen after response.
+    # The saved notification remains retryable if SMTP is temporarily unavailable.
+    await inquiry_service.deliver_saved_order(result["reference"])
+    saved = await db.inquiries.find_one({"id": result["id"]}, {"notification.status": 1})
+    return {**result, "email_status": saved["notification"]["status"]}
+
+
+@api_router.post("/admin/inquiries/{reference}/retry-email")
+async def retry_inquiry_email(reference: str, _: dict = Depends(require_admin)):
+    result = await inquiry_service.retry_email(reference)
+    await inquiry_service.deliver_saved_order(reference)
+    return result
+
 
 @api_router.post("/newsletter")
 async def newsletter(body: NewsletterIn):

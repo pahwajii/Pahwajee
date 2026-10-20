@@ -29,6 +29,9 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
 
         self.service = SimpleNamespace(initialize=AsyncMock(), worker=AsyncMock(side_effect=worker))
         self.patches.enter_context(patch.object(server, "order_service", self.service))
+        self.inquiries = SimpleNamespace(initialize=AsyncMock(), worker=AsyncMock(side_effect=worker))
+        self.patches.enter_context(patch.object(server, "inquiry_service", self.inquiries))
+        server.app.state.inquiry_email_task = None
         self.seeds = [self.patches.enter_context(patch.object(server, name, AsyncMock()))
                       for name in ("seed_admin", "seed_data", "migrate_purchase_fields")]
         server.app.state.order_email_task = None
@@ -41,20 +44,24 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
             async with server.app.router.lifespan_context(server.app):
                 await asyncio.wait_for(self.started.wait(), timeout=1)
                 self.service.initialize.assert_awaited_once()
+                self.inquiries.initialize.assert_awaited_once()
                 for seed in self.seeds:
                     seed.assert_awaited_once()
                 self.client.close.assert_not_called()
             self.assertTrue(self.stopped.is_set())
             self.assertIsNone(server.app.state.order_email_task)
+            self.assertIsNone(server.app.state.inquiry_email_task)
             self.client.close.assert_called_once()
 
     async def test_vercel_lifespan_preserves_data_and_skips_infinite_worker(self):
         with patch.object(server, "IS_VERCEL", True):
             async with server.app.router.lifespan_context(server.app):
                 self.service.initialize.assert_awaited_once()
+                self.inquiries.initialize.assert_awaited_once()
                 for seed in self.seeds:
                     seed.assert_not_awaited()
                 self.service.worker.assert_not_called()
+                self.inquiries.worker.assert_not_called()
             self.client.close.assert_called_once()
 
     async def test_startup_failure_still_closes_database(self):
