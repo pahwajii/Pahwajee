@@ -58,7 +58,7 @@ export default function CategoryLanding({ type }) {
           <summary className="cursor-pointer min-h-11 flex items-center font-semibold text-sm sm:text-base">{faq.question}</summary>
           <p className="pb-2 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
         </details>)}</div>
-        <Link to={config.guide.to} className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">{config.guide.label}</Link>
+        <div className="mt-3 flex flex-col items-start">{[config.guide, ...(config.moreGuides || [])].map(guide => <Link key={guide.to} to={guide.to} className="inline-flex min-h-11 items-center py-2 text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">{guide.label}</Link>)}</div>
       </section>
       <OrderHelp photo={config.photo} caption={config.caption} />
     </div>

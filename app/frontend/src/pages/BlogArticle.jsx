@@ -20,6 +20,7 @@ export default function BlogArticle() {
     headline: post.title, description: post.description,
     image: [absoluteUrl(post.image), ...post.sections.filter(section => section.photo).map(section => absoluteUrl(section.photo.src))],
     datePublished: post.datePublished, inLanguage: 'en-IN',
+    citation: [...new Set(post.sections.flatMap(section => (section.references || []).map(source => source.href)))],
     author: { '@type': 'Organization', name: 'PAHWA JEE', url: absoluteUrl('/about') },
     publisher: { '@id': `${SITE_URL}/#business` },
     mainEntityOfPage: { '@id': `${url}#webpage` },
@@ -36,17 +37,24 @@ export default function BlogArticle() {
       <article>
         <header className="grid items-center gap-8 py-8 lg:grid-cols-2 lg:gap-12 lg:py-12">
           <div>
-            <h1 className="font-serif text-4xl leading-tight sm:text-5xl">{post.title}</h1>
+            <h1 className="font-serif text-3xl leading-tight sm:text-5xl">{post.title}</h1>
             <p className="mt-5 text-sm text-muted-foreground">By <Link to="/about" className="underline underline-offset-4">PAHWA JEE</Link><span aria-hidden="true"> · </span><time dateTime={post.datePublished}>{blogDate(post.datePublished)}</time></p>
             <p className="mt-6 text-base leading-relaxed text-muted-foreground">{post.introduction}</p>
           </div>
-          <div>
+          <figure>
             <OptimizedImage square src={post.image} alt={post.imageAlt} loading="eager" fetchPriority="high" sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, calc(100vw - 32px)" className="aspect-square w-full rounded-2xl object-cover border border-border" />
-          </div>
+            {post.imageCaption && <figcaption className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.imageCaption}</figcaption>}
+          </figure>
         </header>
         <div className="mx-auto max-w-3xl space-y-10 pt-6">
+          {post.sections.length >= 5 && <nav aria-labelledby="article-contents" className="rounded-xl border border-border bg-card p-5 sm:p-6">
+            <h2 id="article-contents" className="font-serif text-2xl">In this article</h2>
+            <ol className="mt-3 grid list-decimal gap-x-6 pl-5 text-sm sm:grid-cols-2">
+              {post.sections.map((section, index) => <li key={section.heading}><a href={`#article-section-${index}`} className="inline-flex min-h-11 items-center py-2 underline underline-offset-4 text-primary dark:text-secondary">{section.heading}</a></li>)}
+            </ol>
+          </nav>}
           {post.sections.map((section, index) => <section key={section.heading} aria-labelledby={`article-section-${index}`}>
-            <h2 id={`article-section-${index}`} className="font-serif text-2xl leading-snug sm:text-3xl">{section.heading}</h2>
+            <h2 id={`article-section-${index}`} className="scroll-mt-32 font-serif text-2xl leading-snug sm:text-3xl">{section.heading}</h2>
             {section.comparison && <div className="mt-5 grid gap-4 sm:grid-cols-3">
               {section.comparison.map(item => <div key={item.name} className="rounded-xl border border-border bg-card p-5">
                 <h3 className="font-serif text-2xl">{item.name}</h3>
@@ -58,6 +66,16 @@ export default function BlogArticle() {
               </div>)}
             </div>}
             {section.paragraphs?.map(paragraph => <p key={paragraph} className="mt-4 text-base leading-7 text-muted-foreground">{paragraph}</p>)}
+            {section.ingredients && <dl className="mt-5 divide-y divide-border rounded-xl border border-border bg-card px-4 sm:px-5">
+              {section.ingredients.map(item => <div key={item.name} className="grid gap-2 py-4 sm:grid-cols-[180px_1fr] sm:gap-5">
+                <dt className="font-semibold">{item.name}</dt><dd className="text-base leading-7 text-muted-foreground">{item.purpose}</dd>
+              </div>)}
+            </dl>}
+            {section.steps && <ol className="mt-5 list-decimal space-y-5 pl-6 marker:font-semibold marker:text-primary dark:marker:text-secondary">
+              {section.steps.map(step => <li key={step.title} className="pl-1"><h3 className="font-semibold text-lg">{step.title}</h3><p className="mt-1 text-base leading-7 text-muted-foreground">{step.text}</p></li>)}
+            </ol>}
+            {section.paragraphsAfter?.map(paragraph => <p key={paragraph} className="mt-4 text-base leading-7 text-muted-foreground">{paragraph}</p>)}
+            {section.references && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Sources: {section.references.map((source, index) => <span key={source.href}>{index > 0 && '; '}<a href={source.href} className="underline underline-offset-4 hover:text-primary dark:hover:text-secondary">{source.label}</a></span>)}</p>}
             {section.list && <ul className="mt-4 list-disc space-y-3 pl-6 text-base leading-7 text-muted-foreground">{section.list.map(item => <li key={item}>{item}</li>)}</ul>}
             {section.links && <div className="mt-4 flex flex-col items-start gap-1">{section.links.map(link => <Link key={link.to} to={link.to} className={textLink}>{link.label}<ArrowRight size={16} className="shrink-0" aria-hidden="true" /></Link>)}</div>}
             {section.photo && <figure className="mt-6">
@@ -76,7 +94,8 @@ export default function BlogArticle() {
       </article>
       <section className="mt-16 border-t border-border pt-10" aria-labelledby="related-articles-heading">
         <h2 id="related-articles-heading" className="mb-6 font-serif text-3xl">More from Pahwajee</h2>
-        <BlogCards posts={blogPosts.filter(item => item.slug !== post.slug)} />
+        <BlogCards posts={(post.relatedSlugs ? post.relatedSlugs.map(slug => blogPosts.find(item => item.slug === slug)).filter(Boolean) : blogPosts.filter(item => item.slug !== post.slug)).slice(0, 3)} />
+        <Link to="/blog" className={`${textLink} mt-5`}>View all articles<ArrowRight size={16} aria-hidden="true" /></Link>
       </section>
     </div>
   </div>;

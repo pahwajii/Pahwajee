@@ -334,7 +334,7 @@ export default function Home() {
           <h2 id="home-blog-heading" className="font-serif text-3xl sm:text-4xl">From Pahwajee</h2>
           <Link to="/blog" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">View all articles <ArrowRight size={16} aria-hidden="true" /></Link>
         </div>
-        <BlogCards posts={blogPosts} />
+        <BlogCards posts={blogPosts.slice(0, 3)} />
       </section>
 
       {/* 12 & 13. Visit Store & Contact / WhatsApp */}

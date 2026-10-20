@@ -1,5 +1,8 @@
+import { octoberGuides } from './blogOctober2026.js';
+
 // Publication dates are editorial dates, not regenerated on each build.
 export const blogPosts = [
+  ...octoberGuides,
   {
     slug: 'rewri-gajak-chikki-difference',
     title: 'Rewri, Gajak and Chikki: What’s the Difference?',

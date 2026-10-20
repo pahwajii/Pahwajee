@@ -84,7 +84,8 @@ test('blog articles ship crawlable content, matching article metadata and workin
     const path = blogPath(post);
     const html = await readFile(`dist${path}.html`, 'utf8');
     assert.ok(sitemap.includes(`${SITE_URL}${path}</loc>`));
-    assert.ok(home.includes(`href="${path}"`) && listing.includes(`href="${path}"`));
+    assert.ok(listing.includes(`href="${path}"`));
+    if (blogPosts.indexOf(post) < 3) assert.ok(home.includes(`href="${path}"`));
     assert.match(html, /property="og:type" content="article"/);
     assert.ok(html.includes(post.introduction));
     const graph = JSON.parse(html.match(/<script id="jsonld-schema" type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];

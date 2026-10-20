@@ -2,6 +2,7 @@ import { isNankhatai, isRewriGajak, isSweet } from './catalogueContent.js';
 
 export const collections = {
   specialities: {
+    moreGuides: [{to:'/blog/why-meerut-famous-rewri-gajak-nankhatai',label:'Why Meerut is known for Rewri, Gajak and Nankhatai'}],
     title: 'Meerut Rewri, Gajak & Nankhatai Specialities | PAHWAJEE',
     description: 'Compare Pahwajee’s Khasta Rewri, Gol Gazak, Dilkhush Gazak and two Nankhatai varieties. See prices, packs and availability in Meerut.',
     h1: 'Pahwajee’s Meerut Specialities',
@@ -15,6 +16,7 @@ export const collections = {
     ],
   },
   'rewri-gajak': {
+    moreGuides: [{to:'/blog/how-rewri-is-made-ingredients-process',label:'Rewri ingredients and making steps'},{to:'/blog/gajak-making-ingredients-traditional-handwork',label:'Gajak ingredients and traditional handwork'}],
     title: 'Rewri & Gajak in Meerut — Khasta, Gol & Dilkhush | PAHWAJEE',
     description: 'Shop Meerut Rewri and Gajak at Pahwajee, 19B Abu Lane. Compare Khasta Rewri, Gol Gazak, Dilkhush and more with prices, pack sizes and availability.',
     h1: 'Rewri & Gajak in Meerut',
@@ -31,6 +33,7 @@ export const collections = {
     ],
   },
   nankhatai: {
+    moreGuides: [{to:'/blog/nankhatai-ingredients-guide',label:'Nankhatai ingredients explained'}],
     title: 'Nankhatai in Meerut — Desi Ghee & Vanaspati | PAHWAJEE',
     description: 'Compare Desi Ghee and Vanaspati Ghee Nankhatai at Pahwajee, Abu Lane, Meerut. See current prices, 500 g and 1 kg packs, and ordering information.',
     h1: 'Nankhatai in Meerut',
@@ -45,6 +48,7 @@ export const collections = {
     ],
   },
   sweets: {
+    moreGuides: [{to:'/blog/why-meerut-famous-rewri-gajak-nankhatai',label:'The story behind Meerut’s sweet specialities'}],
     title: 'Sweets, Laddoo & Barfi in Meerut | PAHWAJEE',
     description: 'Browse Pahwajee’s laddoos, barfi, fruit bites and seasonal sweets in Meerut. See current prices, special-order items and custom 1 kg mithai boxes.',
     h1: 'Sweets & Mithai in Meerut',
@@ -61,6 +65,7 @@ export const collections = {
     ],
   },
   bakery: {
+    moreGuides: [{to:'/blog/nankhatai-ingredients-guide',label:'What ingredients go into Nankhatai?'}],
     title: 'Nankhatai, Biscuits & Cakes on Order in Meerut | PAHWAJEE',
     description: 'Explore Pahwajee’s Nankhatai, bakery biscuits and vegetarian cakes on order in Meerut. Discuss flavour, size, design, price and collection date.',
     h1: 'Bakery & Cakes on Order in Meerut',

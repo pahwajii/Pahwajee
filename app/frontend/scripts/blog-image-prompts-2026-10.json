@@ -1,0 +1,22 @@
+﻿{
+  "created": "2026-10-20",
+  "tool": "image_gen.imagegen",
+  "purpose": "Representative educational illustrations; not photographs of Pahwajee production.",
+  "images": [
+    {
+      "key": "nankhatai-ingredients",
+      "prompt": "Use case: photorealistic-natural. Create a square editorial food photograph for an educational Indian bakery article about Nankhatai ingredients. Top-down view on warm cream stone: a modest brass plate of crumbly pale-golden round nankhatai biscuits, small separate ceramic bowls of white refined wheat flour, pale yellow chickpea flour, fine semolina, powdered sugar and golden semi-solid ghee; several green cardamom pods and a few almonds/pistachios beside the bowls. Clear separation so ingredients are visually identifiable, realistic small quantities, elegant simple food styling, soft window light, warm ivory and muted brass colour palette consistent with a heritage sweet shop website. Entire arrangement comfortably inside square frame, no edge cropping. NO text, NO logo, NO watermark, NO people. This is a representative ingredient illustration, not documentary shop photography.",
+      "asset": "/blog/nankhatai-ingredients.webp"
+    },
+    {
+      "key": "rewri-making-stages",
+      "prompt": "Use case: scientific-educational. Create a square 2-by-2 editorial photo-style illustration showing FOUR clearly separated stages of traditional sesame sugar Rewri making. Equal quadrants with thin warm cream gutters, identical softly lit neutral Indian confectionery worktop. Top left: small separate steel bowls of white sesame seeds, white sugar, and a little golden ghee. Top right: sesame seeds gently roasting in a wide iron pan, stirred with a long wooden spatula. Bottom left: thick pale-gold sugar syrup being folded and stretched with two long wooden paddles above a lightly greased metal surface, hands kept away from the hot sugar, no bare-hand contact with syrup. Bottom right: many SMALL pale cream sugar buttons fully coated with white sesame seeds, oval and round Rewri bites cooling neatly on a steel tray. Realistic texture and tidy food-safe workspace. The final sweet is small sesame-coated Rewri, NOT laddoo, NOT rectangular chikki. No text, no numbers, no arrows, no labels, no logo, no watermark, no shop identity. All important objects remain inside their panels. This illustrates a general traditional method, not an actual Pahwajee kitchen.",
+      "asset": "/blog/rewri-making-stages.webp"
+    },
+    {
+      "key": "gajak-handwork-stages",
+      "prompt": "Use case: scientific-educational. Create a square 2-by-2 editorial photo-style illustration for a detailed article about traditional flaky sesame Gajak and handwork. Four equal panels with thin warm cream gutters and consistent natural warm light in a clean Indian confectionery workspace. Top left: separate bowls of white sesame seeds, amber jaggery chunks, white sugar and a small amount of ghee, shown as recipe alternatives. Top right: sesame-syrup mixture being carefully worked with a broad wooden spatula in an iron pan; worker's hands on the long handle safely away from hot syrup. Bottom left: close-up of two anatomically correct hands using a broad wooden rolling pin to flatten a pale beige, sesame-rich layered sweet on a clean lightly greased stone slab; show fine flaky layers at the edge, not sticky caramel. Bottom right: the set flaky Gajak sheet being scored into rectangular pieces using a pastry scraper, with several crumbly layered sesame pieces already separated. Focus on tools, texture and skilled manual finishing. No faces, text, numbers, arrows, logos, watermark or specific shop branding. Entire tools and relevant food visible within each panel. Representative process illustration, not documentary photography.",
+      "asset": "/blog/gajak-handwork-stages.webp"
+    }
+  ]
+}

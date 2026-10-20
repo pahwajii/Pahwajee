@@ -8,9 +8,9 @@ export const isSweet = p => !isGift(p) && /laddoo|pinni|bite|barfi|halwa|louch|p
 export const collectionFor = product => isGift(product)
   ? { to: '/gifting', label: 'Gift hampers & mithai boxes', guide: '/blog/diwali-gift-hampers-meerut-guide', guideLabel: 'How to choose a gift hamper' }
   : isNankhatai(product)
-    ? { to: '/nankhatai-meerut', label: 'Nankhatai in Meerut', guide: '/blog/how-to-store-nankhatai', guideLabel: 'How to store Nankhatai' }
+    ? { to: '/nankhatai-meerut', label: 'Nankhatai in Meerut', guide: '/blog/nankhatai-ingredients-guide', guideLabel: 'Nankhatai ingredients and varieties' }
     : isRewriGajak(product)
-      ? { to: '/rewri-gajak-meerut', label: 'Rewri & Gajak in Meerut', guide: '/blog/rewri-gajak-chikki-difference', guideLabel: 'Rewri, Gajak or Chikki: compare the textures' }
+      ? { to: '/rewri-gajak-meerut', label: 'Rewri & Gajak in Meerut', guide: /rewri/.test(product.slug || '') ? '/blog/how-rewri-is-made-ingredients-process' : '/blog/gajak-making-ingredients-traditional-handwork', guideLabel: /rewri/.test(product.slug || '') ? 'Rewri ingredients and making steps' : 'Gajak ingredients and traditional handwork' }
       : { to: '/sweets-meerut', label: 'Sweets & laddoos in Meerut', guide: '/blog/diwali-gift-hampers-meerut-guide', guideLabel: 'Choosing sweets for a gift box' };
 
 const descriptions = {
