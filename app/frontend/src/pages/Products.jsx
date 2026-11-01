@@ -7,10 +7,10 @@ import { useCart } from '../context/CartContext';
 import { currentCatalogue } from '../lib/catalogueState';
 import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
+import './products.css';
 
 
 
@@ -125,21 +125,14 @@ export default function Products() {
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-          <AnimatePresence mode="popLayout">
             {filteredProducts.map((p) => (
-              <motion.div
+              <div
                 key={p.id}
-                className="min-w-0 h-full"
-                layout
-                initial={false}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
+                className="shop-product-enter min-w-0 h-full"
               >
                 <ProductCard product={p} />
-              </motion.div>
+              </div>
             ))}
-          </AnimatePresence>
         </div>
         <OrderHelp />
       </div>

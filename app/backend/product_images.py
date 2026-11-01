@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from io import BytesIO
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from PIL import Image, ImageOps, UnidentifiedImageError
 from pymongo.errors import DuplicateKeyError
 from starlette.concurrency import run_in_threadpool
 
@@ -18,6 +17,8 @@ SUPPORTED_TYPES = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP
 
 def prepare_product_image(data: bytes, content_type: str):
     """Decode an allowed format, orient it, and strip metadata before storage."""
+    # Public catalogue cold starts should not load the photo encoder.
+    from PIL import Image, ImageOps, UnidentifiedImageError
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error", Image.DecompressionBombWarning)

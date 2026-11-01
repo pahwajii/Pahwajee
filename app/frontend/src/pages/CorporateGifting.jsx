@@ -25,15 +25,15 @@ export default function CorporateGifting() {
         </nav>
         <section className="max-w-3xl pt-4 pb-6 sm:pb-8">
           <h1 className="text-3xl sm:text-5xl font-serif leading-tight">Gift Hampers &amp; Mithai Boxes in Meerut</h1>
-          <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">Choose a dry fruit design and use Order now to confirm it on WhatsApp. For a ready-made 1 kg mithai box, choose your quantity, add it to the cart and review your order.</p>
+          <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">Choose a dry fruit design to enquire on WhatsApp. For a ready-made 1 kg mithai box, choose your quantity, add it to the cart and review your order.</p>
           <nav aria-label="Gifting sections" className="mt-4 flex flex-wrap gap-2">
             {[['dry-fruit-hampers','Dry fruit hampers'],['mithai-gift-boxes','Mithai boxes'],['custom-box','Customise a box'],['bulk-gifting','Bulk orders']].map(([id,label]) => <Link key={id} to={`/gifting#${id}`} className="inline-flex min-h-11 items-center rounded-full border border-border px-3 text-sm font-semibold hover:bg-primary/10">{label}</Link>)}
           </nav>
         </section>
         {hampers.length > 0 && <section id="dry-fruit-hampers" className="my-6 sm:my-8 scroll-mt-28" aria-labelledby="dry-fruit-hampers-heading">
           <h2 id="dry-fruit-hampers-heading" className="text-2xl sm:text-3xl mb-2">Dry Fruit Gift Hampers</h2>
-          <p className="text-sm text-muted-foreground mb-5">{displayPrice(hamperCollection)}. Order now opens WhatsApp with your chosen design. Confirm contents, final price and delivery or collection date there.</p>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{hampers.map(hamper => <HamperCard key={hamper.id} hamper={hamper} collection={hamperCollection} />)}</div>
+          <p className="text-sm text-muted-foreground mb-5">{displayPrice(hamperCollection)}. Confirm contents, final price and delivery or collection date with the store.</p>
+          <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">{hampers.map((hamper, index) => <HamperCard key={hamper.id} hamper={hamper} collection={hamperCollection} priority={index === 0} />)}</div>
         </section>}
         <section id="mithai-gift-boxes" className="my-10 scroll-mt-28" aria-labelledby="mithai-gift-boxes-heading">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2"><h2 id="mithai-gift-boxes-heading" className="text-2xl sm:text-3xl">Mithai Gift Boxes</h2><Link to="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline">Review cart &amp; order</Link></div>

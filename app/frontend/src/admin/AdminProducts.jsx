@@ -3,28 +3,63 @@ import { useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Check, ExternalLink, Image, LoaderCircle, Pencil, Plus, RefreshCw, Save, Upload } from 'lucide-react';
 import api from '../lib/api';
 import { productDescription } from '../lib/catalogueContent';
+import { designsFor } from '../lib/giftHampers';
+import { notifyCatalogueChanged } from '../lib/catalogueState';
 import { ErrorMessage, PageHeading, Pagination, ResourceState, SearchBox, useResource } from './shared';
 
-const newProduct = { name: '', slug: '', description: '', category: '', image: '', images: [], price: '', availability: 'Available', tags: [], season: 'all', featured: false, bestseller: false, bestSeller: false, festivalSpecial: false, newArrival: false, order: 0 };
+const newProduct = { name: '', slug: '', description: '', category: '', image: '', images: [], gift_designs: null, price: '', availability: 'Available', tags: [], season: 'all', featured: false, bestseller: false, bestSeller: false, festivalSpecial: false, newArrival: false, order: 0 };
 const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const productFields = Object.keys(newProduct);
 const availabilityOptions = ['Available', 'Sold out', 'Unavailable', 'Special order only'];
 const photoTypes = ['image/jpeg', 'image/png', 'image/webp'];
 const maxPhotoBytes = 3 * 1024 * 1024;
 
+function PhotoField({ id, label, value, onChange, disabled, onUploading, contain = false }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [preview, setPreview] = useState('');
+  const uploadLock = useRef(false);
+  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
+  async function upload(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file || uploadLock.current) return;
+    setError(''); setNotice('');
+    if (!photoTypes.includes(file.type)) { setError('Choose a JPG, PNG, or WebP photo.'); return; }
+    if (file.size > maxPhotoBytes) { setError('This photo is too large. Choose one under 3 MB.'); return; }
+    uploadLock.current = true; setUploading(true); onUploading(true);
+    setPreview(URL.createObjectURL(file));
+    try {
+      const uploaded = await api.upload('/admin/product-images', file);
+      onChange(uploaded.url);
+      setNotice('Photo uploaded. Save the product to apply it.');
+    } catch (error) { setError(error.message || 'Photo could not be uploaded. Please try again.'); }
+    finally { uploadLock.current = false; setUploading(false); onUploading(false); setPreview(''); }
+  }
+  return <div className="min-w-0 space-y-3" aria-busy={uploading}>
+    <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-muted">
+      {preview || value ? <img src={preview || value} alt={`${label} preview`} className={`h-full w-full ${contain ? 'object-contain' : 'object-cover'}`} referrerPolicy="no-referrer" /> : <Image size={42} className="text-muted-foreground" aria-hidden="true" />}
+      {uploading && <div className="absolute inset-0 grid place-items-center bg-card/80"><p role="status" className="flex items-center gap-2 text-sm font-medium"><LoaderCircle size={18} className="animate-spin motion-reduce:animate-none" />Uploading photo...</p></div>}
+    </div>
+    <label htmlFor={`${id}-file`} className="admin-label flex items-center gap-2"><Upload size={17} aria-hidden="true" />Upload {label.toLowerCase()}</label>
+    <input id={`${id}-file`} type="file" accept="image/jpeg,image/png,image/webp" disabled={disabled || uploading} onChange={upload} aria-describedby={`${id}-help`} className="block min-h-11 w-full min-w-0 text-sm file:mr-2 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-3 file:text-sm file:font-medium file:text-primary" />
+    <p id={`${id}-help`} className="text-xs text-muted-foreground">JPG, PNG, or WebP. Up to 3 MB.</p>
+    <ErrorMessage>{error}</ErrorMessage>
+    {notice && <p role="status" className="text-sm text-emerald-700 dark:text-emerald-300">{notice}</p>}
+    <details className="text-sm"><summary className="min-h-11 cursor-pointer py-3 text-muted-foreground">Use an image link instead</summary><label className="mt-2 block"><span className="admin-label">{label} path or HTTPS URL</span><input disabled={disabled || uploading} maxLength={2000} value={value} onChange={(event) => { onChange(event.target.value); setNotice(''); setError(''); }} placeholder="https://..." className="admin-input" /></label></details>
+  </div>;
+}
+
 function ProductEditor({ product, categories, onClose, onSaved }) {
-  const [form, setForm] = useState(() => ({ ...newProduct, ...product, description: product?.id ? productDescription(product) : '', category: product?.category || categories[0]?.slug || '', bestseller: !!(product?.bestseller || product?.bestSeller) }));
+  const [form, setForm] = useState(() => ({ ...newProduct, ...product, gift_designs: product?.slug === 'dry-fruit-gift-trays' ? designsFor(product) : product?.gift_designs ?? null, description: product?.id ? productDescription(product) : '', category: product?.category || categories[0]?.slug || '', bestseller: !!(product?.bestseller || product?.bestSeller) }));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [dirty, setDirty] = useState(false);
   const [confirmClose, setConfirmClose] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [photoError, setPhotoError] = useState('');
-  const [photoNotice, setPhotoNotice] = useState('');
-  const [photoPreview, setPhotoPreview] = useState('');
-  const uploadLock = useRef(false);
   const locked = busy || uploading;
-  useEffect(() => () => { if (photoPreview) URL.revokeObjectURL(photoPreview); }, [photoPreview]);
+  const hasDesigns = Array.isArray(form.gift_designs);
   useEffect(() => {
     if (!dirty && !uploading) return;
     const warnBeforeLeaving = (event) => { event.preventDefault(); event.returnValue = ''; };
@@ -33,34 +68,23 @@ function ProductEditor({ product, categories, onClose, onSaved }) {
   }, [dirty, uploading]);
   function update(key, value) { setForm((current) => ({ ...current, [key]: value })); setDirty(true); }
   function updatePhoto(value) {
-    setForm((current) => ({ ...current, image: value, images: value ? [value, ...(current.images || []).slice(1).filter((image) => image !== value)] : [] }));
+    setForm((current) => ({ ...current, image: value, ...(hasDesigns ? {} : { images: value ? [value, ...(current.images || []).slice(1).filter((image) => image !== value)] : [] }) }));
     setDirty(true);
   }
-  async function uploadPhoto(event) {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file || uploadLock.current) return;
-    setPhotoError(''); setPhotoNotice('');
-    if (!photoTypes.includes(file.type)) { setPhotoError('Choose a JPG, PNG, or WebP photo.'); return; }
-    if (file.size > maxPhotoBytes) { setPhotoError('This photo is too large. Choose one under 3 MB.'); return; }
-    uploadLock.current = true;
-    setUploading(true); setPhotoPreview(URL.createObjectURL(file));
-    try {
-      const uploaded = await api.upload('/admin/product-images', file);
-      updatePhoto(uploaded.url);
-      setPhotoNotice('Photo uploaded. Save the product to apply it.');
-    } catch (err) { setPhotoError(err.message || 'Photo could not be uploaded. Please try again.'); }
-    finally { uploadLock.current = false; setUploading(false); setPhotoPreview(''); }
+  function updateDesign(id, field, value) {
+    setForm((current) => ({ ...current, gift_designs: current.gift_designs.map((design) => design.id === id ? { ...design, [field]: value } : design) }));
+    setDirty(true);
   }
   async function save(event) {
     event.preventDefault();
-    if (locked || uploadLock.current) return;
+    if (locked) return;
     setBusy(true); setError('');
     const payload = Object.fromEntries(productFields.map((key) => [key, form[key]]));
     payload.slug = form.slug || slugify(form.name);
     payload.bestSeller = form.bestseller;
     try {
       const saved = product?.id ? await api.put(`/admin/products/${encodeURIComponent(product.id)}`, payload) : await api.post('/admin/products', payload);
+      notifyCatalogueChanged();
       onSaved(saved);
     } catch (err) { setError(err.message); } finally { setBusy(false); }
   }
@@ -80,20 +104,19 @@ function ProductEditor({ product, categories, onClose, onSaved }) {
           <div className="grid gap-5 sm:grid-cols-2"><div><label className="admin-label" htmlFor="product-season">Season</label><select id="product-season" value={form.season} onChange={(e) => update('season', e.target.value)} className="admin-input">{[...new Set(['all', 'summer', 'winter', 'festival', form.season])].map((season) => <option key={season} value={season}>{season === 'all' ? 'All year' : season.charAt(0).toUpperCase() + season.slice(1)}</option>)}</select></div><div><label className="admin-label" htmlFor="product-order">Display order</label><input id="product-order" type="number" step="1" required value={form.order} onChange={(e) => update('order', e.target.value === '' ? '' : Number(e.target.value))} className="admin-input" /><p className="mt-1 text-xs text-muted-foreground">Lower numbers appear first.</p></div></div>
           <div><label className="admin-label" htmlFor="product-tags">Search tags</label><input id="product-tags" value={form.tags.join(', ')} onChange={(e) => update('tags', e.target.value.split(',').map((tag) => tag.trimStart()))} placeholder="sweet, nankhatai" className="admin-input" /></div>
         </fieldset>
+        {hasDesigns && form.gift_designs.length > 0 && <section aria-labelledby="designs-heading" className="space-y-4 border-t border-border pt-5">
+          <div><h2 id="designs-heading" className="text-xl font-semibold">Hamper designs</h2><p className="mt-2 text-sm text-muted-foreground">Update each design's name or photo here. The cover photo is managed separately.</p></div>
+          <div className="grid min-w-0 gap-5 sm:grid-cols-2">{form.gift_designs.map((design) => <fieldset key={design.id} disabled={locked} className="min-w-0 space-y-3 rounded-xl border border-border p-4">
+            <legend className="sr-only">{design.name}</legend>
+            <label className="block"><span className="admin-label">Design name</span><input required maxLength={160} value={design.name} onChange={(event) => updateDesign(design.id, 'name', event.target.value)} className="admin-input" /></label>
+            <PhotoField id={`design-${design.id}`} label={`${design.name || 'Design'} photo`} value={design.image} onChange={(value) => updateDesign(design.id, 'image', value)} disabled={locked} onUploading={setUploading} contain />
+          </fieldset>)}</div>
+        </section>}
       </div>
       <div className="space-y-5">
-        <section className="admin-panel space-y-4 p-5" aria-labelledby="photo-heading" aria-busy={uploading}>
-          <h2 id="photo-heading" className="font-semibold">Product photo</h2>
-          <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-muted">
-            {photoPreview || form.image ? <img key={photoPreview || form.image} src={photoPreview || form.image} alt="Product preview" className="h-full w-full object-cover" referrerPolicy="no-referrer" /> : <Image size={42} className="text-muted-foreground" aria-hidden="true" />}
-            {uploading && <div className="absolute inset-0 grid place-items-center bg-card/80"><p role="status" className="flex items-center gap-2 text-sm font-medium"><LoaderCircle size={18} className="animate-spin motion-reduce:animate-none" />Uploading photo...</p></div>}
-          </div>
-          <label htmlFor="product-photo-file" className="admin-label flex items-center gap-2"><Upload size={17} aria-hidden="true" />Upload a photo</label>
-          <input id="product-photo-file" type="file" accept="image/jpeg,image/png,image/webp" disabled={locked} onChange={uploadPhoto} aria-describedby="photo-help" className="block min-h-11 w-full min-w-0 text-sm file:mr-2 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-3 file:text-sm file:font-medium file:text-primary" />
-          <p id="photo-help" className="text-xs text-muted-foreground">JPG, PNG, or WebP. Up to 3 MB.</p>
-          <ErrorMessage>{photoError}</ErrorMessage>
-          {photoNotice && <p role="status" className="text-sm text-emerald-700 dark:text-emerald-300">{photoNotice}</p>}
-          <details className="text-sm"><summary className="min-h-11 cursor-pointer py-3 text-muted-foreground">Use an image link instead</summary><label className="mt-2 block"><span className="admin-label">Image path or HTTPS URL</span><input disabled={locked} maxLength={2000} value={form.image} onChange={(e) => { updatePhoto(e.target.value); setPhotoNotice(''); setPhotoError(''); }} placeholder="https://..." className="admin-input" /></label></details>
+        <section className="admin-panel space-y-4 p-5" aria-labelledby="photo-heading">
+          <h2 id="photo-heading" className="font-semibold">{hasDesigns ? 'Collection cover photo' : 'Product photo'}</h2>
+          <PhotoField id="product-photo" label={hasDesigns ? 'Cover photo' : 'Photo'} value={form.image} onChange={updatePhoto} disabled={locked} onUploading={setUploading} contain={hasDesigns} />
         </section>
         <fieldset disabled={locked} className="admin-panel space-y-3 p-5"><legend className="sr-only">Product highlights</legend><h2 className="font-semibold">Highlights</h2>{[['bestseller', 'Bestseller'], ['featured', 'Featured'], ['festivalSpecial', 'Festival special'], ['newArrival', 'New arrival']].map(([key, label]) => <label key={key} className="flex min-h-11 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" checked={form[key]} onChange={(e) => update(key, e.target.checked)} className="h-5 w-5 accent-[hsl(var(--primary))]" />{label}</label>)}</fieldset>
         <button className="admin-primary w-full" disabled={locked}><Save size={17} />{busy ? 'Saving…' : 'Save product'}</button>
@@ -114,6 +137,7 @@ function AvailabilityControl({ product, disabled, onSaving, onSaved, onConflict 
     saveLock.current = true; setBusy(true); setError(''); onSaving(product.id);
     try {
       const saved = await api.patch(`/admin/products/${encodeURIComponent(product.id)}/availability`, { availability: value, expected_availability: product.availability });
+      notifyCatalogueChanged();
       onSaved(saved);
     } catch (err) {
       setError(err.message);

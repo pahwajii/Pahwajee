@@ -1,4 +1,5 @@
 import PolicyPage from './pages/PolicyPage';
+import Home from './pages/Home';
 import InStoreMenu from './pages/InStoreMenu';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -18,7 +19,7 @@ import { StaticRouter } from 'react-router-dom';
 import App from './App';
 import { SeoCollectorContext } from './context/PageData';
 
-const pages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage };
+const pages = { Home, Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage };
 
 export function render(path, data) {
   const collector = {current: null};

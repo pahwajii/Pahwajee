@@ -11,7 +11,7 @@ function run(command, args, options = {}) {
   const result = spawnSync(command, args, { cwd: frontend, stdio: 'inherit', ...options });
   if (result.error || result.status !== 0) throw new Error(`Release step failed: ${command} ${args[0]}`);
 }
-run(process.execPath, ['--test', 'src/lib/cart.test.js', 'src/lib/mithaiBox.test.js', 'src/lib/favourites.test.js', 'src/lib/productOrder.test.js', 'src/lib/inquiry.test.js', 'src/lib/catalogueState.test.js']);
+run(process.execPath, ['--test', 'src/lib/cart.test.js', 'src/lib/mithaiBox.test.js', 'src/lib/favourites.test.js', 'src/lib/productOrder.test.js', 'src/lib/inquiry.test.js', 'src/lib/catalogueState.test.js', 'src/lib/giftHampers.test.js', 'src/lib/routeLoading.test.js']);
 run(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
 if (!production) {
   // Preview builds must never write to production, even if credentials were shared.
@@ -32,6 +32,8 @@ if (!production) {
     run(python, [script, 'prepare'], { env });
     run(process.execPath, ['scripts/prerender.mjs'], { env });
     run(process.execPath, ['--test', 'src/lib/seo.test.js']);
+    // Database setup runs once per production release, not on public cold starts.
+    run(python, [resolve(app, 'backend/ensure_indexes.py')], { env });
     // No catalogue writes until tests, compilation and every public page have built.
     run(python, [script, 'apply'], { env });
   } finally {

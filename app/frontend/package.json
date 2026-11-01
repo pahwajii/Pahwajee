@@ -10,7 +10,6 @@
     "@vercel/speed-insights": "^2.0.0",
     "@vitejs/plugin-react": "latest",
     "autoprefixer": "latest",
-    "framer-motion": "^12.42.2",
     "lucide-react": "^0.435.0",
     "postcss": "latest",
     "react": "latest",

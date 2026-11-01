@@ -25,6 +25,7 @@ from pymongo.errors import DuplicateKeyError
 from pymongo import ReturnDocument
 from admin import create_admin_router
 from product_images import create_product_image_router
+from ensure_indexes import ensure_required_indexes
 from inquiries import InquiryIn, InquiryService
 from orders import GALLERY_ONLY_SLUGS, OrderService, OrderRequest, OrderBodyLimitMiddleware, migrate_purchase_fields, purchasable_product, purchase_fields, smtp_ready
 
@@ -112,6 +113,19 @@ class LoginIn(BaseModel):
     email: EmailStr
     password: str
 
+class GiftDesign(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    id: str = Field(min_length=1, max_length=100, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    name: str = Field(min_length=1, max_length=160)
+    image: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("image")
+    @classmethod
+    def safe_image(cls, value):
+        if not ((value.startswith("/") and not value.startswith("//")) or value.startswith("https://")) or "\\" in value:
+            raise ValueError("Use a local image path or an HTTPS image URL")
+        return value
+
 class Product(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
@@ -121,6 +135,7 @@ class Product(BaseModel):
     category: str
     image: str = ""
     images: List[str] = []
+    gift_designs: Optional[List[GiftDesign]] = None
     price: Optional[str] = None
     unit_price_paise: Optional[int] = None
     sale_unit: Optional[str] = None
@@ -144,6 +159,7 @@ class ProductIn(BaseModel):
     category: str = Field(min_length=1, max_length=100)
     image: str = Field(default="", max_length=2000)
     images: List[str] = []
+    gift_designs: Optional[List[GiftDesign]] = Field(default=None, max_length=30)
     price: Optional[str] = None
     availability: str = "Available"
     tags: List[str] = []
@@ -154,6 +170,13 @@ class ProductIn(BaseModel):
     festivalSpecial: bool = False
     newArrival: bool = False
     order: int = 0
+
+    @field_validator("gift_designs")
+    @classmethod
+    def unique_designs(cls, value):
+        if value is not None and len({design.id for design in value}) != len(value):
+            raise ValueError("Every hamper design must have a unique ID")
+        return value
 
     @field_validator("image")
     @classmethod
@@ -399,16 +422,13 @@ async def seed_admin():
 
 
 async def startup():
-    await db.users.create_index("email", unique=True)
-    await db.products.create_index("slug", unique=True)
-    await db.categories.create_index("slug", unique=True)
     if not IS_VERCEL:
+        # Production builds create and verify indexes before promotion. Avoid
+        # eleven database round trips on every serverless cold start.
+        await ensure_required_indexes(db)
         await seed_admin()
         await seed_data()
         await migrate_purchase_fields(db)
-    await order_service.initialize()
-    await inquiry_service.initialize()
-    if not IS_VERCEL:
         app.state.order_email_task = asyncio.create_task(order_service.worker())
         app.state.inquiry_email_task = asyncio.create_task(inquiry_service.worker())
 
@@ -624,6 +644,10 @@ async def admin_create_product(body: ProductIn, _: dict = Depends(require_admin)
 @api_router.put("/admin/products/{pid}")
 async def admin_update_product(pid: str, body: ProductIn, _: dict = Depends(require_admin)):
     data = body.model_dump()
+    # Older clients know nothing about design metadata; a cover-only edit must
+    # not erase it. An explicit [] is still an intentional clear operation.
+    if body.gift_designs is None:
+        data.pop("gift_designs", None)
     if not data.get("slug"):
         data["slug"] = _slugify(data["name"])
     if not data["slug"]:

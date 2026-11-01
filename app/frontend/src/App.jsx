@@ -3,34 +3,43 @@ import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
-import Home from './pages/Home';
-const Favourites = React.lazy(() => import('./pages/Favourites'));
-const InStoreMenu = React.lazy(() => import('./pages/InStoreMenu'));
-const Products = React.lazy(() => import('./pages/Products'));
-const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
-const About = React.lazy(() => import('./pages/About'));
-const Reviews = React.lazy(() => import('./pages/Reviews'));
-const FAQs = React.lazy(() => import('./pages/FAQs'));
-const Contact = React.lazy(() => import('./pages/Contact'));
-const Diwali = React.lazy(() => import('./pages/Diwali'));
-const CorporateGifting = React.lazy(() => import('./pages/CorporateGifting'));
-const Gallery = React.lazy(() => import('./pages/Gallery'));
-const Blog = React.lazy(() => import('./pages/Blog'));
-const PolicyPage = React.lazy(() => import('./pages/PolicyPage'));
-const BlogArticle = React.lazy(() => import('./pages/BlogArticle'));
-const CategoryLanding = React.lazy(() => import('./pages/CategoryLanding'));
 import NotFound from './pages/NotFound';
 import { CartProvider } from './context/CartContext';
-
-const Cart = React.lazy(() => import('./pages/Cart'));
-const AdminApp = React.lazy(() => import('./admin/AdminApp'));
-
 import { PageDataContext } from './context/PageData';
+import { initialPageName } from './lib/routeLoading';
 
-const clientPages = { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage };
+const pageLoaders = {
+  Home: () => import('./pages/Home'),
+  Favourites: () => import('./pages/Favourites'),
+  InStoreMenu: () => import('./pages/InStoreMenu'),
+  Products: () => import('./pages/Products'),
+  ProductDetail: () => import('./pages/ProductDetail'),
+  About: () => import('./pages/About'),
+  Reviews: () => import('./pages/Reviews'),
+  FAQs: () => import('./pages/FAQs'),
+  Contact: () => import('./pages/Contact'),
+  Diwali: () => import('./pages/Diwali'),
+  CorporateGifting: () => import('./pages/CorporateGifting'),
+  Gallery: () => import('./pages/Gallery'),
+  Blog: () => import('./pages/Blog'),
+  PolicyPage: () => import('./pages/PolicyPage'),
+  BlogArticle: () => import('./pages/BlogArticle'),
+  CategoryLanding: () => import('./pages/CategoryLanding'),
+  Cart: () => import('./pages/Cart'),
+  AdminApp: () => import('./admin/AdminApp'),
+};
+const clientPages = Object.fromEntries(Object.entries(pageLoaders).map(([name, load]) => [name, React.lazy(load)]));
 
-export default function App({ data = {}, pages = clientPages }) {
-  const { Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage } = pages;
+// Hydrating a lazy route can replace its already-visible HTML with a short
+// fallback when a provider updates. Resolve the first page before hydrating.
+// The other routes remain lazy, and SSR supplies synchronous page overrides.
+export async function loadInitialPages(pathname) {
+  const name = initialPageName(pathname);
+  return name ? { [name]: (await pageLoaders[name]()).default } : {};
+}
+
+export default function App({ data = {}, pages = {} }) {
+  const { Home, Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage, Favourites, Cart, AdminApp } = { ...clientPages, ...pages };
   return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}><FavouritesProvider>
       <ScrollToTop />
       <Routes>

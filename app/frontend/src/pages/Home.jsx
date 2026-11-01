@@ -1,6 +1,6 @@
-import { giftHamperDesigns } from '../lib/giftHampers';
+import { designsFor, giftHamperDesigns, hamperPath, HAMPER_COLLECTION_SLUG } from '../lib/giftHampers';
 import BlogCards from '../components/BlogCards';
-import { blogPosts } from '../lib/blog';
+import { blogSummaries as blogPosts } from '../lib/blogSummaries';
 import { writtenReviews, GoogleReviewCard, GoogleReviewButton } from '../components/GoogleReviews';
 import { displayPrice } from '../lib/cart';
 import OptimizedImage from '../components/OptimizedImage';
@@ -62,8 +62,11 @@ const homeCategories = [
 ];
 
 export default function Home() {
-  const { catalog } = useCart();
+  const { catalog, catalogLoaded } = useCart();
   const currentPrice = (item) => displayPrice(catalog[item.slug] || item);
+  const hamperCollection = catalog[HAMPER_COLLECTION_SLUG] || (!catalogLoaded ? { slug: HAMPER_COLLECTION_SLUG } : null);
+  const currentDesigns = new Map(designsFor(hamperCollection).map(design => [design.id, design]));
+  const curatedHampers = giftHampers.filter(hamper => currentDesigns.has(hamper.id)).map(hamper => ({ ...hamper, ...currentDesigns.get(hamper.id) }));
 
 
   return (
@@ -220,18 +223,18 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {giftHampers.map((hamper, idx) => (
-              <div key={idx} className="card-warm p-6 flex flex-col justify-between">
+          <div className="grid gap-6 min-[480px]:grid-cols-2 lg:grid-cols-3">
+            {curatedHampers.map((hamper) => (
+              <div key={hamper.id} className="card-warm p-6 flex flex-col justify-between">
                 <div>
-                  <OptimizedImage square sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw" src={hamper.image} alt={hamper.name} className="aspect-square w-full object-cover rounded-xl mb-4" />
+                  <OptimizedImage sizes="(min-width: 1280px) 330px, (min-width: 1024px) calc((100vw - 288px) / 3), (min-width: 640px) calc((100vw - 184px) / 2), (min-width: 480px) calc((100vw - 152px) / 2), calc(100vw - 80px)" src={hamper.image} alt={hamper.name} className="aspect-square w-full object-contain rounded-xl mb-4" />
                   <h3 className="font-serif text-2xl font-bold mb-2">{hamper.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mb-4">{hamper.desc}</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-border/30 pt-4">
                   <span className="text-sm font-bold text-gold-ink">{hamper.price}</span>
-                  <Link to="/gifting" className="text-xs font-semibold text-primary hover:underline">
-                    View Hampers &rarr;
+                  <Link to={hamperPath(hamper)} className="inline-flex min-h-11 items-center text-xs font-semibold text-primary hover:underline">
+                    View Hamper &rarr;
                   </Link>
                 </div>
               </div>

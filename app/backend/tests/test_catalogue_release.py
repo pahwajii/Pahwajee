@@ -73,5 +73,16 @@ class CatalogueReleaseTests(unittest.TestCase):
         self.assertEqual(result['unit_price_paise'], 62000)
         self.assertEqual(result['availability'], 'Currently unavailable')
 
+    def test_hamper_design_migration_preserves_cover_and_existing_product_fields(self):
+        change = next(item for item in load_migrations() if item['id'] == '0003-stable-hamper-designs')
+        product = {**PRODUCT, 'slug': 'dry-fruit-gift-trays', 'name': 'Gift Trays', 'category': 'festival-collection', 'image': '/api/product-images/admin-cover.webp'}
+        updated = project_catalogue([product], [change])[0]
+        self.assertEqual(updated['image'], product['image'])
+        self.assertEqual(updated['description'], product['description'])
+        self.assertEqual(updated['price'], product['price'])
+        self.assertEqual(len(updated['gift_designs']), 7)
+        self.assertEqual(len({item['id'] for item in updated['gift_designs']}), 7)
+        self.assertEqual(pending_migrations([change], [{'_id': change['id'], 'checksum': change['checksum']}]), [])
+
 if __name__ == '__main__':
     unittest.main()

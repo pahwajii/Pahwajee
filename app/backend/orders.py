@@ -320,10 +320,9 @@ class OrderService(NotificationOutbox):
         send_order_email(document)
 
     async def initialize(self):
-        await self.db.orders.create_index("idempotency_key", unique=True)
-        await self.db.orders.create_index("reference", unique=True)
-        await self.db.orders.create_index([("email.status", 1), ("email.next_attempt_at", 1)])
-        await self.db.order_rate_limits.create_index("expires_at", expireAfterSeconds=0)
+        from ensure_indexes import ensure_collection_indexes
+        await ensure_collection_indexes(self.db, "orders")
+        await ensure_collection_indexes(self.db, "order_rate_limits")
 
     async def rate_limit(self, client_ip):
         now = datetime.now(timezone.utc)

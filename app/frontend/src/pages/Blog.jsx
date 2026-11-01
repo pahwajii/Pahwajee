@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import BlogCards from '../components/BlogCards';
-import { blogPosts, blogPath } from '../lib/blog';
+import { blogSummaries as blogPosts, blogPath } from '../lib/blogSummaries';
 import { absoluteUrl } from '../lib/seo';
 
 export default function Blog() {

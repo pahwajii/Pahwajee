@@ -49,6 +49,12 @@ existing enquiry-only behavior.
 3. Choose availability and press **Save product**. Use the storefront link to
    check the saved product.
 
+For **Dry Fruit Gift Trays**, use **Hamper designs** to replace a particular
+design's photo or name. Design links keep the same stable ID when its photo
+changes. The **Collection cover photo** controls the overall product cover and
+does not replace or remove an individual design. The existing seven designs are
+preserved; the editor does not merge, remove, or reorder them.
+
 Uploads are resized to at most 1600 pixels, converted to WebP, stripped of camera
 metadata, and stored in MongoDB's `product_images` collection. They survive
 server restarts and deployments; no file bucket credentials are required. Include
@@ -57,9 +63,12 @@ replacing a photo creates a new URL. Unused uploads are retained, so storage usa
 should be monitored as the catalogue grows.
 
 Product changes are read from the live API when shoppers open a page, navigate,
-or return to the tab. Saving does not require a rebuild. Cart actions wait for
-current availability, and checkout validates it again on the server. A failed
-refresh retains the last loaded catalogue but disables ordering until it recovers.
+or return to the tab. Successful responses are reused for 15 seconds; background
+refreshes keep the page visible. Saving in admin also refreshes open storefront
+tabs in the same browser. Saving does not require a rebuild. Initial ordering
+waits for current availability, and checkout validates it again on the server.
+A failed refresh retains the last loaded catalogue but disables ordering until
+it recovers; requests time out with a retry action after 8 seconds.
 
 The site's initial HTML, sitemap, curated homepage sections, and custom pack
 rules still come from the build. New products have working detail URLs and appear

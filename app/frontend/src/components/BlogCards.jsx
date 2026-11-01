@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-import { blogPath } from '../lib/blog';
+import { blogPath } from '../lib/blogSummaries';
 
 export default function BlogCards({ posts, headingLevel = 3 }) {
   const Heading = `h${headingLevel}`;

@@ -72,3 +72,10 @@ export function reconcileCart(items, catalog) {
   });
   return { items: updated, priceChanged };
 }
+
+export function checkoutChanges(items, catalog) {
+  return {
+    unavailable: items.some(item => !canPurchase(catalog[item.slug]) || catalog[item.slug].sale_unit !== item.sale_unit || !validCartPack(item, catalog[item.slug])),
+    priceChanged: items.some(item => catalog[item.slug] && item.unit_price_paise !== catalog[item.slug].unit_price_paise),
+  };
+}

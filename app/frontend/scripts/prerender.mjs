@@ -27,7 +27,8 @@ const data = {products, faqs, testimonials, gallery};
 const server = await createServer({mode: 'production', server: {middlewareMode: true}, appType: 'custom'});
 try {
   const {render} = await server.ssrLoadModule('/src/entry-server.jsx');
-  const {PUBLIC_PATHS, SITE_URL, renderHead, metadata, serializeJson, escapeHtml} = await server.ssrLoadModule('/src/lib/seo.js');
+  const {SITE_URL, renderHead, metadata, serializeJson, escapeHtml} = await server.ssrLoadModule('/src/lib/seo.js');
+  const {PUBLIC_PATHS} = await server.ssrLoadModule('/src/lib/publicRoutes.js');
   let template = await readFile(resolve(root, 'dist/index.html'), 'utf8');
   // The shared stylesheet is only about 10 KB compressed. Embed it in the
   // prerendered document so slow mobile connections can paint without another

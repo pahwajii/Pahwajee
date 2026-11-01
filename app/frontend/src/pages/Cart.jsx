@@ -7,7 +7,7 @@ import { ArrowLeft, CheckCircle2, Copy, LoaderCircle, MapPin, MessageCircle, Min
 import SEO from '../components/SEO';
 import BrandLogo from '../components/BrandLogo';
 import { useCart } from '../context/CartContext';
-import { productPackSizes, validCartPack, canPurchase, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
+import { productPackSizes, validCartPack, canPurchase, checkoutChanges, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
 import api from '../lib/api';
 
 const ATTEMPT_KEY = 'pahwa-order-attempt-v1';
@@ -107,6 +107,14 @@ export default function Cart() {
       notes: form.notes.trim(),
     };
     try {
+      const current = await refreshCatalog({ force: true });
+      const changes = checkoutChanges(items, current);
+      if (changes.unavailable || changes.priceChanged) {
+        const message = changes.unavailable ? 'An item or pack is no longer available. Please review your cart.' : 'Prices have changed. Please review the updated total and submit again.';
+        setNotice(message);
+        setError(message);
+        return;
+      }
       const serialized = JSON.stringify(payload);
       if (attempt.current?.payload !== serialized) attempt.current = { payload: serialized, key: await submissionKey(payload) };
       const order = await api.post('/orders', { ...payload, idempotency_key: attempt.current.key });
@@ -116,7 +124,7 @@ export default function Cart() {
       attempt.current = null;
     } catch (failure) {
       if (failure.status === 409 && ['prices_changed', 'unavailable_items'].includes(failure.detail?.code)) {
-        await refreshCatalog().catch(() => {});
+        await refreshCatalog({ force: true }).catch(() => {});
         setNotice(failure.message);
       }
       setError(failure.status ? failure.message : 'We couldn’t confirm your request. Your cart is saved. Please retry; the same request won’t be duplicated.');

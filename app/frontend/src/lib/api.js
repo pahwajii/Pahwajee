@@ -1,6 +1,7 @@
 import storePolicy from '../../../store-policy.json';
 import googleReviews from '../../../google-reviews.json';
 import { isStoreProduct, isGalleryOnlySlug } from './storefront';
+import { withCatalogueTimeout } from './catalogueState';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
@@ -42,13 +43,15 @@ async function request(path, options = {}, retried = false) {
   return response.json();
 }
 
-async function get(path) {
+async function get(path, options = {}) {
   if (path.startsWith('/products/') && isGalleryOnlySlug(path.slice('/products/'.length).split('?')[0])) {
     const error = new Error('Product not found');
     error.status = 404;
     throw error;
   }
-  const data = await request(path);
+  const data = /^\/products(?:\/|\?|$)/.test(path)
+    ? await withCatalogueTimeout((signal) => request(path, { ...options, signal }), { signal: options.signal })
+    : await request(path, options);
   return /^\/products(?:\?|$)/.test(path) && Array.isArray(data) ? data.filter(isStoreProduct) : data;
 }
 

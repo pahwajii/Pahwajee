@@ -17,6 +17,7 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
             for name in ("users", "products", "categories")
         })
         self.patches.enter_context(patch.object(server, "db", self.db))
+        self.indexes = self.patches.enter_context(patch.object(server, "ensure_required_indexes", AsyncMock()))
         self.started = asyncio.Event()
         self.stopped = asyncio.Event()
 
@@ -43,8 +44,9 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
         with patch.object(server, "IS_VERCEL", False):
             async with server.app.router.lifespan_context(server.app):
                 await asyncio.wait_for(self.started.wait(), timeout=1)
-                self.service.initialize.assert_awaited_once()
-                self.inquiries.initialize.assert_awaited_once()
+                self.indexes.assert_awaited_once_with(self.db)
+                self.service.initialize.assert_not_awaited()
+                self.inquiries.initialize.assert_not_awaited()
                 for seed in self.seeds:
                     seed.assert_awaited_once()
                 self.client.close.assert_not_called()
@@ -56,8 +58,11 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
     async def test_vercel_lifespan_preserves_data_and_skips_infinite_worker(self):
         with patch.object(server, "IS_VERCEL", True):
             async with server.app.router.lifespan_context(server.app):
-                self.service.initialize.assert_awaited_once()
-                self.inquiries.initialize.assert_awaited_once()
+                self.indexes.assert_not_awaited()
+                self.service.initialize.assert_not_awaited()
+                self.inquiries.initialize.assert_not_awaited()
+                for collection in vars(self.db).values():
+                    collection.create_index.assert_not_awaited()
                 for seed in self.seeds:
                     seed.assert_not_awaited()
                 self.service.worker.assert_not_called()
@@ -65,8 +70,8 @@ class LifespanTests(unittest.IsolatedAsyncioTestCase):
             self.client.close.assert_called_once()
 
     async def test_startup_failure_still_closes_database(self):
-        self.db.users.create_index.side_effect = RuntimeError("simulated startup failure")
-        with self.assertRaisesRegex(RuntimeError, "simulated startup failure"):
+        self.indexes.side_effect = RuntimeError("simulated startup failure")
+        with patch.object(server, "IS_VERCEL", False), self.assertRaisesRegex(RuntimeError, "simulated startup failure"):
             async with server.app.router.lifespan_context(server.app):
                 self.fail("A failed startup must not serve requests")
         self.client.close.assert_called_once()

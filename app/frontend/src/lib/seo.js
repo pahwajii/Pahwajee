@@ -1,10 +1,8 @@
-import { policy, policyPages } from './policies.js';
+import policy from '../../../store-policy.json' with { type: 'json' };
 import { productDescription } from './catalogueContent.js';
 import productPacks from '../../../product-packs.json' with { type: 'json' };
-import { blogPosts, blogPath } from './blog.js';
 // Public canonical origin, shared by metadata, structured data and the sitemap.
 export const SITE_URL = 'https://pahwajee.in';
-export const PUBLIC_PATHS = ['/', '/products', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut', '/gifting', '/diwali', '/about', '/contact', '/gallery', '/testimonials', '/faqs', '/blog', ...Object.keys(policyPages).map(slug => '/' + slug), ...blogPosts.map(blogPath)];
 export const DEFAULT_TITLE = 'PAHWA JEE Meerut | Nankhatai, Rewri, Gajak & Gift Hampers';
 export const DEFAULT_DESCRIPTION = 'Visit PAHWA JEE at 19B, Abu Lane, Meerut for Desi Ghee and Vanaspati Ghee Nankhatai, Rewri, Gajak, sweets and gift hampers. Browse products and request an order.';
 const labels = {'in-store-menu': 'In-store Menu', products: 'Shop', 'our-specialities': 'Our Specialities', 'nankhatai-meerut': 'Nankhatai', 'rewri-gajak-meerut': 'Rewri & Gajak', 'sweets-meerut': 'Sweets', 'bakery-meerut': 'Bakery', gifting: 'Gift Hampers', diwali: 'Diwali Gifts', about: 'Our Story', contact: 'Contact', gallery: 'Gallery', testimonials: 'Customer Reviews', faqs: 'FAQs'};

@@ -1,8 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCartItem, restoreCart, lineKey, packPrice, reconcileCart, displayPrice, validCartPack } from './cart.js';
+import { addCartItem, restoreCart, lineKey, packPrice, reconcileCart, displayPrice, validCartPack, checkoutChanges } from './cart.js';
 
 const product = { slug: 'pure-desi-ghee-nankhatai', name: 'Pure Desi Ghee Nankhatai', image: '/products/nankhatayi.png', sale_unit: 'kg', unit_price_paise: 60000, cart_eligible: true, availability: 'Available' };
+
+test('checkout requires review after fresh stock, pack or price changes', () => {
+  const items = addCartItem([], product, 500, 1);
+  assert.deepEqual(checkoutChanges(items, { [product.slug]: product }), { unavailable: false, priceChanged: false });
+  assert.equal(checkoutChanges(items, {}).unavailable, true);
+  assert.equal(checkoutChanges(items, { [product.slug]: { ...product, availability: 'Sold out' } }).unavailable, true);
+  assert.equal(checkoutChanges(items, { [product.slug]: { ...product, pack_sizes_grams: [1000] } }).unavailable, true);
+  assert.equal(checkoutChanges(items, { [product.slug]: { ...product, unit_price_paise: 62000 } }).priceChanged, true);
+});
 
 test('same product/pack merges; variants and pack sizes stay separate', () => {
   let items = addCartItem([], product, 500, 1);

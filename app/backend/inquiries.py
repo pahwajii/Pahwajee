@@ -91,10 +91,9 @@ class InquiryService(NotificationOutbox):
 
     async def initialize(self):
         # Historical enquiries have neither field; do not email old submissions.
-        await self.db.inquiries.create_index("idempotency_key", unique=True, sparse=True)
-        await self.db.inquiries.create_index("reference", unique=True, sparse=True)
-        await self.db.inquiries.create_index([("notification.status", 1), ("notification.next_attempt_at", 1)])
-        await self.db.inquiry_rate_limits.create_index("expires_at", expireAfterSeconds=0)
+        from ensure_indexes import ensure_collection_indexes
+        await ensure_collection_indexes(self.db, "inquiries")
+        await ensure_collection_indexes(self.db, "inquiry_rate_limits")
 
     async def rate_limit(self, client_ip):
         now = datetime.now(timezone.utc)

@@ -4,6 +4,13 @@ Pushing `main` in `pahwajii/Pahwajee` starts Vercel production deployment to htt
 
 The release runs focused cart/catalogue tests, compiles the frontend, reads the public catalogue and applies pending migrations in memory, then prerenders all product pages and the sitemap. Only after these checks pass does it commit the database changes in a MongoDB transaction. Vercel then finishes packaging and promotes the deployment.
 
+Before catalogue changes commit, `backend/ensure_indexes.py` creates and verifies
+the 11 required indexes, including order/enquiry uniqueness and rate-limit TTLs.
+An incompatible or missing constraint stops deployment; the script never drops
+indexes. This runs only for production `main` builds. Vercel request startup no
+longer creates indexes or seeds records. Local startup still provisions and
+verifies the same indexes before serving requests.
+
 ## Product/database edits
 
 Routine catalogue changes belong in `/admin/products`: add products, upload photos,
@@ -25,6 +32,13 @@ New products use `ProductIn` fields from `backend/server.py`, including `name`, 
 Each migration runs once. The `catalogue_migrations` MongoDB collection records its checksum, commit and affected product backups. Retries skip completed migrations; changing/deleting a released migration stops the build. An admin edit or competing release during the build stops it instead of publishing stale prices. Pending product writes and receipts commit together or roll back together.
 
 The initial empty migration records automation activation; the October catalogue was already released manually. Historical review JSON files are retained for reference and are **not** reapplied automatically.
+
+Migration `0003-stable-hamper-designs` adds the seven existing design IDs/names/
+photos to the gift-tray collection. It leaves the current cover photo, prices,
+availability, and descriptions intact. Subsequent admin photo changes update
+`gift_designs`; older clients omitting that field preserve it. An explicit empty
+array is an intentional clear, while missing/null metadata uses the legacy
+display fallback.
 
 ## Configuration
 

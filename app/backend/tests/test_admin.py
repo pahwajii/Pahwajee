@@ -139,6 +139,42 @@ class AdminTests(unittest.IsolatedAsyncioTestCase):
         self.db.users.find_one.return_value = {**self.user, "role": "customer"}
         self.assertEqual((await self.http.patch('/api/admin/products/test/availability', headers=self.auth, json=body)).status_code, 403)
 
+    async def test_cover_update_preserves_designs_when_older_client_omits_them(self):
+        designs = [{"id": "golden-platter", "name": "Golden Platter", "image": "/products/tray.png"}]
+        self.db.products.find_one.side_effect = [None, {"id": "test", "gift_designs": designs}]
+        response = await self.http.put('/api/admin/products/test', headers=self.auth, json={
+            "name": "Gift Trays", "category": "signature", "image": "/api/product-images/cover.webp",
+        })
+        self.assertEqual(response.status_code, 200)
+        saved = self.db.products.update_one.call_args.args[1]['$set']
+        self.assertNotIn('gift_designs', saved)
+        self.assertEqual(response.json()['gift_designs'], designs)
+
+    async def test_design_photo_edit_keeps_stable_id_and_all_other_designs(self):
+        designs = [
+            {"id": "peacock-gift-box", "name": "Peacock Box", "image": "/api/product-images/new.webp"},
+            {"id": "golden-platter", "name": "Golden Platter", "image": "/products/tray.png"},
+        ]
+        self.db.products.find_one.side_effect = [None, {"id": "test", "gift_designs": designs}]
+        response = await self.http.put('/api/admin/products/test', headers=self.auth, json={
+            "name": "Gift Trays", "category": "signature", "image": "/products/cover.png", "gift_designs": designs,
+        })
+        self.assertEqual(response.status_code, 200)
+        saved = self.db.products.update_one.call_args.args[1]['$set']
+        self.assertEqual(saved['gift_designs'], designs)
+        self.assertEqual(saved['image'], '/products/cover.png')
+
+    async def test_gift_designs_validate_ids_names_images_and_allow_explicit_clear(self):
+        design = {"id": "peacock-box", "name": "Peacock Box", "image": "/products/photo.png"}
+        base = {"name": "Gift Trays", "category": "signature"}
+        for designs in [[design, design], [{**design, "id": "bad/id"}], [{**design, "name": " "}], [{**design, "image": "javascript:alert(1)"}], [{**design, "image": "//other.example/photo.png"}]]:
+            response = await self.http.post('/api/admin/products', headers=self.auth, json={**base, "gift_designs": designs})
+            self.assertEqual(response.status_code, 422)
+        self.db.products.find_one.side_effect = [None, {"id": "test", "gift_designs": []}]
+        response = await self.http.put('/api/admin/products/test', headers=self.auth, json={**base, "gift_designs": []})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.db.products.update_one.call_args.args[1]['$set']['gift_designs'], [])
+
     async def test_quick_availability_rejects_stale_unknown_and_invalid_changes(self):
         self.db.products.find_one_and_update.return_value = None
         self.db.products.find_one.return_value = {"id": "test"}
