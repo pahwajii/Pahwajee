@@ -4,19 +4,19 @@ import { Plus, X, MessageCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { BUSINESS } from '../lib/api';
 import { formatMoney, packPrice } from '../lib/cart';
+import { currentCatalogue } from '../lib/catalogueState';
 import { customSweetSlugs, canChooseSweet, quoteCustomBox, customBoxEnquiry, hasAssortmentPhoto, PORTION_COUNT, PORTION_GRAMS } from '../lib/mithaiBox';
 import fallbackProducts from '../generated/catalog.json';
 import OptimizedImage from './OptimizedImage';
 
 const filters = ['All sweets', 'Laddoos', 'Fruit bites', 'Barfi & more'];
-const fallbackCatalog = Object.fromEntries(fallbackProducts.map(product => [product.slug, product]));
 
 export default function CustomMithaiBox() {
-  const { catalog, catalogStatus, refreshCatalog } = useCart();
+  const { catalog, catalogStatus, catalogLoaded, refreshCatalog } = useCart();
   const [selections, setSelections] = useState([]);
   const [filter, setFilter] = useState('All sweets');
   const id = useId();
-  const current = catalogStatus === 'ready' ? catalog : { ...fallbackCatalog, ...catalog };
+  const current = currentCatalogue(catalog, catalogLoaded, fallbackProducts);
   const choices = customSweetSlugs.map(slug => current[slug]).filter(Boolean);
   const visibleChoices = choices.filter(product => filter === 'All sweets' ||
     (filter === 'Laddoos' ? product.slug.includes('laddoo') : filter === 'Fruit bites' ? product.slug.endsWith('-bite') : !product.slug.includes('laddoo') && !product.slug.endsWith('-bite')));

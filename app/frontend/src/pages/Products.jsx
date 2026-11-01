@@ -3,12 +3,13 @@ import { compareProducts } from '../lib/productOrder';
 import { isMithaiBox } from '../lib/mithaiBox';
 import fallbackProducts from '../generated/catalog.json';
 import { usePageData } from '../context/PageData';
-import { useEffect, useMemo, useState } from 'react';
+import { useCart } from '../context/CartContext';
+import { currentCatalogue } from '../lib/catalogueState';
+import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import SEO from '../components/SEO';
-import api from '../lib/api';
 import ProductCard from '../components/ProductCard';
 
 
@@ -37,15 +38,11 @@ function includesAny(value = '', terms) {
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState(usePageData().products || fallbackProducts);
+  const snapshot = usePageData().products || fallbackProducts;
+  const { catalog, catalogLoaded } = useCart();
+  const products = useMemo(() => Object.values(currentCatalogue(catalog, catalogLoaded, snapshot)), [catalog, catalogLoaded, snapshot]);
   const [query, setQuery] = useState('');
   const activeFilter = searchParams.get('filter') || 'all';
-
-  useEffect(() => {
-    api.get('/products')
-      .then((items) => setProducts(items.length ? items : fallbackProducts))
-      .catch(() => setProducts(fallbackProducts));
-  }, []);
 
   const activeFilterConfig = filters.find((filter) => filter.value === activeFilter) || filters[0];
 

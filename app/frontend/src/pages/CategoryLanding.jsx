@@ -1,25 +1,22 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Phone, ArrowLeft } from 'lucide-react';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
 import OptimizedImage from '../components/OptimizedImage';
 import OrderHelp from '../components/OrderHelp';
-import api, { waLink, telLink } from '../lib/api';
+import { waLink, telLink } from '../lib/api';
 import { compareProducts } from '../lib/productOrder';
 import { collections } from '../lib/collections';
 import { usePageData } from '../context/PageData';
+import { useCart } from '../context/CartContext';
+import { currentCatalogue } from '../lib/catalogueState';
 import fallbackProducts from '../generated/catalog.json';
 import menu from '../data/in-store-menu.json';
 
 export default function CategoryLanding({ type }) {
-  const [products, setProducts] = useState(usePageData().products || fallbackProducts);
+  const { catalog, catalogLoaded } = useCart();
+  const products = Object.values(currentCatalogue(catalog, catalogLoaded, usePageData().products || fallbackProducts));
   const config = collections[type] || collections.nankhatai;
-  useEffect(() => {
-    let active = true;
-    api.get('/products').then(items => { if (active) setProducts(items.length ? items : fallbackProducts); }).catch(() => {});
-    return () => { active = false; };
-  }, [type]);
   const filtered = products.filter(config.filterMatch).sort(compareProducts);
   const bakeryItems = menu.filter(item => item.category === 'Cakes' || item.slug === 'bakery-biscuits');
   return <div className="noise-bg min-h-screen pb-12 pt-6 sm:pt-8">

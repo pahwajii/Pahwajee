@@ -33,7 +33,9 @@ const descriptions = {
   'jachha-bachha-panjeeri': 'Jachha Bachha Panjeeri is prepared only on special order and is not kept available at all times. Share your required quantity and date with the store to confirm preparation, ingredients and collection arrangements.',
 };
 
-export const productDescription = product => descriptions[product.slug] || product.description || `${product.name} from Pahwajee, Meerut. Check the listed pack options and contact the store for ingredients and availability.`;
+export const productDescription = product => product.content_managed_by_admin
+  ? product.description || ''
+  : descriptions[product.slug] || product.description || `${product.name} from Pahwajee, Meerut. Check the listed pack options and contact the store for ingredients and availability.`;
 
 export function availabilityNote(product) {
   if (product.availability === 'Special order only') return 'Prepared only on special order. Confirm the required quantity and date with the store before planning collection.';

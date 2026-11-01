@@ -5,3 +5,4 @@ motor
 pydantic[email]
 bcrypt
 PyJWT
+Pillow>=12.3.0,<14

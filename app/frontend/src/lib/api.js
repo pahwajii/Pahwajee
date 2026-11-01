@@ -10,12 +10,12 @@ async function request(path, options = {}, retried = false) {
   const needsCredentials = path.startsWith('/auth') || path.startsWith('/admin') || options.credentials;
   const response = await fetch(`${API_BASE}${path}`, {
     credentials: needsCredentials ? 'include' : 'omit',
+    ...options,
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true',
       ...(options.headers || {}),
     },
-    ...options,
   });
 
   if (!response.ok) {
@@ -29,7 +29,11 @@ async function request(path, options = {}, retried = false) {
     }
     const payload = await response.json().catch(() => ({}));
     const detail = payload.detail;
-    const error = new Error(typeof detail === 'string' ? detail : detail?.message || (Array.isArray(detail) ? 'Please check the customer details and cart quantities.' : 'Something went wrong. Please try again.'));
+    const validationMessage = Array.isArray(detail) ? detail.map((issue) => {
+      const field = (issue.loc || []).filter((part) => !['body', 'query', 'path'].includes(part)).join(' ').replaceAll('_', ' ');
+      return `${field ? `${field}: ` : ''}${issue.msg || 'Please check this value.'}`;
+    }).join(' ') : '';
+    const error = new Error(typeof detail === 'string' ? detail : detail?.message || validationMessage || 'Something went wrong. Please try again.');
     error.status = response.status;
     error.detail = detail;
     throw error;
@@ -53,6 +57,7 @@ export default {
   post: (path, body) => request(path, { method: 'POST', body: JSON.stringify(body) }),
   put: (path, body) => request(path, { method: 'PUT', body: JSON.stringify(body) }),
   patch: (path, body) => request(path, { method: 'PATCH', body: JSON.stringify(body) }),
+  upload: (path, file) => request(path, { method: 'POST', body: file, headers: { 'Content-Type': file.type } }),
   delete: (path) => request(path, { method: 'DELETE' }),
 };
 

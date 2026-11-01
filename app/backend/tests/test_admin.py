@@ -109,6 +109,7 @@ class AdminTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(product['slug'], 'test-nankhatai')
         self.assertEqual(product['unit_price_paise'], 60000)
         self.assertEqual(product['pack_sizes_grams'], [500, 1000])
+        self.assertTrue(product['content_managed_by_admin'])
         self.db.products.insert_one.assert_awaited_once()
 
     async def test_product_edit_persists_availability_and_recalculates_prices(self):
@@ -118,7 +119,41 @@ class AdminTests(unittest.IsolatedAsyncioTestCase):
         fields = self.db.products.update_one.call_args.args[1]['$set']
         self.assertEqual(fields['unit_price_paise'], 64000)
         self.assertEqual(fields['availability'], 'Sold out')
+        self.assertTrue(fields['content_managed_by_admin'])
         self.assertEqual(fields['pack_sizes_grams'], [500, 1000])
+
+    async def test_quick_availability_is_atomic_and_does_not_overwrite_product_details(self):
+        self.db.products.find_one_and_update.return_value = {
+            "id": "test", "slug": "test-nankhatai", "name": "Test Nankhatai",
+            "category": "signature", "price": "Rs 640/kg", "availability": "Sold out",
+        }
+        body = {"availability": "Sold out", "expected_availability": "Available"}
+        self.assertEqual((await self.http.patch('/api/admin/products/test/availability', json=body)).status_code, 401)
+        response = await self.http.patch('/api/admin/products/test/availability', headers=self.auth, json=body)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['availability'], 'Sold out')
+        self.assertEqual(response.json()['unit_price_paise'], 64000)
+        query, changes = self.db.products.find_one_and_update.call_args.args
+        self.assertEqual(query, {"id": "test", "availability": "Available"})
+        self.assertEqual(changes, {"$set": {"availability": "Sold out"}})
+        self.db.users.find_one.return_value = {**self.user, "role": "customer"}
+        self.assertEqual((await self.http.patch('/api/admin/products/test/availability', headers=self.auth, json=body)).status_code, 403)
+
+    async def test_quick_availability_rejects_stale_unknown_and_invalid_changes(self):
+        self.db.products.find_one_and_update.return_value = None
+        self.db.products.find_one.return_value = {"id": "test"}
+        body = {"availability": "Available", "expected_availability": "Sold out"}
+        self.assertEqual((await self.http.patch('/api/admin/products/test/availability', headers=self.auth, json=body)).status_code, 409)
+        self.db.products.find_one.return_value = None
+        self.assertEqual((await self.http.patch('/api/admin/products/missing/availability', headers=self.auth, json=body)).status_code, 404)
+        for invalid in [{**body, "availability": "Maybe"}, {"availability": "Available"}, {**body, "name": "Overwrite"}]:
+            self.assertEqual((await self.http.patch('/api/admin/products/test/availability', headers=self.auth, json=invalid)).status_code, 422)
+
+    async def test_public_products_do_not_cache_admin_changes(self):
+        self.cursor(self.db.products, [])
+        self.assertEqual((await self.http.get('/api/products')).headers['cache-control'], 'no-store')
+        self.db.products.find_one.return_value = {"slug": "test", "name": "Test", "price": "Rs 100/piece", "availability": "Available"}
+        self.assertEqual((await self.http.get('/api/products/test')).headers['cache-control'], 'no-store')
 
     async def test_product_validation_and_duplicate_url(self):
         for body in [{"name": " ", "category": "signature"}, {"name": "Test", "category": "signature", "image": "javascript:alert(1)"}, {"name": "Test", "category": "signature", "slug": "../bad"}]:

@@ -14,6 +14,7 @@ import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { productSchema } from '../lib/seo';
 import { usePageData } from '../context/PageData';
+import { currentCatalogue, refreshOnReturn } from '../lib/catalogueState';
 import api, { waLink, telLink } from '../lib/api';
 import ProductCard from '../components/ProductCard';
 import AddToCart from '../components/AddToCart';
@@ -22,7 +23,7 @@ import { ChevronRight, ChevronLeft, Phone, MessageCircle, ShieldAlert, Calendar,
 export default function ProductDetail() {
   const { slug } = useParams();
   const initialProducts = usePageData().products || fallbackProducts;
-  const { catalog, catalogStatus } = useCart();
+  const { catalog, catalogLoaded } = useCart();
   const initialProduct = initialProducts.find(item => item.slug === slug);
   const [product, setProduct] = useState(initialProduct || null);
   const [loading, setLoading] = useState(!initialProduct);
@@ -36,7 +37,7 @@ export default function ProductDetail() {
     setLoading(!cached);
     setActiveImgIndex(0);
 
-    api.get(`/products/${slug}`)
+    const refreshProduct = () => api.get(`/products/${slug}`)
       .then((data) => {
         if (!active) return;
         setProduct(data);
@@ -47,7 +48,9 @@ export default function ProductDetail() {
       // still removes deleted products and switches their metadata to noindex.
       .catch((error) => { if (active && error.status === 404) setProduct(null); })
       .finally(() => { if (active) setLoading(false); });
-    return () => { active = false; };
+    refreshProduct();
+    const stopRefreshing = refreshOnReturn(refreshProduct, window, document);
+    return () => { active = false; stopRefreshing(); };
   }, [slug]);
 
   if (loading) {
@@ -65,7 +68,7 @@ export default function ProductDetail() {
     );
   }
 
-  const relatedProducts = relatedProductsFor(product, catalogStatus === 'ready' ? Object.values(catalog) : initialProducts);
+  const relatedProducts = relatedProductsFor(product, Object.values(currentCatalogue(catalog, catalogLoaded, initialProducts)));
   const specs = productSpecs(product);
   const collection = collectionFor(product);
   const description = productDescription(product);

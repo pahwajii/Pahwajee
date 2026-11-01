@@ -6,7 +6,12 @@ The release runs focused cart/catalogue tests, compiles the frontend, reads the 
 
 ## Product/database edits
 
-For every database product change, add a **new**, uniquely ordered JSON file in `app/catalogue-migrations/` in the same commit as the UI/snapshot/assets. Do not edit an already released migration. Example:
+Routine catalogue changes belong in `/admin/products`: add products, upload photos,
+edit prices/descriptions, or change availability and save. They persist in MongoDB
+and reach the live storefront without a deployment. See
+[Shop administration](backend/ADMIN_SETUP.md) for the workflow and image limits.
+
+For database changes shipped as part of a code release, add a **new**, uniquely ordered JSON file in `app/catalogue-migrations/` in the same commit as the UI/snapshot/assets. Do not edit an already released migration. Example:
 
 ```json
 {

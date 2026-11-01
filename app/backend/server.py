@@ -15,14 +15,16 @@ from ipaddress import ip_address
 import bcrypt
 import jwt
 from datetime import datetime, timezone, timedelta
-from typing import Optional, List
+from typing import Optional, List, Literal
 
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends, Query
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 from pymongo.errors import DuplicateKeyError
+from pymongo import ReturnDocument
 from admin import create_admin_router
+from product_images import create_product_image_router
 from inquiries import InquiryIn, InquiryService
 from orders import GALLERY_ONLY_SLUGS, OrderService, OrderRequest, OrderBodyLimitMiddleware, migrate_purchase_fields, purchasable_product, purchase_fields, smtp_ready
 
@@ -115,6 +117,7 @@ class Product(BaseModel):
     name: str
     slug: str
     description: str = ""
+    content_managed_by_admin: bool = False
     category: str
     image: str = ""
     images: List[str] = []
@@ -158,6 +161,12 @@ class ProductIn(BaseModel):
         if value and not ((value.startswith("/") and not value.startswith("//")) or value.startswith("https://")):
             raise ValueError("Use a local image path or an HTTPS image URL")
         return value
+
+
+class AvailabilityUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    availability: Literal["Available", "Sold out", "Unavailable", "Special order only"]
+    expected_availability: str = Field(min_length=1, max_length=200)
 
 class Category(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -467,7 +476,8 @@ async def get_categories():
     return await db.categories.find({}, {"_id": 0}).sort("order", 1).to_list(200)
 
 @api_router.get("/products")
-async def get_products(category: Optional[str] = None, featured: Optional[bool] = None, bestseller: Optional[bool] = None, q: Optional[str] = None, limit: int = 200):
+async def get_products(response: Response, category: Optional[str] = None, featured: Optional[bool] = None, bestseller: Optional[bool] = None, q: Optional[str] = None, limit: int = 200):
+    response.headers["Cache-Control"] = "no-store"
     query = {"slug": {"$nin": list(GALLERY_ONLY_SLUGS)}}
     if category:
         query["category"] = category
@@ -481,7 +491,8 @@ async def get_products(category: Optional[str] = None, featured: Optional[bool] 
     return [purchasable_product(product) for product in products]
 
 @api_router.get("/products/{slug}")
-async def get_product(slug: str):
+async def get_product(slug: str, response: Response):
+    response.headers["Cache-Control"] = "no-store"
     if slug in GALLERY_ONLY_SLUGS:
         raise HTTPException(404, "Product not found")
     p = await db.products.find_one({"slug": slug}, {"_id": 0})
@@ -603,7 +614,7 @@ async def admin_create_product(body: ProductIn, _: dict = Depends(require_admin)
         raise HTTPException(422, "Choose an existing category.")
     if await db.products.find_one({"slug": data["slug"]}):
         raise HTTPException(400, "Slug already exists")
-    prod = Product(**{**data, **purchase_fields(data)})
+    prod = Product(**{**data, **purchase_fields(data), "content_managed_by_admin": True})
     try:
         await db.products.insert_one(prod.model_dump())
     except DuplicateKeyError:
@@ -622,6 +633,7 @@ async def admin_update_product(pid: str, body: ProductIn, _: dict = Depends(requ
     if await db.products.find_one({"slug": data["slug"], "id": {"$ne": pid}}):
         raise HTTPException(409, "Another product already uses this URL.")
     data.update(purchase_fields(data))
+    data["content_managed_by_admin"] = True
     try:
         res = await db.products.update_one({"id": pid}, {"$set": data})
     except DuplicateKeyError:
@@ -634,6 +646,20 @@ async def admin_update_product(pid: str, body: ProductIn, _: dict = Depends(requ
 async def admin_delete_product(pid: str, _: dict = Depends(require_admin)):
     await db.products.delete_one({"id": pid})
     return {"ok": True}
+
+
+@api_router.patch("/admin/products/{pid}/availability")
+async def admin_update_availability(pid: str, body: AvailabilityUpdate, _: dict = Depends(require_admin)):
+    product = await db.products.find_one_and_update(
+        {"id": pid, "availability": body.expected_availability},
+        {"$set": {"availability": body.availability}},
+        projection={"_id": 0}, return_document=ReturnDocument.AFTER,
+    )
+    if product is None:
+        if not await db.products.find_one({"id": pid}, {"_id": 1}):
+            raise HTTPException(404, "Product not found.")
+        raise HTTPException(409, "Availability changed in another session. Refresh before trying again.")
+    return purchasable_product(product)
 
 @api_router.post("/admin/testimonials")
 async def admin_create_testimonial(body: TestimonialIn, _: dict = Depends(require_admin)):
@@ -669,6 +695,7 @@ async def private_admin_responses(request: Request, call_next):
 
 app.include_router(api_router)
 app.include_router(create_admin_router(db, require_admin))
+app.include_router(create_product_image_router(db, require_admin))
 app.add_middleware(OrderBodyLimitMiddleware)
 
 app.add_middleware(

@@ -9,15 +9,15 @@ import { useFavourites } from '../context/FavouritesContext';
 import { useCart } from '../context/CartContext';
 import { favouriteKey } from '../lib/favourites';
 import { displayPrice, formatMoney, productPackSizes, packLabel } from '../lib/cart';
+import { currentCatalogue } from '../lib/catalogueState';
 import fallback from '../generated/catalog.json';
 import menu from '../data/in-store-menu.json';
-const snapshot = Object.fromEntries(fallback.map(item => [item.slug,item]));
 const menuItems = Object.fromEntries(menu.map(item => [item.slug,item]));
 export default function Favourites() {
   const {items, ready, storageError, toggle} = useFavourites();
-  const {catalog, catalogStatus, refreshCatalog} = useCart();
+  const {catalog, catalogStatus, catalogLoaded, refreshCatalog} = useCart();
   const [compare,setCompare] = useState(false);
-  const products = catalogStatus === 'ready' ? catalog : {...snapshot,...catalog};
+  const products = currentCatalogue(catalog, catalogLoaded, fallback);
   const rows = items.map(ref => ({ref,item:(ref.kind === 'menu' ? menuItems : products)[ref.slug]}));
   const price = row => row.ref.kind === 'menu' ? row.item.priceLabel || formatMoney(row.item.price * 100) : displayPrice(row.item);
   const status = row => row.ref.kind === 'menu' ? row.item.availability || 'In store only' : row.item.availability || 'Check with store';
