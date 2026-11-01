@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertCircle, CheckCircle2, LoaderCircle, Send } from 'lucide-react';
 import api, { telLink, waLink } from '../lib/api';
+import { submitTrackedLead } from '../lib/confirmedLead';
 import { bulkInquiryPayload, emptyBulkInquiry, inquirySubmissionKey, validateBulkInquiry } from '../lib/inquiry';
 
 const fields = {
@@ -38,7 +39,7 @@ export default function BulkInquiryForm() {
       const payload = bulkInquiryPayload(form);
       const fingerprint = JSON.stringify(payload);
       if (attempt.current?.fingerprint !== fingerprint) attempt.current = { fingerprint, key: await inquirySubmissionKey(payload) };
-      const saved = await api.post('/inquiries', { ...payload, idempotency_key: attempt.current.key });
+      const saved = await submitTrackedLead('bulk_gifting', () => api.post('/inquiries', { ...payload, idempotency_key: attempt.current.key }));
       setReceipt(saved); setStatus('success');
     } catch (err) {
       if (Array.isArray(err.detail)) {

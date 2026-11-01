@@ -83,7 +83,7 @@ export default function About() {
               <MapPin className="w-6 h-6 shrink-0" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-primary-foreground/75 font-semibold">Store Location</p>
-                <p className="font-serif font-bold text-lg">19 Abu Lane, Meerut</p>
+                <p className="font-serif font-bold text-lg">19B, Abu Lane, Meerut</p>
               </div>
             </div>
           </div>
@@ -95,11 +95,11 @@ export default function About() {
             <div className="md:col-span-5 relative group">
               <OptimizedImage
                 src="/pahwa_family.jpg"
-                alt="The Pahwa Brothers at PAHWA JEE 19 Abu Lane Meerut"
+                alt="The Pahwa Brothers at PAHWA JEE, 19B Abu Lane, Meerut"
                 className="rounded-2xl object-cover w-full aspect-[3/2] shadow-md border-2 border-white/80"
               />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
-                The Pahwa Brothers · 19 Abu Lane
+                The Pahwa Brothers · 19B Abu Lane
               </div>
             </div>
             <div className="md:col-span-7">

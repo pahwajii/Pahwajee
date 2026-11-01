@@ -7,6 +7,7 @@ import { BUSINESS, waLink, telLink } from "@/lib/api";
 import { useCart } from "../context/CartContext";
 import BrandLogo from './BrandLogo';
 import ShoppingNav from './ShoppingNav';
+import { trackContactClick } from '../lib/leadTracking';
 
 const NAV = [
   { to: "/diwali", label: "Diwali" },
@@ -136,6 +137,7 @@ function Navbar({ dark, onToggleTheme }) {
             <div
               className="mobile-menu-enter xl:hidden mt-2 glass rounded-2xl p-3 max-h-[75vh] overflow-y-auto"
               data-testid="mobile-menu"
+              data-contact-placement="mobile_menu"
             >
               {NAV.map((n) => (
                 <NavLink
@@ -170,7 +172,7 @@ function FloatingButtons() {
   if (pathname === '/diwali') return null;
   const shoppingPage = pathname.startsWith('/products') || ['/gifting', '/favourites', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
-    <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons">
+    <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons" data-contact-placement="floating">
       <a
         aria-label="WhatsApp order"
         href={waLink()}
@@ -181,16 +183,6 @@ function FloatingButtons() {
           WhatsApp Order
         </span>
       </a>
-      <a
-        aria-label="Call PAHWA JEE"
-        href={telLink()}
-        className="group relative grid h-11 w-11 place-items-center rounded-full bg-primary text-white shadow-xl transition hover:scale-110"
-      >
-        <Phone size={18} />
-        <span className="absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-white/90 px-3 py-2 text-xs font-medium text-foreground shadow-lg backdrop-blur-sm group-hover:block dark:bg-black/80">
-          Call Now
-        </span>
-      </a>
     </div>
   );
 }
@@ -198,14 +190,14 @@ function FloatingButtons() {
 export default function Layout() {
   const [dark, setDark] = useDarkMode();
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans" onClick={trackContactClick}>
       <Navbar dark={dark} onToggleTheme={() => setDark((value) => !value)} />
       <main className="flex-grow pt-24">
         <ShoppingNav />
         <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>
       <FloatingButtons />
-      <footer className="bg-card border-t border-border mt-auto py-10 sm:py-12">
+      <footer className="bg-card border-t border-border mt-auto py-10 sm:py-12" data-contact-placement="footer">
         <div className="container-x grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-[1.1fr_1.35fr_1fr] xl:gap-10">
           <div className="min-w-0 md:col-span-2 xl:col-span-1">
             <BrandLogo loading="lazy" className="h-auto w-52 sm:w-64 max-w-full mb-4" sizes="(min-width: 640px) 256px, 208px" />

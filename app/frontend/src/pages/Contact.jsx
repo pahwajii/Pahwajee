@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SEO from '../components/SEO';
 import api, { BUSINESS, waLink, telLink } from '../lib/api';
+import { submitTrackedLead } from '../lib/confirmedLead';
 import { MapPin, Phone, MessageSquare, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function Contact() {
@@ -24,7 +25,7 @@ export default function Contact() {
     }
     setStatus('sending');
     try {
-      await api.post('/inquiries', formData);
+      await submitTrackedLead('contact', () => api.post('/inquiries', formData));
       setStatus('success');
       setFormData({ name: '', phone: '', email: '', message: '' });
     } catch (err) {
@@ -140,10 +141,11 @@ export default function Contact() {
             <h2 className="text-2xl font-serif font-bold text-foreground mb-6">Send an Inquiry</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                <label htmlFor="contact-name" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
                   Name <span className="text-primary">*</span>
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   required
@@ -156,10 +158,11 @@ export default function Contact() {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                  <label htmlFor="contact-phone" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
                     Phone Number <span className="text-primary">*</span>
                   </label>
                   <input
+                    id="contact-phone"
                     type="tel"
                     name="phone"
                     required
@@ -170,10 +173,11 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                  <label htmlFor="contact-email" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
                     Email Address (Optional)
                   </label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     value={formData.email}
@@ -185,10 +189,11 @@ export default function Contact() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                <label htmlFor="contact-message" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
                   Message / Order Details <span className="text-primary">*</span>
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   required
                   rows="4"

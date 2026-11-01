@@ -116,7 +116,7 @@ export default function Home() {
               <MapPin className="mt-1 text-primary shrink-0" size={20} />
               <div>
                 <p className="font-semibold font-serif text-lg text-foreground">Visit our local store</p>
-                <p className="text-xs text-muted-foreground mt-0.5">19 Abu Lane, Meerut Cantt. Open daily 10:00 AM to 11:00 PM.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">19B, Abu Lane, Meerut. Open daily 10:00 AM to 11:00 PM.</p>
               </div>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function Home() {
             <p className="text-muted-foreground leading-relaxed text-base mb-6">{signatureGajak.desc}</p>
             <div className="flex items-center gap-6 mb-6">
               <span className="text-2xl font-serif font-bold text-gold-ink">{currentPrice(signatureGajak)}</span>
-              <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Organic Jaggery</span>
+              <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold">Jaggery</span>
             </div>
             <div className="space-y-4">
               <AddToCart product={signatureGajak} />
@@ -221,6 +221,7 @@ export default function Home() {
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
               Curated gift hampers featuring premium dry fruit wooden trays, festive sweet boxes, and corporate custom branding.
             </p>
+            <Link to="/blog/diwali-gift-hampers-meerut-guide" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-primary dark:text-secondary underline underline-offset-4">Choosing Diwali gifts: contents, budget &amp; packaging</Link>
           </div>
 
           <div className="grid gap-6 min-[480px]:grid-cols-2 lg:grid-cols-3">

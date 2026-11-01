@@ -95,7 +95,11 @@ test('blog articles ship crawlable content, matching article metadata and workin
     assert.equal(article.url, `${SITE_URL}${path}`);
     assert.deepEqual(graph.find(item => item['@type'] === 'BreadcrumbList').itemListElement.map(item => item.item), [`${SITE_URL}/`, `${SITE_URL}/blog`, `${SITE_URL}${path}`]);
     for (const image of article.image) await readFile(`public${decodeURI(new URL(image).pathname)}`);
-    for (const link of [...post.sections.flatMap(section => section.links || []), post.cta]) await readFile(`dist${link.to}.html`);
+    for (const link of [...post.sections.flatMap(section => section.links || []), post.cta]) {
+      const target = new URL(link.to, SITE_URL);
+      const targetHtml = await readFile(`dist${target.pathname}.html`, 'utf8');
+      if (target.hash) assert.ok(targetHtml.includes(`id="${decodeURIComponent(target.hash.slice(1))}"`), `Missing section for ${link.to}`);
+    }
   }
   assert.match(renderHead(metadata({path: '/blog'})), /property="og:type" content="website"/);
 });

@@ -9,6 +9,7 @@ import BrandLogo from '../components/BrandLogo';
 import { useCart } from '../context/CartContext';
 import { productPackSizes, validCartPack, canPurchase, checkoutChanges, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
 import api from '../lib/api';
+import { submitTrackedLead } from '../lib/confirmedLead';
 
 const ATTEMPT_KEY = 'pahwa-order-attempt-v1';
 const emptyForm = { name: '', phone: '', email: '', method: 'pickup', address: '', city: '', pincode: '', notes: '' };
@@ -117,7 +118,7 @@ export default function Cart() {
       }
       const serialized = JSON.stringify(payload);
       if (attempt.current?.payload !== serialized) attempt.current = { payload: serialized, key: await submissionKey(payload) };
-      const order = await api.post('/orders', { ...payload, idempotency_key: attempt.current.key });
+      const order = await submitTrackedLead('order_request', () => api.post('/orders', { ...payload, idempotency_key: attempt.current.key }));
       completeOrder(order);
       setForm(emptyForm);
       try { sessionStorage.removeItem(ATTEMPT_KEY); } catch { /* No customer data is persisted. */ }

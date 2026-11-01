@@ -631,13 +631,21 @@ export const blogContent = {
       {
         "heading": "Compare the gift and its presentation",
         "paragraphs": [
-          "Pahwajee’s gifting page includes dry fruit designs such as the Peacock Dry Fruit Gift Box, Floral Dry Fruit Gift Box and Golden Dry Fruit Platter. A box, tray and platter each present the gift differently; consider how you will carry it and hand it over.",
+          "A box, tray and platter each present the gift differently; consider how you will carry it and hand it over. Open one of the Pahwajee designs below to compare the photos.",
           "Use the photos to shortlist a design, then confirm the available contents, net weight and final price with the store. A photograph is a useful starting point, but it does not replace the details of your order."
         ],
         "links": [
           {
-            "label": "Browse gift hamper designs and mithai boxes",
-            "to": "/gifting"
+            "label": "Peacock Dry Fruit Gift Box",
+            "to": "/products/dry-fruit-gift-trays?design=peacock-gift-box"
+          },
+          {
+            "label": "Golden Dry Fruit Platter",
+            "to": "/products/dry-fruit-gift-trays?design=golden-platter"
+          },
+          {
+            "label": "Floral Dry Fruit Gift Box",
+            "to": "/products/dry-fruit-gift-trays?design=floral-gift-box"
           }
         ],
         "photo": {
@@ -664,6 +672,10 @@ export const blogContent = {
           "For a bulk order, send these details together through the gifting enquiry form or WhatsApp. Confirm availability and the agreed handover date before finalising your plans."
         ],
         "links": [
+          {
+            "label": "Request a bulk gifting quote",
+            "to": "/gifting#bulk-gifting"
+          },
           {
             "label": "See Pahwajee’s Diwali collection",
             "to": "/diwali"
@@ -714,12 +726,20 @@ export const blogContent = {
       {
         "heading": "Choosing Nankhatai at Pahwajee",
         "paragraphs": [
-          "The Pahwajee catalogue includes Desi Ghee and Vanaspati Ghee Nankhatai. Check the product description when choosing your variety, and ask for the storage guidance for the pack you buy."
+          "Check the ghee base and product description when choosing your variety, then ask for the storage guidance for the pack you buy. For a closer look at the ingredients that affect texture, read our ingredient guide."
         ],
         "links": [
           {
-            "label": "Compare Pahwajee’s Nankhatai varieties",
-            "to": "/nankhatai-meerut"
+            "label": "Pure Desi Ghee Nankhatai: packs and availability",
+            "to": "/products/pure-desi-ghee-nankhatai"
+          },
+          {
+            "label": "Vanaspati Ghee Nankhatai: packs and availability",
+            "to": "/products/vanaspati-ghee-nankhatai"
+          },
+          {
+            "label": "Nankhatai ingredients and their role in texture",
+            "to": "/blog/nankhatai-ingredients-guide"
           }
         ]
       }
