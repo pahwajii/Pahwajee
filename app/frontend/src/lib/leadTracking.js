@@ -24,13 +24,18 @@ export function contactClickEvent(href, pathname, placement = 'content') {
   } };
 }
 
-export function trackContactClick(event) {
-  if (event.defaultPrevented || typeof window === 'undefined' || typeof window.gtag !== 'function') return;
-  const link = event.target?.closest?.('a[href]');
-  if (!link) return;
-  const placement = link.closest('[data-contact-placement]')?.dataset.contactPlacement;
-  const contact = contactClickEvent(link.getAttribute('href'), window.location.pathname, placement);
+export function trackContactIntent(href, placement = 'content') {
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+  const contact = contactClickEvent(href, window.location.pathname, placement);
   if (!contact) return;
   try { window.gtag('event', contact.name, contact.parameters); }
   catch { /* Analytics must never prevent a call or enquiry from opening. */ }
+}
+
+export function trackContactClick(event) {
+  if (event.defaultPrevented) return;
+  const link = event.target?.closest?.('a[href]');
+  if (!link) return;
+  const placement = link.closest('[data-contact-placement]')?.dataset.contactPlacement;
+  trackContactIntent(link.getAttribute('href'), placement);
 }

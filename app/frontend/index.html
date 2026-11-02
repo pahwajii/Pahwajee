@@ -2,13 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KT1V9V0JZT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KT1V9V0JZT');
+    <!-- Keep local/preview visits and direct admin visits out of production GA. -->
+    <script id="production-analytics">
+      (function () {
+        if (!['pahwajee.in', 'www.pahwajee.in'].includes(window.location.hostname)) return;
+        var pathname = window.location.pathname;
+        try { pathname = decodeURIComponent(pathname); } catch (_) {}
+        if (/^\/admin(?:\/|$)/i.test(pathname)) return;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-KT1V9V0JZT');
+        var tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-KT1V9V0JZT';
+        document.head.appendChild(tag);
+      }());
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="180x180" href="/media/pj-icon-180.png" />

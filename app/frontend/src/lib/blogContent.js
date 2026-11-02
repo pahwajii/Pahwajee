@@ -256,7 +256,7 @@ export const blogContent = {
   },
   "how-rewri-is-made-ingredients-process": {
     "imageCaption": "AI-generated illustration of a general traditional method; not a photograph of Pahwajee’s kitchen.",
-    "introduction": "Rewri, also called Revri or Rewari, is recognised by its small pieces and sesame coating. It looks simple in a bowl, but preparing the sweet involves careful control of the syrup and quick, consistent shaping. Here is the traditional sugar-Rewri process from ingredients to packing; jaggery versions and individual workshops use different formulas.",
+    "introduction": "Rewri is a small, crisp sweet with a sesame coating and a sugar or jaggery base. Also written as Revri or Rewari, it comes in different recipes and textures. This guide explains the ingredients and the traditional sugar-Rewri process, from roasting sesame to shaping and packing. Jaggery versions and individual workshops use different methods.",
     "sections": [
       {
         "heading": "What ingredients are used in Rewri?",
@@ -551,7 +551,7 @@ export const blogContent = {
     }
   },
   "rewri-gajak-chikki-difference": {
-    "introduction": "Rewri, Gajak and Chikki often share ingredients such as sesame, peanuts, sugar or jaggery. Their biggest differences are how they are shaped and the texture you get with each bite. Here is a quick guide to choosing among them.",
+    "introduction": "Gajak is often flaky or layered, while Chikki usually has a firm, brittle crunch with visible nuts or seeds. Their ingredients can overlap: sesame, peanuts, sugar and jaggery appear in different recipes. Rewri is a third option, usually made as small individual pieces with a sesame coating. Compare the shape and texture below, then check the variety you plan to buy.",
     "sections": [
       {
         "heading": "Compare them at a glance",
@@ -586,16 +586,24 @@ export const blogContent = {
       {
         "heading": "Choose by the texture you enjoy",
         "paragraphs": [
-          "For small, crisp bites, start with Rewri. For a flaky texture, look at Gajak varieties such as Dilkhush Gazak. If you enjoy a firmer crunch with visible peanuts, explore Roasted Peanut Chikki. A selection of different textures can also work well when sharing with family."
+          "For small, crisp bites, start with Khasta Rewri. For a flaky texture, look at Gajak varieties such as Dilkhush Gazak. If you enjoy a firmer crunch with visible peanuts, explore Roasted Peanut Chikki. A selection of different textures can also work well when sharing with family."
         ],
         "links": [
           {
-            "label": "Explore Rewri and Gajak",
-            "to": "/rewri-gajak-meerut"
+            "label": "View Khasta Rewri",
+            "to": "/products/khasta-rewri"
+          },
+          {
+            "label": "View Dilkhush Gazak",
+            "to": "/products/dilkhush-gazak"
           },
           {
             "label": "View Roasted Peanut Chikki",
             "to": "/products/roasted-peanut-chikki"
+          },
+          {
+            "label": "Explore Rewri and Gajak",
+            "to": "/rewri-gajak-meerut"
           }
         ],
         "photo": {

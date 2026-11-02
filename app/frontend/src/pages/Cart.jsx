@@ -10,6 +10,7 @@ import { useCart } from '../context/CartContext';
 import { productPackSizes, validCartPack, canPurchase, checkoutChanges, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
 import api from '../lib/api';
 import { submitTrackedLead } from '../lib/confirmedLead';
+import { openPrivateWhatsAppDraft } from '../lib/privateWhatsApp';
 
 const ATTEMPT_KEY = 'pahwa-order-attempt-v1';
 const emptyForm = { name: '', phone: '', email: '', method: 'pickup', address: '', city: '', pincode: '', notes: '' };
@@ -73,7 +74,7 @@ function OrderReceipt({ order, onContinue }) {
       <DeliveryInfo />
     </div>
     <div className="mt-6 flex flex-wrap gap-3">
-      <a href={order.whatsapp_url} target="_blank" rel="noopener noreferrer" className="btn-primary !bg-emerald-700 !text-white"><MessageCircle size={18} /> Send on WhatsApp</a>
+      <button type="button" onClick={() => openPrivateWhatsAppDraft(order.whatsapp_url)} className="btn-primary !bg-emerald-700 !text-white"><MessageCircle size={18} aria-hidden="true" /> Send on WhatsApp</button>
       <button type="button" onClick={copy} className="btn-outline"><Copy size={17} /> {copied ? 'Copied' : 'Copy Order Details'}</button>
     </div>
     <p className="mt-3 text-sm text-muted-foreground">WhatsApp will open with your order details. Tap Send there to share them with the shop.</p>

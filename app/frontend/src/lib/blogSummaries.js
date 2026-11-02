@@ -22,10 +22,10 @@ export const blogSummaries = [
   },
   {
     "slug": "how-rewri-is-made-ingredients-process",
-    "title": "How Rewri Is Made: Ingredients and Traditional Steps",
-    "seoTitle": "How Rewri Is Made: Ingredients & Steps | Pahwajee",
-    "description": "Follow Rewri making from sesame roasting and syrup preparation to pulling, shaping and packing, with illustrations and Meerut product links.",
-    "excerpt": "From sesame seeds to small crisp bites: a closer look at the work behind Rewri.",
+    "title": "What Is Rewri? Ingredients and How It Is Made",
+    "seoTitle": "What Is Rewri? Ingredients & How It Is Made | Pahwajee",
+    "description": "Rewri is a small sesame-coated sweet made with sugar or jaggery. Explore its ingredients, traditional making steps and Pahwajee varieties in Meerut.",
+    "excerpt": "A guide to Rewri’s sesame coating, ingredients and traditional making steps.",
     "image": "/blog/rewri-making-stages.webp",
     "imageAlt": "Four illustrated Rewri stages: ingredients, sesame roasting, sugar working and finished sesame-coated pieces",
     "datePublished": "2026-10-20"
@@ -42,10 +42,10 @@ export const blogSummaries = [
   },
   {
     "slug": "rewri-gajak-chikki-difference",
-    "title": "Rewri, Gajak and Chikki: What’s the Difference?",
-    "seoTitle": "Rewri vs Gajak vs Chikki: A Simple Guide | PAHWAJEE",
-    "description": "Compare the shape, texture and ingredients of Rewri, Gajak and Chikki, then explore Pahwajee’s collection in Abu Lane, Meerut.",
-    "excerpt": "Small sesame bites, flaky layers or a firm crunch? Find your favourite.",
+    "title": "Gajak vs Chikki: Ingredients, Texture and Shape",
+    "seoTitle": "Gajak vs Chikki: Differences Explained | Pahwajee",
+    "description": "Gajak is often flaky or layered; Chikki has a firm, brittle crunch. Compare their ingredients and shapes with Rewri, then explore varieties in Meerut.",
+    "excerpt": "Compare flaky Gajak, brittle Chikki and sesame-coated Rewri before choosing a pack.",
     "image": "/products/Khasta-rewri.png",
     "imageAlt": "Small sesame-covered Rewri pieces piled on a plate",
     "datePublished": "2026-10-12"
