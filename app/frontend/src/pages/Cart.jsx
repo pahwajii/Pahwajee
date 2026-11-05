@@ -7,6 +7,7 @@ import { ArrowLeft, CheckCircle2, Copy, LoaderCircle, MapPin, MessageCircle, Min
 import SEO from '../components/SEO';
 import BrandLogo from '../components/BrandLogo';
 import { useCart } from '../context/CartContext';
+import { usePromo } from '../context/PromoContext';
 import { productPackSizes, validCartPack, canPurchase, checkoutChanges, formatMoney, lineKey, packLabel, packPrice } from '../lib/cart';
 import api from '../lib/api';
 import { submitTrackedLead } from '../lib/confirmedLead';
@@ -70,6 +71,18 @@ function OrderReceipt({ order, onContinue }) {
         </li>)}
       </ul>
       <div className="mt-4 flex justify-between gap-4 border-t border-border pt-4 font-semibold"><span>Items subtotal</span><span>{formatMoney(order.subtotal_paise)}</span></div>
+      {order.discount_paise > 0 && (
+        <div className="mt-2 flex justify-between gap-4 text-sm text-emerald-700 dark:text-emerald-400 font-semibold">
+          <span>{order.discount_label || 'Special Offer Discount'}</span>
+          <span>-{formatMoney(order.discount_paise)}</span>
+        </div>
+      )}
+      {order.total_paise && order.discount_paise > 0 && (
+        <div className="mt-2 flex justify-between gap-4 border-t border-border pt-2 text-base font-bold">
+          <span>Total</span>
+          <span>{formatMoney(order.total_paise)}</span>
+        </div>
+      )}
       <p className="mt-4 text-sm text-muted-foreground">{order.fulfilment.method === 'pickup' ? 'Store pickup · 19B, Abu Lane, Meerut' : `Delivery requested · ${order.fulfilment.address}, ${order.fulfilment.city} ${order.fulfilment.pincode}`}</p>
       <DeliveryInfo />
     </div>
@@ -86,6 +99,9 @@ function OrderReceipt({ order, onContinue }) {
 
 export default function Cart() {
   const { items, catalog, catalogStatus, refreshCatalog, notice, setNotice, changeQuantity, changePack, removeItem, invalidItems, subtotal, submitting, setSubmitting, completeOrder, lastOrder, clearReceipt } = useCart();
+  const { promo, isEligibleForDiscount, calculateDiscount } = usePromo();
+  const discount = calculateDiscount(items);
+  const total = Math.max(0, subtotal - discount);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
   const busy = useRef(false);
@@ -106,7 +122,7 @@ export default function Cart() {
       customer: { name: form.name.trim(), phone: form.phone.trim(), email: form.email.trim() || null },
       fulfilment: { method: form.method, address: form.method === 'delivery' ? form.address.trim() : '', city: form.method === 'delivery' ? form.city.trim() : '', pincode: form.method === 'delivery' ? form.pincode.trim() : '' },
       items: items.map((item) => ({ slug: item.slug, pack_grams: item.pack_grams, quantity: item.quantity, expected_unit_price_paise: item.unit_price_paise })).sort((a, b) => a.slug.localeCompare(b.slug) || (a.pack_grams || 0) - (b.pack_grams || 0)),
-      notes: form.notes.trim(),
+      notes: [form.notes.trim(), discount > 0 ? `[Offer: ${promo.discount_percent}% off on ${promo.category === 'all' ? 'All Products' : 'Rewri & Gajak'} applied]` : ''].filter(Boolean).join('\n'),
     };
     try {
       const current = await refreshCatalog({ force: true });
@@ -157,6 +173,10 @@ export default function Cart() {
             {items.map((item) => {
               const key = lineKey(item);
               const unavailable = catalogStatus === 'ready' && (!canPurchase(catalog[item.slug]) || catalog[item.slug]?.sale_unit !== item.sale_unit || !validCartPack(item, catalog[item.slug]));
+              const eligible = isEligibleForDiscount(item);
+              const lineBase = packPrice(item.unit_price_paise, item.pack_grams) * item.quantity;
+              const lineDiscount = eligible ? Math.round(lineBase * (Number(promo.discount_percent) / 100)) : 0;
+              const lineFinal = lineBase - lineDiscount;
               return <div key={key} className="p-4 sm:p-6">
                 <div className="flex gap-4">
                   <Link to={`/products/${item.slug}`} className="shrink-0">{item.image ? <OptimizedImage square sizes="96px" src={item.image} alt={item.name} className="h-20 w-20 rounded-xl object-cover sm:h-24 sm:w-24" /> : <BrandLogo alt={item.name} className="h-20 w-20 rounded-xl p-2 sm:h-24 sm:w-24" />}</Link>
@@ -170,7 +190,21 @@ export default function Cart() {
                 <div className="mt-4 flex flex-wrap items-end gap-3">
                   {item.sale_unit === 'kg' && <label className="text-xs text-muted-foreground">Pack size<select value={item.pack_grams} onChange={(e) => changePack(key, Number(e.target.value))} aria-label={`Cart pack size for ${item.name} ${packLabel(item.pack_grams)}`} disabled={submitting || unavailable} className="commerce-input mt-1 !w-24">{productPackSizes(catalog[item.slug]).map((grams) => <option key={grams} value={grams}>{packLabel(grams)}</option>)}</select></label>}
                   <div><p className="mb-1 text-xs text-muted-foreground">{item.sale_unit === 'kg' ? 'Packs' : item.sale_unit === 'plate' ? 'Plates' : 'Quantity'}</p><QuantityControl item={item} disabled={submitting || unavailable} onChange={(value) => changeQuantity(key, value)} /></div>
-                  <span className="ml-auto pb-2 text-lg font-semibold whitespace-nowrap">{formatMoney(packPrice(item.unit_price_paise, item.pack_grams) * item.quantity)}</span>
+                  <div className="ml-auto pb-2 text-right">
+                    {eligible && lineDiscount > 0 ? (
+                      <div>
+                        <span className="inline-block text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider mb-1">
+                          {promo.discount_percent}% OFF
+                        </span>
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-xs line-through text-muted-foreground">{formatMoney(lineBase)}</span>
+                          <span className="text-lg font-semibold whitespace-nowrap text-foreground">{formatMoney(lineFinal)}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-lg font-semibold whitespace-nowrap">{formatMoney(lineBase)}</span>
+                    )}
+                  </div>
                 </div>
               </div>;
             })}
@@ -200,7 +234,22 @@ export default function Cart() {
         <aside className="card-warm p-5 sm:p-7 lg:sticky lg:top-28">
           <h2 className="text-3xl">Order summary</h2>
           <FssaiNotice className="mt-3" />
-          <div className="mt-6 flex justify-between gap-4 text-base"><span>Items subtotal</span><strong data-testid="cart-subtotal">{formatMoney(subtotal)}</strong></div>
+          <div className="mt-6 space-y-2.5 text-sm sm:text-base">
+            <div className="flex justify-between gap-4">
+              <span>Items subtotal</span>
+              <span data-testid="cart-subtotal">{formatMoney(subtotal)}</span>
+            </div>
+            {discount > 0 && (
+              <div className="flex justify-between gap-4 text-emerald-700 dark:text-emerald-400 font-semibold">
+                <span>{promo.category === 'all' ? 'Order Discount' : 'Rewri & Gajak Offer'} ({promo.discount_percent}% off)</span>
+                <span>-{formatMoney(discount)}</span>
+              </div>
+            )}
+            <div className="flex justify-between gap-4 border-t border-border pt-3 text-lg font-bold">
+              <span>Total</span>
+              <strong data-testid="cart-total">{formatMoney(total)}</strong>
+            </div>
+          </div>
           <DeliveryInfo />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">We’ll confirm availability and fulfilment with you. No online payment is collected.</p>
           <p className="mt-4 text-xs leading-relaxed text-muted-foreground">Please read our <Link to="/terms-and-conditions" className="underline">Terms &amp; Conditions</Link> and <Link to="/returns-and-cancellations" className="underline">replacement and cancellation policy</Link>. Our <Link to="/privacy-policy" className="underline">Privacy Policy</Link> explains how we use your order details.</p>

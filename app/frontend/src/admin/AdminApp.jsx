@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, NavLink, Outlet, Route, Routes } from 'react-router-dom';
-import { ArrowRight, ClipboardList, ExternalLink, LayoutDashboard, LockKeyhole, LogOut, MessageSquare, Package, RefreshCw } from 'lucide-react';
+import { ArrowRight, ClipboardList, ExternalLink, LayoutDashboard, LockKeyhole, LogOut, MessageSquare, Package, RefreshCw, Sparkles } from 'lucide-react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { formatMoney } from '../lib/cart';
 import { ErrorMessage, PageHeading, ResourceState, StatusBadge, dateLabel, useResource } from './shared';
 import AdminProducts from './AdminProducts';
 import AdminOrders from './AdminOrders';
 import AdminInquiries from './AdminInquiries';
+import AdminBanner from './AdminBanner';
 import './admin.css';
 import BrandLogo from '../components/BrandLogo';
 
@@ -59,6 +60,7 @@ const sections = [
   { to: '/admin/products', label: 'Products', icon: Package },
   { to: '/admin/orders', label: 'Orders', icon: ClipboardList },
   { to: '/admin/enquiries', label: 'Enquiries', icon: MessageSquare },
+  { to: '/admin/banner', label: 'Offer Banner', icon: Sparkles },
 ];
 
 function Shell() {
@@ -75,7 +77,7 @@ function Shell() {
     <a href="#admin-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-card focus:p-3">Skip to content</a>
     <aside className="border-b border-border bg-card lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r">
       <div className="flex items-center justify-between px-5 py-5 lg:block lg:px-7 lg:py-8"><Link to="/admin/dashboard" aria-label="Admin overview"><BrandLogo className="h-12 w-auto" /></Link><span className="text-xs text-muted-foreground lg:mt-3 lg:block">Shop administration</span></div>
-      <nav aria-label="Admin navigation" className="grid grid-cols-4 gap-1 px-3 pb-4 lg:block lg:space-y-2 lg:px-4">{sections.map(({ to, label, icon: Icon }) => <NavLink key={to} to={to} className={({ isActive }) => `flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-3 text-xs font-medium sm:flex-row sm:gap-3 sm:text-sm lg:justify-start lg:px-4 ${isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}><Icon size={19} />{label}</NavLink>)}</nav>
+      <nav aria-label="Admin navigation" className="grid grid-cols-5 gap-1 px-2 pb-4 lg:block lg:space-y-2 lg:px-4">{sections.map(({ to, label, icon: Icon }) => <NavLink key={to} to={to} className={({ isActive }) => `flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-2.5 text-[11px] font-medium sm:flex-row sm:gap-2.5 sm:text-sm lg:justify-start lg:px-4 ${isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}><Icon size={18} />{label}</NavLink>)}</nav>
       <div className="hidden lg:mt-auto lg:block lg:p-6"><p className="text-sm font-medium">PAHWA JEE</p><p className="mt-1 text-xs text-muted-foreground">Abu Lane, Meerut</p><Link to="/" className="mt-5 flex min-h-11 items-center gap-2 text-sm text-primary">View storefront<ExternalLink size={15} /></Link></div>
     </aside>
     <div className="min-w-0">
@@ -106,5 +108,5 @@ function Overview() {
 }
 
 export default function AdminApp() {
-  return <AuthProvider><div className="admin-app"><AdminMetadata /><Routes><Route path="login" element={<Login />} /><Route element={<Shell />}><Route index element={<Navigate to="dashboard" replace />} /><Route path="dashboard" element={<Overview />} /><Route path="products" element={<AdminProducts />} /><Route path="orders" element={<AdminOrders />} /><Route path="enquiries" element={<AdminInquiries />} /><Route path="*" element={<Navigate to="/admin/dashboard" replace />} /></Route></Routes></div></AuthProvider>;
+  return <AuthProvider><div className="admin-app"><AdminMetadata /><Routes><Route path="login" element={<Login />} /><Route element={<Shell />}><Route index element={<Navigate to="dashboard" replace />} /><Route path="dashboard" element={<Overview />} /><Route path="products" element={<AdminProducts />} /><Route path="orders" element={<AdminOrders />} /><Route path="enquiries" element={<AdminInquiries />} /><Route path="banner" element={<AdminBanner />} /><Route path="*" element={<Navigate to="/admin/dashboard" replace />} /></Route></Routes></div></AuthProvider>;
 }

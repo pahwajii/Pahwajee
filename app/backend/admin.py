@@ -33,6 +33,18 @@ class InquiryUpdate(BaseModel):
     internal_notes: str = Field(default="", max_length=2000)
 
 
+class PromoBannerUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    active: bool = True
+    text: str = Field(min_length=3, max_length=200)
+    discount_percent: int = Field(ge=0, le=100)
+    category: str = Field(max_length=50)
+    cta_text: str = Field(default="", max_length=100)
+    cta_link: str = Field(default="", max_length=200)
+    start_date: str = Field(default="", max_length=50)
+    end_date: str = Field(default="", max_length=50)
+
+
 def create_admin_router(db, require_admin):
     router = APIRouter(prefix="/api/admin", dependencies=[Depends(require_admin)])
 
@@ -111,5 +123,27 @@ def create_admin_router(db, require_admin):
                 raise HTTPException(404, "Enquiry not found.")
             raise HTTPException(409, "This enquiry changed in another session. Refresh it before saving.")
         return result
+
+    @router.get("/promo-banner")
+    async def get_admin_promo_banner(response: Response):
+        response.headers["Cache-Control"] = "no-store"
+        doc = await db.promo_banner.find_one({}, {"_id": 0})
+        return doc or {
+            "active": True,
+            "text": "Shop today and get 10% off on all website orders! 10% off on Rewri & Gajak",
+            "discount_percent": 10,
+            "category": "rewri-gajak",
+            "cta_text": "Shop Rewri & Gajak",
+            "cta_link": "/rewri-gajak-meerut",
+            "start_date": "",
+            "end_date": "",
+        }
+
+    @router.put("/promo-banner")
+    async def update_admin_promo_banner(body: PromoBannerUpdate):
+        data = body.model_dump()
+        await db.promo_banner.update_one({}, {"$set": data}, upsert=True)
+        saved = await db.promo_banner.find_one({}, {"_id": 0})
+        return saved or data
 
     return router

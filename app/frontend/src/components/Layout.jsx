@@ -1,4 +1,6 @@
 import { useFavourites } from '../context/FavouritesContext';
+import { usePromo } from '../context/PromoContext';
+import AnnouncementBanner from './AnnouncementBanner';
 import FssaiNotice from './FssaiNotice';
 import { Link, NavLink, useLocation, Outlet } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
@@ -66,6 +68,7 @@ function useDarkMode() {
 function Navbar({ dark, onToggleTheme }) {
   const { count } = useCart();
   const { items: favourites } = useFavourites();
+  const { bannerVisible } = usePromo();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -82,7 +85,7 @@ function Navbar({ dark, onToggleTheme }) {
   return (
     <header
       data-testid="site-header"
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? "py-2" : "py-4"}`}
+      className={`fixed left-0 right-0 z-40 transition-all duration-300 ${bannerVisible ? "top-9 sm:top-9" : "top-0"} ${scrolled ? "py-2" : "py-4"}`}
     >
       <div className="container-x">
         <div className={`glass rounded-2xl px-3 sm:px-6 py-3 flex items-center justify-between gap-2 xl:gap-4 transition-all ${scrolled ? "shadow-xl" : "shadow-md"}`}>
@@ -189,10 +192,12 @@ function FloatingButtons() {
 
 export default function Layout() {
   const [dark, setDark] = useDarkMode();
+  const { bannerVisible } = usePromo();
   return (
     <div className="min-h-screen flex flex-col font-sans" onClick={trackContactClick}>
+      <AnnouncementBanner />
       <Navbar dark={dark} onToggleTheme={() => setDark((value) => !value)} />
-      <main className="flex-grow pt-24">
+      <main className={`flex-grow transition-all duration-300 ${bannerVisible ? "pt-28 sm:pt-32" : "pt-24"}`}>
         <ShoppingNav />
         <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>

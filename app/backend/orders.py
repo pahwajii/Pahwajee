@@ -170,7 +170,11 @@ def order_summary(order):
     for item in order["items"]:
         pack = ("1kg" if item["pack_grams"] == 1000 else f"{item['pack_grams']}g") if item["sale_unit"] == "kg" else item["sale_unit"]
         lines.append(f"{item['name']} - {pack} x {item['quantity']}: {rupees(item['line_total_paise'])}")
-    lines.extend(["", f"Items subtotal: {rupees(order['subtotal_paise'])}", f"Name: {customer['name']}", f"Mobile: {customer['phone']}"])
+    lines.extend(["", f"Items subtotal: {rupees(order['subtotal_paise'])}"])
+    if order.get("discount_paise"):
+        lines.append(f"Special Offer ({order.get('discount_label', 'Discount')}): -{rupees(order['discount_paise'])}")
+        lines.append(f"Total: {rupees(order['total_paise'])}")
+    lines.extend([f"Name: {customer['name']}", f"Mobile: {customer['phone']}"])
     if customer.get("email"):
         lines.append(f"Email: {customer['email']}")
     lines.append("Fulfilment: " + ("Store Pickup" if fulfilment["method"] == "pickup" else "Delivery Request"))
@@ -184,7 +188,7 @@ def order_summary(order):
 
 def receipt(order):
     # No public order lookup: customer details are returned only to the submitter.
-    data = {k: order[k] for k in ("reference", "status", "created_at", "items", "customer", "fulfilment", "notes", "subtotal_paise")}
+    data = {k: order[k] for k in ("reference", "status", "created_at", "items", "customer", "fulfilment", "notes", "subtotal_paise", "discount_paise", "total_paise", "discount_label") if k in order}
     data["summary"] = order["summary"]
     data["whatsapp_url"] = "https://wa.me/916396339806?" + urlencode({"text": order["summary"]})
     return data
@@ -352,12 +356,52 @@ class OrderService(NotificationOutbox):
         items, subtotal = price_order(body.items, products)
         now = datetime.now(timezone.utc)
         order_id = uuid.uuid4().hex
+        discount_paise = 0
+        discount_label = ""
+        try:
+            promo = await self.db.promo_banner.find_one({}, {"_id": 0})
+            if promo and promo.get("active", False):
+                pct = promo.get("discount_percent", 0)
+                is_active = True
+                if promo.get("start_date"):
+                    try:
+                        s_dt = datetime.fromisoformat(promo["start_date"].replace("Z", "+00:00"))
+                        if now < s_dt:
+                            is_active = False
+                    except Exception:
+                        pass
+                if promo.get("end_date"):
+                    try:
+                        e_dt = datetime.fromisoformat(promo["end_date"].replace("Z", "+00:00"))
+                        if now > e_dt:
+                            is_active = False
+                    except Exception:
+                        pass
+                if is_active and pct > 0:
+                    cat = (promo.get("category") or "rewri-gajak").lower()
+                    for line in items:
+                        slug = line["slug"]
+                        matches = False
+                        if cat == "all":
+                            matches = True
+                        elif cat in ("rewri-gajak", "rewri-gazak", "gajak", "rewri"):
+                            matches = bool(re.search(r"rewri|gazak|gajak|chikki|til-peanut|til-patti", slug))
+                        elif cat == "nankhatai":
+                            matches = "nankhatai" in slug
+                        elif cat == "sweets":
+                            matches = bool(re.search(r"laddoo|pinni|bite|barfi|halwa|louch|panjeeri|til-bugga|gur-ke-sev|murmura", slug))
+                        if matches:
+                            discount_paise += int(round(line["line_total_paise"] * pct / 100))
+                    if discount_paise > 0:
+                        discount_label = f"{pct}% off {'All Items' if cat == 'all' else 'Rewri & Gajak'}"
+        except Exception:
+            pass
         order = {
             "id": order_id, "reference": f"PJ-{now.astimezone(timezone(timedelta(hours=5, minutes=30))):%Y%m%d}-{order_id[:10].upper()}",
             "idempotency_key": key, "fingerprint": fingerprint,
             "status": "requested", "created_at": now.isoformat(),
             "customer": payload["customer"], "fulfilment": payload["fulfilment"], "notes": payload["notes"],
-            "items": items, "subtotal_paise": subtotal,
+            "items": items, "subtotal_paise": subtotal, "discount_paise": discount_paise, "total_paise": max(0, subtotal - discount_paise), "discount_label": discount_label,
             "email": {"status": "pending", "attempts": 0, "next_attempt_at": now},
         }
         order["summary"] = order_summary(order)

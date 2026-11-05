@@ -571,6 +571,23 @@ async def get_testimonials():
 async def get_gallery():
     return await db.gallery.find({}, {"_id": 0}).sort("order", 1).to_list(200)
 
+DEFAULT_PROMO = {
+    "active": True,
+    "text": "Shop today and get 10% off on all website orders! 10% off on Rewri & Gajak",
+    "discount_percent": 10,
+    "category": "rewri-gajak",
+    "cta_text": "Shop Rewri & Gajak",
+    "cta_link": "/rewri-gajak-meerut",
+    "start_date": "",
+    "end_date": "",
+}
+
+@api_router.get("/promo-banner")
+async def get_promo_banner(response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    doc = await db.promo_banner.find_one({}, {"_id": 0})
+    return doc or DEFAULT_PROMO
+
 @api_router.get("/banners")
 async def get_banners():
     return await db.banners.find({"active": True}, {"_id": 0}).sort("order", 1).to_list(20)

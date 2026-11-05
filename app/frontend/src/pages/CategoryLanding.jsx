@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { MessageCircle, Phone, ArrowLeft } from 'lucide-react';
+import { MessageCircle, Phone, ArrowLeft, Sparkles } from 'lucide-react';
+import { usePromo } from '../context/PromoContext';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
 import OptimizedImage from '../components/OptimizedImage';
@@ -15,6 +16,7 @@ import menu from '../data/in-store-menu.json';
 
 export default function CategoryLanding({ type }) {
   const { catalog, catalogLoaded } = useCart();
+  const { promo, isPromoActive } = usePromo();
   const products = Object.values(currentCatalogue(catalog, catalogLoaded, usePageData().products || fallbackProducts));
   const config = collections[type] || collections.nankhatai;
   const filtered = products.filter(config.filterMatch).sort(compareProducts);
@@ -32,6 +34,22 @@ export default function CategoryLanding({ type }) {
           <a href={telLink()} className="btn-primary flex items-center gap-2"><Phone size={17} /> Call the store</a>
         </div>
       </section>
+
+      {isPromoActive && (promo.category === type || promo.category === 'all' || (type === 'rewri-gajak' && ['rewri-gajak', 'rewri-gazak', 'gajak', 'rewri'].includes(promo.category))) && (
+        <aside aria-label="Current Offer" className="my-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-primary/10 to-amber-500/15 border border-secondary/40 p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <Sparkles className="w-5 h-5 text-gold-ink" aria-hidden="true" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-serif text-lg sm:text-xl font-bold text-foreground">
+              Special Offer: {promo.discount_percent}% Off on Rewri &amp; Gajak Today!
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+              Add your favourites to the cart to get an automatic {promo.discount_percent}% discount on all website orders today.
+            </p>
+          </div>
+        </aside>
+      )}
 
       <section className="my-8" aria-labelledby="collection-products">
         <h2 id="collection-products" className="text-2xl sm:text-3xl font-serif mb-2">{type === 'bakery' ? 'Nankhatai packs' : 'Compare products & pack sizes'}</h2>

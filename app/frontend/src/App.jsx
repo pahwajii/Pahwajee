@@ -1,4 +1,5 @@
 import { FavouritesProvider } from './context/FavouritesContext';
+import { PromoProvider } from './context/PromoContext';
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -40,7 +41,7 @@ export async function loadInitialPages(pathname) {
 
 export default function App({ data = {}, pages = {} }) {
   const { Home, Products, ProductDetail, About, Reviews, FAQs, Contact, Diwali, CorporateGifting, Gallery, CategoryLanding, InStoreMenu, Blog, BlogArticle, PolicyPage, Favourites, Cart, AdminApp } = { ...clientPages, ...pages };
-  return <PageDataContext.Provider value={data}><CartProvider initialProducts={data.products}><FavouritesProvider>
+  return <PageDataContext.Provider value={data}><PromoProvider><CartProvider initialProducts={data.products}><FavouritesProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/admin/*" element={<React.Suspense fallback={<p className="container-x py-12" role="status">Loading admin…</p>}><AdminApp /></React.Suspense>} />
@@ -75,5 +76,5 @@ export default function App({ data = {}, pages = {} }) {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-  </FavouritesProvider></CartProvider></PageDataContext.Provider>;
+  </FavouritesProvider></CartProvider></PromoProvider></PageDataContext.Provider>;
 }
