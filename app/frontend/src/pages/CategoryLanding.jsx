@@ -42,10 +42,10 @@ export default function CategoryLanding({ type }) {
           </div>
           <div className="min-w-0 flex-1">
             <h2 className="font-serif text-lg sm:text-xl font-bold text-foreground">
-              Special Offer: {promo.discount_percent}% Off on Rewri &amp; Gajak Today!
+              Special Offer: {promo.discount_percent}% Off Today!
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-              Add your favourites to the cart to get an automatic {promo.discount_percent}% discount on all website orders today.
+              {promo.text || `Add your favourites to the cart to get an automatic ${promo.discount_percent}% discount on your order.`}
             </p>
           </div>
         </aside>

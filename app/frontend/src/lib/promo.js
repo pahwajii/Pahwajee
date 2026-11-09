@@ -4,12 +4,12 @@ import { packPrice } from './cart.js';
 export const PROMO_STORAGE_DISMISS_KEY = 'pahwa-promo-dismissed';
 
 export const DEFAULT_PROMO = {
-  active: true,
-  text: 'Shop today and get 10% off on all website orders! 10% off on Rewri & Gajak',
-  discount_percent: 10,
+  active: false,
+  text: '',
+  discount_percent: 0,
   category: 'rewri-gajak',
-  cta_text: 'Shop Rewri & Gajak',
-  cta_link: '/rewri-gajak-meerut',
+  cta_text: '',
+  cta_link: '',
   start_date: '',
   end_date: '',
 };

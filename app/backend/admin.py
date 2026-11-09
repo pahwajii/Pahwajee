@@ -35,10 +35,10 @@ class InquiryUpdate(BaseModel):
 
 class PromoBannerUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    active: bool = True
-    text: str = Field(min_length=3, max_length=200)
-    discount_percent: int = Field(ge=0, le=100)
-    category: str = Field(max_length=50)
+    active: bool = False
+    text: str = Field(default="", max_length=200)
+    discount_percent: int = Field(default=0, ge=0, le=100)
+    category: str = Field(default="rewri-gajak", max_length=50)
     cta_text: str = Field(default="", max_length=100)
     cta_link: str = Field(default="", max_length=200)
     start_date: str = Field(default="", max_length=50)
@@ -129,12 +129,12 @@ def create_admin_router(db, require_admin):
         response.headers["Cache-Control"] = "no-store"
         doc = await db.promo_banner.find_one({}, {"_id": 0})
         return doc or {
-            "active": True,
-            "text": "Shop today and get 10% off on all website orders! 10% off on Rewri & Gajak",
-            "discount_percent": 10,
+            "active": False,
+            "text": "",
+            "discount_percent": 0,
             "category": "rewri-gajak",
-            "cta_text": "Shop Rewri & Gajak",
-            "cta_link": "/rewri-gajak-meerut",
+            "cta_text": "",
+            "cta_link": "",
             "start_date": "",
             "end_date": "",
         }
