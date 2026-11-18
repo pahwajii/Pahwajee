@@ -8,11 +8,9 @@ import { Menu, X, Phone, MessageCircle, Sun, Moon, Clock, Instagram, Facebook, S
 import { BUSINESS, waLink, telLink } from "@/lib/api";
 import { useCart } from "../context/CartContext";
 import BrandLogo from './BrandLogo';
-import ShoppingNav from './ShoppingNav';
 import { trackContactClick } from '../lib/leadTracking';
 
 const NAV = [
-  { to: "/diwali", label: "Diwali" },
   { to: "/products", label: "Shop" },
   { to: "/in-store-menu", label: "In-store Menu" },
   { to: "/our-specialities", label: "Our Specialities" },
@@ -171,15 +169,22 @@ function Navbar({ dark, onToggleTheme }) {
 }
 
 function FloatingButtons() {
-  const { pathname } = useLocation();
-  if (pathname === '/diwali') return null;
-  const shoppingPage = pathname.startsWith('/products') || ['/gifting', '/favourites', '/in-store-menu', '/our-specialities', '/nankhatai-meerut', '/rewri-gajak-meerut', '/sweets-meerut', '/bakery-meerut'].includes(pathname);
   return (
-    <div className={`fixed bottom-6 right-6 z-50 ${shoppingPage ? "hidden sm:flex" : "flex"} flex-col gap-3`} data-testid="floating-buttons" data-contact-placement="floating">
+    <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-3" data-testid="floating-buttons" data-contact-placement="floating">
+      <a
+        aria-label="Call now"
+        href={telLink()}
+        className="group relative grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl transition hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
+        <Phone size={20} />
+        <span className="absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-white/90 px-3 py-2 text-xs font-medium text-foreground shadow-lg backdrop-blur-sm group-hover:block dark:bg-black/80">
+          Call Now
+        </span>
+      </a>
       <a
         aria-label="WhatsApp order"
         href={waLink()}
-        className="group relative grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-110"
+        className="group relative grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <MessageCircle size={22} />
         <span className="absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-white/90 px-3 py-2 text-xs font-medium text-foreground shadow-lg backdrop-blur-sm group-hover:block dark:bg-black/80">
@@ -198,7 +203,6 @@ export default function Layout() {
       <AnnouncementBanner />
       <Navbar dark={dark} onToggleTheme={() => setDark((value) => !value)} />
       <main className={`flex-grow transition-all duration-300 ${bannerVisible ? "pt-28 sm:pt-32" : "pt-24"}`}>
-        <ShoppingNav />
         <Suspense fallback={<p className="container-x min-h-64 py-12" role="status">Loading page…</p>}><Outlet /></Suspense>
       </main>
       <FloatingButtons />
