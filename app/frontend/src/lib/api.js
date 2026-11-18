@@ -71,7 +71,7 @@ export const BUSINESS = {
   fssaiNumber: "22718357001092",
   outlets: [
     { name: "Pahwajee - Abu Lane Shop", address: "19B, Abu Lane, Meerut", phones: ["9837566628", "9897202037"] },
-    { name: "Food Adda by Pahwajee", address: "13A, Gurudwara Road, Prahlad Nagar, Meerut", phones: ["8171817881", "9897202037"] },
+    { name: "Food Adda by Pahwajee", address: "13A, Gurudwara Road, Prahlad Nagar, Meerut", phones: ["8171817881", "9897202037", "6398431618"] },
   ],
   googleReviewUrl: googleReviews.write_review_url,
   tagline: "Meerut's Trusted Destination for Nankhatai, Rewri, Gazak, Shakes & Premium Gift Hampers",
