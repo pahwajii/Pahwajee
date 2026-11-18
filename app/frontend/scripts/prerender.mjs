@@ -61,7 +61,8 @@ try {
   const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + paths.map(path => `  <url><loc>${escapeHtml(SITE_URL + path)}</loc></url>`).join('\n') + '\n</urlset>\n';
   await writeFile(resolve(root, 'dist/sitemap.xml'), sitemap);
   // Private routes are crawlable so their noindex headers can be seen by bots.
-  await writeFile(resolve(root, 'dist/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+  const robotsTxt = `User-agent: *\nAllow: /\n\n# AI Crawlers & LLM Agents\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: Amazonbot\nAllow: /\n\nUser-agent: meta-externalagent\nAllow: /\n\nUser-agent: Bytespider\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Cohere-ai\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  await writeFile(resolve(root, 'dist/robots.txt'), robotsTxt);
   console.log(`Prerendered ${paths.length} public pages, including ${products.length} products, for ${SITE_URL}.`);
 } finally {
   await server.close();

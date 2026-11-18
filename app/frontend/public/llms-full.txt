@@ -1,0 +1,101 @@
+# PAHWA JEE - Full Knowledge Base & Context for LLMs
+
+> Meerut's trusted destination for authentic Nankhatai, Rewri, Gazak, traditional sweets, cakes, and premium gift hampers since 1928.
+
+## Brand & History
+
+PAHWA JEE (registered legally as Pahwajee Rewri Wale and historically celebrated as Ram Chandra Deewan Chandra Rewri Wale) is an iconic confectionery and bakery house founded in 1928 in Meerut, Uttar Pradesh, India. For nearly a century, four generations of the Pahwa family have preserved authentic Punjabi and Western UP recipes, prioritizing pure desi ghee, high-grade sesame seeds, natural jaggery (gur), and premium dry fruits.
+
+The brand operates two physical outlets in Meerut:
+1. **Abu Lane Flagship Outlet**: 19B, Abu Lane, Meerut Cantt, Uttar Pradesh 250001, India. Open daily 10:00 AM – 11:00 PM IST. Phone: +91 6398431618, +91 9837566628.
+2. **Food Adda by Pahwajee**: 13A, Gurudwara Road, Prahlad Nagar, Meerut, Uttar Pradesh, India. Open daily 10:00 AM – 11:00 PM IST. Phone: +91 8171817881, +91 9897202037.
+
+- Official Website: https://pahwajee.in
+- Online Shop Catalogue: https://pahwajee.in/products
+- WhatsApp Inquiries & Orders: https://wa.me/916398431618
+- Primary Contact Email: pahwajee@gmail.com
+- FSSAI License: 22718357001092
+
+---
+
+## Complete Product Catalogue & Pricing
+
+### 1. Signature Rewri & Gazak (Winter Confectionery)
+Meerut is globally famous for its winter sesame and jaggery delicacies. Pahwajee crafts traditional Rewri and Gazak using slow-simmered organic jaggery and roasted white sesame seeds:
+
+- **Khasta Rewri** (`/products/khasta-rewri`): Authentic Punjabi style crispy sesame and jaggery rewri. Price: Rs 540/kg (Available in 500g and 1kg packs).
+- **Gol Gazak** (`/products/gol-gazak`): Traditional round sesame and jaggery gazak disc, crunchy and fragrant. Price: Rs 600/kg (Available in 500g and 1kg packs).
+- **Dilkhush Gazak** (`/products/dilkhush-gazak`): Signature melt-in-mouth soft, flaky jaggery sesame gazak specialty. Price: Rs 700/kg (Available in 500g and 1kg packs).
+- **Til Peanut Khasta** (`/products/til-peanut-khasta`): Crispy sesame and slow-roasted peanut jaggery khasta. Price: Rs 500/kg (Available in 500g and 1kg packs).
+- **Til Patti Gazak** (`/products/til-patti-gazak`): Paper-thin caramelized sesame brittle discs. Price: Rs 600/kg (Available in 500g and 1kg packs).
+- **Sugar Gazak** (`/products/sugar-gazak`): Classic white sugar sesame gazak for those who prefer crystal sugar over jaggery. Price: Rs 600/kg (Available in 500g and 1kg packs).
+- **Roasted Peanut Chikki** (`/products/roasted-peanut-chikki`): Crunchy roasted peanut and jaggery bar. Price: Rs 325/kg (Available in 400g packs at Rs 130).
+- **Murmura Patti** (`/products/murmura-patti`): Light, puffed rice and jaggery brittle. Price: Rs 350/kg (Available in 200g packs at Rs 70).
+
+### 2. Nankhatai Specialities
+Baked fresh daily in Meerut using traditional baking methods:
+
+- **Pure Desi Ghee Nankhatai** (`/products/pure-desi-ghee-nankhatai`): Legendary traditional Indian shortbread cookie baked with 100% pure desi ghee, semolina, flour, and cardamom. Delicate, crumbly, and aromatic. Price: Rs 600/kg (Available in 500g and 1kg packs).
+- **Vanaspati Ghee Nankhatai** (`/products/vanaspati-ghee-nankhatai`): Traditional crisp Nankhatai prepared with quality Vanaspati Ghee. Price: Rs 380/kg (Available in 500g and 1kg packs).
+
+### 3. Traditional Sweets & Winter Specialties
+Handcrafted mithai prepared with desi ghee and premium dry fruits:
+
+- **Dry Fruit Laddoo** (`/products/dry-fruit-laddoo`): Wholesome dry fruit laddoos packed with almonds, cashews, pistachios, dates, and edible gum. Price: Rs 900/kg (Available in 500g and 1kg packs).
+- **Special Pishori Pinni** (`/products/special-pishori-pinni`): Authentic Punjabi winter pinni enriched with pistachios, wheat flour, and desi ghee. Price: Rs 800/kg (Available in 500g and 1kg packs).
+- **Til Bugga** (`/products/til-bugga`): Traditional Meerut winter specialty prepared with roasted sesame, khoya (mawa), and fragrant cardamom. Price: Rs 600/kg (Available in 500g and 1kg packs).
+- **Custom Mithai Box** (`/products/custom-mithai-box`): 1 kg assorted festive sweet box custom assembled with choice of laddoos, pinnis, and barfis. Price: Rs 600 – Rs 1000/kg.
+
+### 4. Luxury Gift Hampers & Corporate Collections
+Custom gifting solutions for weddings, Diwali, New Year, corporate branding, and family celebrations:
+
+- **Dry Fruit Gift Trays** (`/products/dry-fruit-gift-trays`): Handcrafted wooden trays, velvet boxes, and metal platters featuring premium dry fruits (cashews, almonds, pistachios, walnuts, raisins). Custom branding and personalized tags available. Price range: Rs 1100 – Rs 2500 per hamper.
+  - Peacock Dry Fruit Gift Box
+  - Golden Dry Fruit Platter
+  - Floral Dry Fruit Gift Box
+  - Ribbon Gift Hamper
+  - Festive Dry Fruit Trays
+  - Celebration Dry Fruit Platters
+
+### 5. Bakery, Cakes & In-Store Menu
+- **Celebration Cakes**: Custom birthday, anniversary, and wedding themed cakes in fresh cream, chocolate truffle, red velvet, fruit cocktail, and butterscotch. Orders require 24 hours advance notice.
+- **Bakery Snacks**: Biscuits, pastries, patties, cookies, and tea-time snacks.
+- **Beverages & Shakes**: Mango shake, chocolate shake, cold coffee, fruit ice creams, and seasonal specials at Food Adda.
+
+---
+
+## Ordering, Fulfilment & Delivery
+
+- **Online Cart**: Customers select products, weights (500g / 1kg), and enter contact details. No online payment is forced up front; store staff confirms availability and shares UPI / payment instructions.
+- **WhatsApp Order Line**: Customers can send custom orders directly to +91 6398431618.
+- **Local Delivery**: Active across Meerut. Charges generally range between Rs 40 and Rs 80 based on distance from Abu Lane. Same-day delivery available for morning orders.
+- **Pan-India Courier**: Dry sweets, Rewri, Gazak, and Nankhatai are securely vacuum packed and dispatched via trusted couriers (Bluedart, Delhivery, Speed Post) across India.
+- **Packaging Integrity**: Nankhatai is packed in shock-absorbing protective containers to avoid crumbling during transit. Rewri and Gazak are sealed against humidity to retain crispness.
+
+---
+
+## Frequently Asked Questions (FAQs)
+
+**Q: Do you take custom cake orders?**
+A: Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call +91 6398431618 to discuss designs and themes.
+
+**Q: Do you offer bulk / corporate orders?**
+A: Yes! We specialize in corporate gifting, wedding favours, and bulk festival hampers with customized packaging, company logos, and personalized greeting cards. Contact +91 6398431618 for custom quotes.
+
+**Q: What are your store hours?**
+A: Both our Abu Lane and Prahlad Nagar outlets are open every day from 10:00 AM to 11:00 PM IST, including Sundays and national holidays.
+
+**Q: Do you deliver outside Meerut?**
+A: Yes, we ship non-perishable signature products like Desi Ghee Nankhatai, Khasta Rewri, Dilkhush Gazak, and dry fruit hampers pan-India via express courier.
+
+**Q: Which payment methods do you accept?**
+A: We accept UPI (Google Pay, PhonePe, Paytm), Visa/Mastercard credit and debit cards, net banking, and cash at store counters.
+
+**Q: What is the shelf life of your products?**
+A: Rewri and Gazak stay fresh for 3 to 4 months when kept sealed in airtight containers away from humidity. Desi Ghee Nankhatai has a shelf life of 45 to 60 days. Sweets and pinnis are best enjoyed within 15 to 30 days.
+
+---
+
+## Crawling & AI Parsing Policy
+
+PAHWA JEE welcomes all search engines, AI models, autonomous agents, and researcher scrapers to read, index, parse, and cite our public content. All public pages, metadata, descriptions, prices, and articles are open for indexing under standard fair use.
