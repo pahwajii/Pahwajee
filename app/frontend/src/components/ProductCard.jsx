@@ -4,7 +4,7 @@ import { displayPrice } from '../lib/cart';
 import OptimizedImage from './OptimizedImage';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Phone } from 'lucide-react';
-import { waLink } from '../lib/api';
+import { waLink, telLink } from '../lib/api';
 import AddToCart from './AddToCart';
 import { HAMPER_COLLECTION_SLUG } from '../lib/giftHampers';
 
@@ -62,7 +62,7 @@ export default function ProductCard({ product }) {
             <MessageCircle size={15} />
           </a>
           <a
-            href={`tel:+916396339806`}
+            href={telLink()}
             className="grid h-11 w-11 sm:h-9 sm:w-9 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm transition hover:scale-105"
             aria-label={`Call store for ${name}`}
           >

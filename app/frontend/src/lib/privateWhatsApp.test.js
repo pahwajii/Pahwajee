@@ -6,14 +6,14 @@ test('explicit draft opening sends the draft only to WhatsApp and sanitizes anal
   const previous = globalThis.window;
   const opened = [];
   const tracked = [];
-  const href = 'https://wa.me/916396339806?text=Private%20Name%209876543210%20address';
+  const href = 'https://wa.me/916398431618?text=Private%20Name%209876543210%20address';
   try {
     globalThis.window = { location: { pathname: '/cart?email=private@example.com' }, open: (...args) => opened.push(args), gtag: (...args) => tracked.push(args) };
     assert.deepEqual(opened, []);
     assert.equal(openPrivateWhatsAppDraft(href), true);
     assert.deepEqual(opened, [[href, '_blank', 'noopener,noreferrer']]);
     assert.deepEqual(tracked, [['event', 'whatsapp_click', { page_path: '/cart', contact_placement: 'content' }]]);
-    for (const unsafe of ['javascript:alert(1)', 'http://wa.me/916396339806', 'https://wa.me.evil.example/?text=private', 'tel:+916396339806']) {
+    for (const unsafe of ['javascript:alert(1)', 'http://wa.me/916398431618', 'https://wa.me.evil.example/?text=private', 'tel:+916398431618']) {
       assert.equal(openPrivateWhatsAppDraft(unsafe), false);
     }
     assert.equal(opened.length, 1);

@@ -351,7 +351,7 @@ SEED_GALLERY = [
 ]
 
 SEED_FAQS = [
-    {"question": "Do you take custom cake orders?", "answer": "Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call 6396339806 to discuss designs.", "order": 1},
+    {"question": "Do you take custom cake orders?", "answer": "Absolutely! We craft custom birthday, anniversary, wedding & themed cakes. Please place your order at least 24 hours in advance. Call 6398431618 to discuss designs.", "order": 1},
     {"question": "Do you offer bulk / corporate orders?", "answer": "Yes - we specialize in corporate gifting, weddings & bulk festival hampers with custom packaging & branding options. Contact us for a personalized quote.", "order": 2},
     {"question": "What are your business hours?", "answer": "We are open every day from 10:00 AM to 11:00 PM, including Sundays and public holidays.", "order": 3},
     {"question": "Do you deliver in Meerut?", "answer": "Yes, we offer local delivery in Meerut. Delivery charges depend on your location and order value. Please call us to confirm.", "order": 4},

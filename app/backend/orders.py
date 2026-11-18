@@ -190,7 +190,7 @@ def receipt(order):
     # No public order lookup: customer details are returned only to the submitter.
     data = {k: order[k] for k in ("reference", "status", "created_at", "items", "customer", "fulfilment", "notes", "subtotal_paise", "discount_paise", "total_paise", "discount_label") if k in order}
     data["summary"] = order["summary"]
-    data["whatsapp_url"] = "https://wa.me/916396339806?" + urlencode({"text": order["summary"]})
+    data["whatsapp_url"] = "https://wa.me/916398431618?" + urlencode({"text": order["summary"]})
     return data
 
 

@@ -21,7 +21,7 @@ export function businessSchema() {
   return {
     '@type': 'Bakery', '@id': `${SITE_URL}/#business`, name: 'PAHWA JEE', legalName: policy.businessName, email: policy.email,
     alternateName: ['Pahwajee', 'Pahwa Jee Rewri Wale', 'Ram Chandra Deewan Chandra Rewri Wale'], url: `${SITE_URL}/`,
-    image: absoluteUrl('/our_shop_main.jpeg'), logo: absoluteUrl('/brand/pahwajee-day.png'), telephone: '+916396339806',
+    image: absoluteUrl('/our_shop_main.jpeg'), logo: absoluteUrl('/brand/pahwajee-day.png'), telephone: '+916398431618',
     address: {'@type': 'PostalAddress', streetAddress: '19B, Abu Lane', addressLocality: 'Meerut', addressRegion: 'Uttar Pradesh', postalCode: '250001', addressCountry: 'IN'},
     openingHoursSpecification: {'@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '10:00', closes: '23:00'},
     hasMenu: `${SITE_URL}/in-store-menu`,
